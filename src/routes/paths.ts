@@ -21,6 +21,7 @@ export const paths = {
   maintenance: '/maintenance',
   pricing: '/pricing',
   payment: '/payment',
+  search: '/search-gravestone',
   about: '/about-us',
   contact: '/contact-us',
   faqs: '/faqs',

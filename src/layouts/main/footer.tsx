@@ -1,70 +1,118 @@
-import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
-import Stack from '@mui/material/Stack';
-import Divider from '@mui/material/Divider';
-import { alpha } from '@mui/material/styles';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Unstable_Grid2';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
+import Stack from "@mui/material/Stack";
+import Divider from "@mui/material/Divider";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Unstable_Grid2";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import { alpha, styled } from "@mui/material/styles";
 
-import { paths } from 'src/routes/paths';
-import { usePathname } from 'src/routes/hooks';
-import { RouterLink } from 'src/routes/components';
+import { paths } from "src/routes/paths";
+import { usePathname } from "src/routes/hooks";
+import { RouterLink } from "src/routes/components";
 
-import { _socials } from 'src/_mock';
+import { _socials } from "src/_mock";
+import { bgBlur } from "src/theme/css";
 
-import Logo from 'src/components/logo';
-import Iconify from 'src/components/iconify';
+import Logo from "src/components/logo";
+import Iconify from "src/components/iconify";
 
 // ----------------------------------------------------------------------
 
 const LINKS = [
   {
-    headline: 'Minimal',
+    headline: "Minimal",
     children: [
-      { name: 'About us', href: paths.about },
-      { name: 'Contact us', href: paths.contact },
-      { name: 'FAQs', href: paths.faqs },
+      { name: "About us", href: paths.about },
+      { name: "Contact us", href: paths.contact },
+      { name: "FAQs", href: paths.faqs },
     ],
   },
   {
-    headline: 'Legal',
+    headline: "Legal",
     children: [
-      { name: 'Terms and Condition', href: '#' },
-      { name: 'Privacy Policy', href: '#' },
+      { name: "Terms and Condition", href: "#" },
+      { name: "Privacy Policy", href: "#" },
     ],
   },
   {
-    headline: 'Contact',
-    children: [{ name: 'support@minimals.cc', href: '#' }],
+    headline: "Contact",
+    children: [{ name: "support@minimals.cc", href: "#" }],
   },
 ];
 
 // ----------------------------------------------------------------------
 
+type StyledPolygonProps = {
+  opacity?: number;
+  anchor?: "left" | "right";
+};
+
+const StyledPolygon = styled("div")<StyledPolygonProps>(
+  ({ opacity = 1, anchor = "left", theme }) => ({
+    ...bgBlur({
+      opacity,
+      color: theme.palette.background.default,
+    }),
+    zIndex: 9,
+    bottom: "164px",
+    height: 80,
+    width: "50%",
+    position: "absolute",
+    clipPath: "polygon(0% 0%, 100% 100%, 0% 100%)",
+    ...(anchor === "left" && {
+      left: 0,
+      ...(theme.direction === "rtl" && {
+        transform: "scale(-1, 1)",
+      }),
+    }),
+    ...(anchor === "right" && {
+      right: 0,
+      transform: "scaleX(-1)",
+      ...(theme.direction === "rtl" && {
+        transform: "scaleX(1)",
+      }),
+    }),
+  })
+);
+
 export default function Footer() {
   const pathname = usePathname();
 
-  const homePage = pathname === '/';
+  const homePage = pathname === "/";
+
+  const renderPolygons = (
+    <>
+      <StyledPolygon />
+      <StyledPolygon anchor="right" opacity={0.48} />
+      <StyledPolygon
+        anchor="right"
+        opacity={0.48}
+        sx={{ height: 48, zIndex: 10 }}
+      />
+      <StyledPolygon anchor="right" sx={{ zIndex: 11, height: 24 }} />
+    </>
+  );
 
   const simpleFooter = (
     <Box
       component="footer"
       sx={{
         py: 5,
-        textAlign: 'center',
-        position: 'relative',
-        bgcolor: 'background.default',
+        textAlign: "center",
+        position: "relative",
+        bgcolor: "background.default",
       }}
     >
+      {renderPolygons}
       <Container>
-        <Logo sx={{ mb: 1, mx: 'auto' }} />
+        <Logo sx={{ mb: 1, mx: "auto" }} />
 
         <Typography variant="caption" component="div">
           © All rights reserved
           <br /> made by
-          <Link href="https://minimals.cc/"> minimals.cc </Link>
+          <Link href="https://artem.sorokin/"> A.S. </Link>
         </Typography>
       </Container>
     </Box>
@@ -74,8 +122,8 @@ export default function Footer() {
     <Box
       component="footer"
       sx={{
-        position: 'relative',
-        bgcolor: 'background.default',
+        position: "relative",
+        bgcolor: "background.default",
       }}
     >
       <Divider />
@@ -84,7 +132,7 @@ export default function Footer() {
         sx={{
           pt: 10,
           pb: 5,
-          textAlign: { xs: 'center', md: 'unset' },
+          textAlign: { xs: "center", md: "unset" },
         }}
       >
         <Logo sx={{ mb: 3 }} />
@@ -92,8 +140,8 @@ export default function Footer() {
         <Grid
           container
           justifyContent={{
-            xs: 'center',
-            md: 'space-between',
+            xs: "center",
+            md: "space-between",
           }}
         >
           <Grid xs={8} md={3}>
@@ -101,16 +149,17 @@ export default function Footer() {
               variant="body2"
               sx={{
                 maxWidth: 270,
-                mx: { xs: 'auto', md: 'unset' },
+                mx: { xs: "auto", md: "unset" },
               }}
             >
-              The starting point for your next project with Minimal UI Kit, built on the newest
-              version of Material-UI ©, ready to be customized to your style.
+              The starting point for your next project with Minimal UI Kit,
+              built on the newest version of Material-UI ©, ready to be
+              customized to your style.
             </Typography>
 
             <Stack
               direction="row"
-              justifyContent={{ xs: 'center', md: 'flex-start' }}
+              justifyContent={{ xs: "center", md: "flex-start" }}
               sx={{
                 mt: 3,
                 mb: { xs: 5, md: 0 },
@@ -120,7 +169,7 @@ export default function Footer() {
                 <IconButton
                   key={social.name}
                   sx={{
-                    '&:hover': {
+                    "&:hover": {
                       bgcolor: alpha(social.color, 0.08),
                     },
                   }}
@@ -132,12 +181,12 @@ export default function Footer() {
           </Grid>
 
           <Grid xs={12} md={6}>
-            <Stack spacing={5} direction={{ xs: 'column', md: 'row' }}>
+            <Stack spacing={5} direction={{ xs: "column", md: "row" }}>
               {LINKS.map((list) => (
                 <Stack
                   key={list.headline}
                   spacing={2}
-                  alignItems={{ xs: 'center', md: 'flex-start' }}
+                  alignItems={{ xs: "center", md: "flex-start" }}
                   sx={{ width: 1 }}
                 >
                   <Typography component="div" variant="overline">
