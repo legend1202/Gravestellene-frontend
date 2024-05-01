@@ -5,7 +5,6 @@ import Box from "@mui/material/Box";
 import ScrollProgress from "src/components/scroll-progress";
 
 import HomeSplash from "../home-splash";
-// import HomeSearchResult from "../home-search-result";
 
 export default function HomeView() {
   const { scrollYProgress } = useScroll();

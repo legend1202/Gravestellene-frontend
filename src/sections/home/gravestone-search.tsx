@@ -1,19 +1,13 @@
-// import { useCallback } from "react";
-
 import Stack from "@mui/material/Stack";
 import Badge from "@mui/material/Badge";
 import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
-// import { alpha } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import { DatePicker } from "@mui/x-date-pickers";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-// import InputBase, { inputBaseClasses } from "@mui/material/InputBase";
-
-// import { PATH_SEARCH_GRAVESTONE } from "src/config-global";
 
 import Iconify from "src/components/iconify";
 import Scrollbar from "src/components/scrollbar";
@@ -60,54 +54,6 @@ export default function GravestoneSearch({
   categoryOptions,
   handleShowSearchResult,
 }: Props) {
-  // const marksLabel = [...Array(21)].map((_, index) => {
-  //   const value = index * 10;
-
-  //   const firstValue = index === 0 ? `$${value}` : `${value}`;
-
-  //   return {
-  //     value,
-  //     label: index % 4 ? "" : firstValue,
-  //   };
-  // });
-
-  // const handleFilterGender = useCallback(
-  //   (newValue: string) => {
-  //     const checked = filters.gender.includes(newValue)
-  //       ? filters.gender.filter((value) => value !== newValue)
-  //       : [...filters.gender, newValue];
-  //     onFilters('gender', checked);
-  //   },
-  //   [filters.gender, onFilters]
-  // );
-
-  // const handleFilterCategory = useCallback(
-  //   (newValue: string) => {
-  //     onFilters('category', newValue);
-  //   },
-  //   [onFilters]
-  // );
-
-  // const handleFilterColors = useCallback(
-  //   (newValue: string | string[]) => {
-  //     onFilters("colors", newValue);
-  //   },
-  //   [onFilters]
-  // );
-
-  // const handleFilterPriceRange = useCallback(
-  //   (event: Event, newValue: number | number[]) => {
-  //     onFilters("priceRange", newValue as number[]);
-  //   },
-  //   [onFilters]
-  // );
-
-  // const handleFilterRating = useCallback(
-  //   (newValue: string) => {
-  //     onFilters("rating", newValue);
-  //   },
-  //   [onFilters]
-  // );
 
   const renderHead = (
     <Stack
@@ -263,7 +209,11 @@ export default function GravestoneSearch({
 
             {renderLocation}
 
-            <Button variant="contained" color="success">
+            <Button
+              variant="contained"
+              color="success"
+              onClick={handleShowSearchResult}
+            >
               Search
             </Button>
           </Stack>
