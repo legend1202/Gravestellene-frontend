@@ -13,7 +13,7 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 // import InputBase, { inputBaseClasses } from "@mui/material/InputBase";
 
-import { PATH_SEARCH_GRAVESTONE } from "src/config-global";
+// import { PATH_SEARCH_GRAVESTONE } from "src/config-global";
 
 import Iconify from "src/components/iconify";
 import Scrollbar from "src/components/scrollbar";
@@ -40,6 +40,7 @@ type Props = {
   categoryOptions: string[];
   ratingOptions: string[];
   colorOptions: string[];
+  handleShowSearchResult: VoidFunction;
 };
 
 export default function GravestoneSearch({
@@ -57,6 +58,7 @@ export default function GravestoneSearch({
   genderOptions,
   ratingOptions,
   categoryOptions,
+  handleShowSearchResult,
 }: Props) {
   // const marksLabel = [...Array(21)].map((_, index) => {
   //   const value = index * 10;
@@ -261,11 +263,7 @@ export default function GravestoneSearch({
 
             {renderLocation}
 
-            <Button
-              variant="contained"
-              color="success"
-              href={PATH_SEARCH_GRAVESTONE}
-            >
+            <Button variant="contained" color="success">
               Search
             </Button>
           </Stack>

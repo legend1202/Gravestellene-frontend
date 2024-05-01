@@ -56,7 +56,7 @@ const StyledPolygon = styled("div")<StyledPolygonProps>(
       color: theme.palette.background.default,
     }),
     zIndex: 9,
-    bottom: "164px",
+    bottom: 0,
     height: 80,
     width: "50%",
     position: "absolute",
@@ -99,14 +99,14 @@ export default function Footer() {
     <Box
       component="footer"
       sx={{
-        py: 5,
+        // py: 5,
         textAlign: "center",
         position: "relative",
-        bgcolor: "background.default",
+        // bgcolor: "background.default",
       }}
     >
       {renderPolygons}
-      <Container>
+      {/* <Container>
         <Logo sx={{ mb: 1, mx: "auto" }} />
 
         <Typography variant="caption" component="div">
@@ -114,7 +114,7 @@ export default function Footer() {
           <br /> made by
           <Link href="https://artem.sorokin/"> A.S. </Link>
         </Typography>
-      </Container>
+      </Container> */}
     </Box>
   );
 

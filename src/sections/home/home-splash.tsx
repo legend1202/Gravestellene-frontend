@@ -6,10 +6,10 @@ import Box from "@mui/material/Box";
 // import Link from '@mui/material/Link';
 import Stack from "@mui/material/Stack";
 // import Rating from '@mui/material/Rating';
-import { IconButton } from "@mui/material";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import { Button, IconButton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { alpha, styled } from "@mui/material/styles";
 
@@ -26,13 +26,12 @@ import {
 } from "src/_mock";
 
 import Label from "src/components/label";
-
 import { varFade, MotionContainer } from "src/components/animate";
 
 import { IProductFilters, IProductFilterValue } from "src/types/product";
 
 import GravestoneSearch from "./gravestone-search";
-import HomeSearchResult from "./home-search-result";
+// import HomeSearchResult from "./home-search-result";
 // import { bool, boolean } from "yup";
 
 // ----------------------------------------------------------------------
@@ -46,7 +45,8 @@ const StyledRoot = styled("div")(({ theme }) => ({
     imgUrl: "/assets/background/overlay_3.jpg",
   }),
   width: "100%",
-  height: "100vh",
+  height: "100%",
+  // height: "100% + 164px",
   position: "relative",
   // [theme.breakpoints.up("md")]: {
   //   top: 0,
@@ -192,6 +192,7 @@ export default function HomeSplash() {
           ratingOptions={PRODUCT_RATING_OPTIONS}
           genderOptions={PRODUCT_GENDER_OPTIONS}
           categoryOptions={["all", ...PRODUCT_CATEGORY_OPTIONS]}
+          handleShowSearchResult={handleShowSearchResult}
         />
       </Stack>
     </Stack>
@@ -209,7 +210,7 @@ export default function HomeSplash() {
       >
         <Box
           sx={{
-            height: "100vh",
+            height: "100%",
             py: { xs: 15, md: 20 },
             overflow: "hidden",
             position: "relative",
@@ -320,40 +321,543 @@ export default function HomeSplash() {
               </Box>
               <Stack spacing={0}>{renderFilters}</Stack>
             </Stack>
-            {/* <Stack
-              spacing={3}
-              sx={{
-                mb: { xs: 1, md: 2 },
-              }}
-            >
-              <Box
+            {searchKeyState && (
+              <Stack
+                spacing={3}
                 sx={{
-                  pb: { xs: 3.75, md: 3.75 },
-                  px: { xs: 1, md: 1.5 },
+                  mb: { xs: 1, md: 2 },
                 }}
               >
                 <Box
                   sx={{
-                    backgroundColor: "white",
-                    p: { xs: 1, md: 1.5 },
+                    pb: { xs: 3.75, md: 3.75 },
+                    px: { xs: 1, md: 1.5 },
                   }}
                 >
-                  <Typography
+                  <Box
                     sx={{
-                      display: "block",
-                      p: { xs: 1.5, md: 1.5 },
-                      fontSize: "18px",
+                      backgroundColor: "white",
+                      p: { xs: 1, md: 1.5 },
                     }}
-                    color="primary"
                   >
-                    Amrén, Hi Maria Ingeborg
-                  </Typography>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          display: "block",
+                          p: { xs: 1.5, md: 1.5 },
+                          fontSize: "18px",
+                        }}
+                        color="primary"
+                      >
+                        Amrén, Hi Maria Ingeborg
+                      </Typography>
+                      <Button
+                        variant="contained"
+                        color="success"
+                        sx={{
+                          display: { xs: "none", md: "block" },
+                        }}
+                      >
+                        Västerås pastorate
+                      </Button>
+                    </Box>
+                    <Box
+                      gap={{ xs: 3, lg: 10 }}
+                      display="grid"
+                      alignItems="center"
+                      gridTemplateColumns={{
+                        xs: "repeat(1, 1fr)",
+                        md: "repeat(3, 1fr)",
+                      }}
+                    >
+                      <m.div variants={varFade().inUp}>
+                        <Typography
+                          sx={{
+                            py: { xs: 0.5, md: 0.5 },
+                            px: { xs: 1.5, md: 1.5 },
+                            fontSize: "14px",
+                          }}
+                          color="common.black"
+                        >
+                          Born: 1965-03-04
+                        </Typography>
+                      </m.div>
+                      <m.div variants={varFade().inUp}>
+                        <Typography
+                          sx={{
+                            py: { xs: 0.5, md: 0.5 },
+                            px: { xs: 1.5, md: 1.5 },
+                            fontSize: "14px",
+                          }}
+                          color="common.black"
+                        >
+                          Deceased: 2015-12-07
+                        </Typography>
+                      </m.div>
+                      <m.div variants={varFade().inUp}>
+                        <Typography
+                          sx={{
+                            py: { xs: 0.5, md: 0.5 },
+                            px: { xs: 1.5, md: 1.5 },
+                            fontSize: "14px",
+                          }}
+                          color="common.black"
+                        >
+                          Buried: 2015-12-18
+                        </Typography>
+                      </m.div>
+                    </Box>
+                    <Box
+                      gap={{ xs: 3, lg: 10 }}
+                      display="grid"
+                      alignItems="center"
+                      gridTemplateColumns={{
+                        xs: "repeat(1, 1fr)",
+                        md: "repeat(3, 1fr)",
+                      }}
+                    >
+                      <m.div variants={varFade().inUp}>
+                        <Typography
+                          sx={{
+                            py: { xs: 0.5, md: 0.5 },
+                            px: { xs: 1.5, md: 1.5 },
+                            fontSize: "14px",
+                            fontStyle: "bold",
+                          }}
+                          color="common.black"
+                        >
+                          BARKARÖ CEMETERY
+                        </Typography>
+                      </m.div>
+                      <m.div variants={varFade().inUp}>
+                        <Typography
+                          sx={{
+                            py: { xs: 0.5, md: 0.5 },
+                            px: { xs: 1.5, md: 1.5 },
+                            fontSize: "14px",
+                          }}
+                          color="common.black"
+                        >
+                          Quarter: quarter 09
+                        </Typography>
+                      </m.div>
+                      <m.div variants={varFade().inUp}>
+                        <Typography
+                          sx={{
+                            py: { xs: 0.5, md: 0.5 },
+                            px: { xs: 1.5, md: 1.5 },
+                            fontSize: "14px",
+                          }}
+                          color="common.black"
+                        >
+                          Grave site: 210-1
+                        </Typography>
+                      </m.div>
+                    </Box>
+                    <Box
+                      gap={{ xs: 3, lg: 10 }}
+                      display="grid"
+                      alignItems="center"
+                      gridTemplateColumns={{
+                        xs: "repeat(1, 1fr)",
+                        md: "repeat(3, 1fr)",
+                      }}
+                    >
+                      <m.div variants={varFade().inUp}>
+                        <Typography
+                          sx={{
+                            py: { xs: 0.5, md: 0.5 },
+                            px: { xs: 1.5, md: 1.5 },
+                            fontSize: "14px",
+                            fontStyle: "bold",
+                          }}
+                          color="common.black"
+                        >
+                          Hometown: Västerås-Barkarö parish
+                        </Typography>
+                      </m.div>
+                    </Box>
+                    <Box
+                      gap={{ xs: 3, lg: 10 }}
+                      display="grid"
+                      alignItems="center"
+                      gridTemplateColumns={{
+                        xs: "repeat(1, 1fr)",
+                        md: "repeat(3, 1fr)",
+                      }}
+                    >
+                      <m.div variants={varFade().inUp}>
+                        <Typography
+                          sx={{
+                            py: { xs: 0.5, md: 0.5 },
+                            px: { xs: 1.5, md: 1.5 },
+                            fontSize: "14px",
+                            fontStyle: "bold",
+                          }}
+                          color="common.black"
+                        >
+                          Grave site number: 2109 210-1
+                        </Typography>
+                      </m.div>
+                    </Box>
+                  </Box>
+                  <Box
+                    sx={{
+                      backgroundColor: "white",
+                      p: { xs: 1, md: 1.5 },
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          display: "block",
+                          p: { xs: 1.5, md: 1.5 },
+                          fontSize: "18px",
+                        }}
+                        color="primary"
+                      >
+                        Amrén, Hi Maria Ingeborg
+                      </Typography>
+                      <Button
+                        variant="contained"
+                        color="success"
+                        sx={{
+                          display: { xs: "none", md: "block" },
+                        }}
+                      >
+                        Västerås pastorate
+                      </Button>
+                    </Box>
+                    <Box
+                      gap={{ xs: 3, lg: 10 }}
+                      display="grid"
+                      alignItems="center"
+                      gridTemplateColumns={{
+                        xs: "repeat(1, 1fr)",
+                        md: "repeat(3, 1fr)",
+                      }}
+                    >
+                      <m.div variants={varFade().inUp}>
+                        <Typography
+                          sx={{
+                            py: { xs: 0.5, md: 0.5 },
+                            px: { xs: 1.5, md: 1.5 },
+                            fontSize: "14px",
+                          }}
+                          color="common.black"
+                        >
+                          Born: 1965-03-04
+                        </Typography>
+                      </m.div>
+                      <m.div variants={varFade().inUp}>
+                        <Typography
+                          sx={{
+                            py: { xs: 0.5, md: 0.5 },
+                            px: { xs: 1.5, md: 1.5 },
+                            fontSize: "14px",
+                          }}
+                          color="common.black"
+                        >
+                          Deceased: 2015-12-07
+                        </Typography>
+                      </m.div>
+                      <m.div variants={varFade().inUp}>
+                        <Typography
+                          sx={{
+                            py: { xs: 0.5, md: 0.5 },
+                            px: { xs: 1.5, md: 1.5 },
+                            fontSize: "14px",
+                          }}
+                          color="common.black"
+                        >
+                          Buried: 2015-12-18
+                        </Typography>
+                      </m.div>
+                    </Box>
+                    <Box
+                      gap={{ xs: 3, lg: 10 }}
+                      display="grid"
+                      alignItems="center"
+                      gridTemplateColumns={{
+                        xs: "repeat(1, 1fr)",
+                        md: "repeat(3, 1fr)",
+                      }}
+                    >
+                      <m.div variants={varFade().inUp}>
+                        <Typography
+                          sx={{
+                            py: { xs: 0.5, md: 0.5 },
+                            px: { xs: 1.5, md: 1.5 },
+                            fontSize: "14px",
+                            fontStyle: "bold",
+                          }}
+                          color="common.black"
+                        >
+                          BARKARÖ CEMETERY
+                        </Typography>
+                      </m.div>
+                      <m.div variants={varFade().inUp}>
+                        <Typography
+                          sx={{
+                            py: { xs: 0.5, md: 0.5 },
+                            px: { xs: 1.5, md: 1.5 },
+                            fontSize: "14px",
+                          }}
+                          color="common.black"
+                        >
+                          Quarter: quarter 09
+                        </Typography>
+                      </m.div>
+                      <m.div variants={varFade().inUp}>
+                        <Typography
+                          sx={{
+                            py: { xs: 0.5, md: 0.5 },
+                            px: { xs: 1.5, md: 1.5 },
+                            fontSize: "14px",
+                          }}
+                          color="common.black"
+                        >
+                          Grave site: 210-1
+                        </Typography>
+                      </m.div>
+                    </Box>
+                    <Box
+                      gap={{ xs: 3, lg: 10 }}
+                      display="grid"
+                      alignItems="center"
+                      gridTemplateColumns={{
+                        xs: "repeat(1, 1fr)",
+                        md: "repeat(3, 1fr)",
+                      }}
+                    >
+                      <m.div variants={varFade().inUp}>
+                        <Typography
+                          sx={{
+                            py: { xs: 0.5, md: 0.5 },
+                            px: { xs: 1.5, md: 1.5 },
+                            fontSize: "14px",
+                            fontStyle: "bold",
+                          }}
+                          color="common.black"
+                        >
+                          Hometown: Västerås-Barkarö parish
+                        </Typography>
+                      </m.div>
+                    </Box>
+                    <Box
+                      gap={{ xs: 3, lg: 10 }}
+                      display="grid"
+                      alignItems="center"
+                      gridTemplateColumns={{
+                        xs: "repeat(1, 1fr)",
+                        md: "repeat(3, 1fr)",
+                      }}
+                    >
+                      <m.div variants={varFade().inUp}>
+                        <Typography
+                          sx={{
+                            py: { xs: 0.5, md: 0.5 },
+                            px: { xs: 1.5, md: 1.5 },
+                            fontSize: "14px",
+                            fontStyle: "bold",
+                          }}
+                          color="common.black"
+                        >
+                          Grave site number: 2109 210-1
+                        </Typography>
+                      </m.div>
+                    </Box>
+                  </Box>
+                  <Box
+                    sx={{
+                      backgroundColor: "white",
+                      p: { xs: 1, md: 1.5 },
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          display: "block",
+                          p: { xs: 1.5, md: 1.5 },
+                          fontSize: "18px",
+                        }}
+                        color="primary"
+                      >
+                        Amrén, Hi Maria Ingeborg
+                      </Typography>
+                      <Button
+                        variant="contained"
+                        color="success"
+                        sx={{
+                          display: { xs: "none", md: "block" },
+                        }}
+                      >
+                        Västerås pastorate
+                      </Button>
+                    </Box>
+                    <Box
+                      gap={{ xs: 3, lg: 10 }}
+                      display="grid"
+                      alignItems="center"
+                      gridTemplateColumns={{
+                        xs: "repeat(1, 1fr)",
+                        md: "repeat(3, 1fr)",
+                      }}
+                    >
+                      <m.div variants={varFade().inUp}>
+                        <Typography
+                          sx={{
+                            py: { xs: 0.5, md: 0.5 },
+                            px: { xs: 1.5, md: 1.5 },
+                            fontSize: "14px",
+                          }}
+                          color="common.black"
+                        >
+                          Born: 1965-03-04
+                        </Typography>
+                      </m.div>
+                      <m.div variants={varFade().inUp}>
+                        <Typography
+                          sx={{
+                            py: { xs: 0.5, md: 0.5 },
+                            px: { xs: 1.5, md: 1.5 },
+                            fontSize: "14px",
+                          }}
+                          color="common.black"
+                        >
+                          Deceased: 2015-12-07
+                        </Typography>
+                      </m.div>
+                      <m.div variants={varFade().inUp}>
+                        <Typography
+                          sx={{
+                            py: { xs: 0.5, md: 0.5 },
+                            px: { xs: 1.5, md: 1.5 },
+                            fontSize: "14px",
+                          }}
+                          color="common.black"
+                        >
+                          Buried: 2015-12-18
+                        </Typography>
+                      </m.div>
+                    </Box>
+                    <Box
+                      gap={{ xs: 3, lg: 10 }}
+                      display="grid"
+                      alignItems="center"
+                      gridTemplateColumns={{
+                        xs: "repeat(1, 1fr)",
+                        md: "repeat(3, 1fr)",
+                      }}
+                    >
+                      <m.div variants={varFade().inUp}>
+                        <Typography
+                          sx={{
+                            py: { xs: 0.5, md: 0.5 },
+                            px: { xs: 1.5, md: 1.5 },
+                            fontSize: "14px",
+                            fontStyle: "bold",
+                          }}
+                          color="common.black"
+                        >
+                          BARKARÖ CEMETERY
+                        </Typography>
+                      </m.div>
+                      <m.div variants={varFade().inUp}>
+                        <Typography
+                          sx={{
+                            py: { xs: 0.5, md: 0.5 },
+                            px: { xs: 1.5, md: 1.5 },
+                            fontSize: "14px",
+                          }}
+                          color="common.black"
+                        >
+                          Quarter: quarter 09
+                        </Typography>
+                      </m.div>
+                      <m.div variants={varFade().inUp}>
+                        <Typography
+                          sx={{
+                            py: { xs: 0.5, md: 0.5 },
+                            px: { xs: 1.5, md: 1.5 },
+                            fontSize: "14px",
+                          }}
+                          color="common.black"
+                        >
+                          Grave site: 210-1
+                        </Typography>
+                      </m.div>
+                    </Box>
+                    <Box
+                      gap={{ xs: 3, lg: 10 }}
+                      display="grid"
+                      alignItems="center"
+                      gridTemplateColumns={{
+                        xs: "repeat(1, 1fr)",
+                        md: "repeat(3, 1fr)",
+                      }}
+                    >
+                      <m.div variants={varFade().inUp}>
+                        <Typography
+                          sx={{
+                            py: { xs: 0.5, md: 0.5 },
+                            px: { xs: 1.5, md: 1.5 },
+                            fontSize: "14px",
+                            fontStyle: "bold",
+                          }}
+                          color="common.black"
+                        >
+                          Hometown: Västerås-Barkarö parish
+                        </Typography>
+                      </m.div>
+                    </Box>
+                    <Box
+                      gap={{ xs: 3, lg: 10 }}
+                      display="grid"
+                      alignItems="center"
+                      gridTemplateColumns={{
+                        xs: "repeat(1, 1fr)",
+                        md: "repeat(3, 1fr)",
+                      }}
+                    >
+                      <m.div variants={varFade().inUp}>
+                        <Typography
+                          sx={{
+                            py: { xs: 0.5, md: 0.5 },
+                            px: { xs: 1.5, md: 1.5 },
+                            fontSize: "14px",
+                            fontStyle: "bold",
+                          }}
+                          color="common.black"
+                        >
+                          Grave site number: 2109 210-1
+                        </Typography>
+                      </m.div>
+                    </Box>
+                  </Box>
                 </Box>
-              </Box>
-            </Stack> */}
+              </Stack>
+            )}
           </Container>
         </Box>
       </StyledRoot>
+
+      {/* <Box sx={{ height: { md: "100vh" } }} /> */}
 
       {/* {searchKeyState && <HomeSearchResult />} */}
     </>
