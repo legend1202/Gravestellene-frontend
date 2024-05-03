@@ -256,51 +256,14 @@ export default function ProductNewEditForm({ currentProduct }: Props) {
                 md: "repeat(2, 1fr)",
               }}
             >
-              <RHFTextField name="code" label="Product Code" />
+              <RHFTextField name="name" label="Name" />
 
-              <RHFTextField name="sku" label="Product SKU" />
-
-              <RHFTextField
-                name="quantity"
-                label="Quantity"
-                placeholder="0"
-                type="number"
-                InputLabelProps={{ shrink: true }}
-              />
-
-              <RHFSelect
-                native
-                name="category"
-                label="Category"
-                InputLabelProps={{ shrink: true }}
-              >
-                {PRODUCT_CATEGORY_GROUP_OPTIONS.map((category) => (
-                  <optgroup key={category.group} label={category.group}>
-                    {category.classify.map((classify) => (
-                      <option key={classify} value={classify}>
-                        {classify}
-                      </option>
-                    ))}
-                  </optgroup>
-                ))}
-              </RHFSelect>
-
-              <RHFMultiSelect
-                checkbox
-                name="colors"
-                label="Colors"
-                options={PRODUCT_COLOR_NAME_OPTIONS}
-              />
-
-              <RHFMultiSelect
-                checkbox
-                name="sizes"
-                label="Sizes"
-                options={PRODUCT_SIZE_OPTIONS}
-              />
+              <RHFTextField name="content" label="Location" />
+              <RHFTextField name="location" label="Location" />
+              <RHFTextField name="location" label="Location" />
             </Box>
 
-            <RHFAutocomplete
+            {/* <RHFAutocomplete
               name="tags"
               label="Tags"
               placeholder="+ Tags"
@@ -325,9 +288,9 @@ export default function ProductNewEditForm({ currentProduct }: Props) {
                   />
                 ))
               }
-            />
+            /> */}
 
-            <Stack spacing={1}>
+            {/* <Stack spacing={1}>
               <Typography variant="subtitle2">Gender</Typography>
               <RHFMultiCheckbox
                 row
@@ -335,11 +298,11 @@ export default function ProductNewEditForm({ currentProduct }: Props) {
                 spacing={2}
                 options={PRODUCT_GENDER_OPTIONS}
               />
-            </Stack>
+            </Stack> */}
 
-            <Divider sx={{ borderStyle: "dashed" }} />
+            {/* <Divider sx={{ borderStyle: "dashed" }} /> */}
 
-            <Stack direction="row" alignItems="center" spacing={3}>
+            {/* <Stack direction="row" alignItems="center" spacing={3}>
               <RHFSwitch name="saleLabel.enabled" label={null} sx={{ m: 0 }} />
               <RHFTextField
                 name="saleLabel.content"
@@ -347,9 +310,9 @@ export default function ProductNewEditForm({ currentProduct }: Props) {
                 fullWidth
                 disabled={!values.saleLabel.enabled}
               />
-            </Stack>
+            </Stack> */}
 
-            <Stack direction="row" alignItems="center" spacing={3}>
+            {/* <Stack direction="row" alignItems="center" spacing={3}>
               <RHFSwitch name="newLabel.enabled" label={null} sx={{ m: 0 }} />
               <RHFTextField
                 name="newLabel.content"
@@ -357,7 +320,7 @@ export default function ProductNewEditForm({ currentProduct }: Props) {
                 fullWidth
                 disabled={!values.newLabel.enabled}
               />
-            </Stack>
+            </Stack> */}
           </Stack>
         </Card>
       </Grid>
