@@ -11,17 +11,12 @@ import Badge, { badgeClasses } from "@mui/material/Badge";
 import { paths } from "src/routes/paths";
 
 import { useOffSetTop } from "src/hooks/use-off-set-top";
-import { useResponsive } from "src/hooks/use-responsive";
 
 import { bgBlur } from "src/theme/css";
 
 import Logo from "src/components/logo";
-// import Label from 'src/components/label';
 
-// import NavMobile from './nav/mobile';
-// import NavDesktop from './nav/desktop';
 import { HEADER } from "../config-layout";
-// import { navConfig } from './config-navigation';
 import LoginButton from "../common/login-button";
 // import signupb
 import HeaderShadow from "../common/header-shadow";
@@ -31,8 +26,6 @@ import SettingsButton from "../common/settings-button";
 
 export default function Header() {
   const theme = useTheme();
-
-  const mdUp = useResponsive("up", "md");
 
   const offsetTop = useOffSetTop(HEADER.H_DESKTOP);
 
@@ -86,7 +79,7 @@ export default function Header() {
             alignItems="center"
             direction={{ xs: "row", md: "row-reverse" }}
           >
-            {mdUp && <LoginButton />}
+            <LoginButton />
 
             <SettingsButton
               sx={{
