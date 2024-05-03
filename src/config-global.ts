@@ -1,4 +1,4 @@
-import { paths } from 'src/routes/paths';
+import { paths } from "src/routes/paths";
 
 // API
 // ----------------------------------------------------------------------
@@ -37,5 +37,9 @@ export const MAPBOX_API = import.meta.env.VITE_MAPBOX_API;
 
 // ROOT PATH AFTER LOGIN SUCCESSFUL
 export const PATH_AFTER_LOGIN = paths.dashboard.root; // as '/dashboard'
+
+export const PATH_AFTER_REGISTER = paths.auth.jwt.login; // as '/dashboard'
+
+export const CUSTOM_PATH = paths.dashboard.mail;
 
 export const PATH_SEARCH_GRAVESTONE = paths.search;

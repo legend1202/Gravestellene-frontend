@@ -1,6 +1,6 @@
-import { paramCase } from 'src/utils/change-case';
+import { paramCase } from "src/utils/change-case";
 
-import { _id, _postTitles } from 'src/_mock/assets';
+import { _id, _postTitles } from "src/_mock/assets";
 
 // ----------------------------------------------------------------------
 
@@ -9,33 +9,34 @@ const MOCK_ID = _id[1];
 const MOCK_TITLE = _postTitles[2];
 
 const ROOTS = {
-  AUTH: '/auth',
-  AUTH_DEMO: '/auth-demo',
-  DASHBOARD: '/dashboard',
+  AUTH: "/auth",
+  AUTH_DEMO: "/auth-demo",
+  DASHBOARD: "/dashboard",
+  FELLERRAD: "/fellerrad",
 };
 
 // ----------------------------------------------------------------------
 
 export const paths = {
-  comingSoon: '/coming-soon',
-  maintenance: '/maintenance',
-  pricing: '/pricing',
-  payment: '/payment',
-  search: '/search-gravestone',
-  about: '/about-us',
-  contact: '/contact-us',
-  faqs: '/faqs',
-  page403: '/403',
-  page404: '/404',
-  page500: '/500',
-  components: '/components',
-  docs: 'https://docs.minimals.cc',
-  changelog: 'https://docs.minimals.cc/changelog',
-  zoneUI: 'https://mui.com/store/items/zone-landing-page/',
-  minimalUI: 'https://mui.com/store/items/minimal-dashboard/',
-  freeUI: 'https://mui.com/store/items/minimal-dashboard-free/',
+  comingSoon: "/coming-soon",
+  maintenance: "/maintenance",
+  pricing: "/pricing",
+  payment: "/payment",
+  search: "/search-gravestone",
+  about: "/about-us",
+  contact: "/contact-us",
+  faqs: "/faqs",
+  page403: "/403",
+  page404: "/404",
+  page500: "/500",
+  components: "/components",
+  docs: "https://docs.minimals.cc",
+  changelog: "https://docs.minimals.cc/changelog",
+  zoneUI: "https://mui.com/store/items/zone-landing-page/",
+  minimalUI: "https://mui.com/store/items/minimal-dashboard/",
+  freeUI: "https://mui.com/store/items/minimal-dashboard-free/",
   figma:
-    'https://www.figma.com/file/hjxMnGUJCjY7pX8lQbS7kn/%5BPreview%5D-Minimal-Web.v5.4.0?type=design&node-id=0-1&mode=design&t=2fxnS70DuiTLGzND-0',
+    "https://www.figma.com/file/hjxMnGUJCjY7pX8lQbS7kn/%5BPreview%5D-Minimal-Web.v5.4.0?type=design&node-id=0-1&mode=design&t=2fxnS70DuiTLGzND-0",
   product: {
     root: `/product`,
     checkout: `/product/checkout`,
@@ -152,7 +153,8 @@ export const paths = {
       root: `${ROOTS.DASHBOARD}/post`,
       new: `${ROOTS.DASHBOARD}/post/new`,
       details: (title: string) => `${ROOTS.DASHBOARD}/post/${paramCase(title)}`,
-      edit: (title: string) => `${ROOTS.DASHBOARD}/post/${paramCase(title)}/edit`,
+      edit: (title: string) =>
+        `${ROOTS.DASHBOARD}/post/${paramCase(title)}/edit`,
       demo: {
         details: `${ROOTS.DASHBOARD}/post/${paramCase(MOCK_TITLE)}`,
         edit: `${ROOTS.DASHBOARD}/post/${paramCase(MOCK_TITLE)}/edit`,
@@ -184,6 +186,15 @@ export const paths = {
         details: `${ROOTS.DASHBOARD}/tour/${MOCK_ID}`,
         edit: `${ROOTS.DASHBOARD}/tour/${MOCK_ID}/edit`,
       },
+    },
+  },
+  fellerrad: {
+    root: ROOTS.FELLERRAD,
+    graveyard: `${ROOTS.DASHBOARD}/product/new`,
+    gravestone: `${ROOTS.DASHBOARD}/user/new`,
+    general: {
+      app: `${ROOTS.DASHBOARD}/app`,
+      ecommerce: `${ROOTS.DASHBOARD}/ecommerce`,
     },
   },
 };

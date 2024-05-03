@@ -23,7 +23,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-export default function AuthGuard({ children }: Props) {
+export default function FellerradGuard({ children }: Props) {
   const { loading } = useAuthContext();
 
   return <>{loading ? <SplashScreen /> : <Container>{children}</Container>}</>;
@@ -34,11 +34,12 @@ export default function AuthGuard({ children }: Props) {
 function Container({ children }: Props) {
   const router = useRouter();
 
-  const { authenticated, method } = useAuthContext();
+  const { authenticated, method, ...rest } = useAuthContext();
 
   const [checked, setChecked] = useState(false);
 
   const check = useCallback(() => {
+    console.log("==== user data fellerrad ===", rest);
     if (!authenticated) {
       const searchParams = new URLSearchParams({
         returnTo: window.location.pathname,
@@ -52,7 +53,7 @@ function Container({ children }: Props) {
     } else {
       setChecked(true);
     }
-  }, [authenticated, method, router]);
+  }, [authenticated, method, router, rest]);
 
   useEffect(() => {
     check();

@@ -4,10 +4,13 @@ import MainLayout from "src/layouts/main";
 
 // import { PATH_AFTER_LOGIN } from 'src/config-global';
 import { authRoutes } from "./auth";
-import { authDemoRoutes } from "./auth-demo";
+// import { adminRoutes } from "./admin";
+// import { companyRoutes } from "./company";
+// import { customerRoutes } from "./customer";
+// import { fellerradRoutes } from "./fellerrad";
 import { HomePage, mainRoutes } from "./main";
 import { dashboardRoutes } from "./dashboard";
-import { componentsRoutes } from "./components";
+// import { componentsRoutes } from "./components";
 
 // ----------------------------------------------------------------------
 
@@ -33,7 +36,18 @@ export default function Router() {
 
     // Auth routes
     ...authRoutes,
-    ...authDemoRoutes,
+
+    // // ADMIN routes
+    // ...adminRoutes,
+
+    // // Fellerrad routes
+    // ...fellerradRoutes,
+
+    // // Company routes
+    // ...companyRoutes,
+
+    // // Customer Routes
+    // ...customerRoutes,
 
     // Dashboard routes
     ...dashboardRoutes,
@@ -41,8 +55,8 @@ export default function Router() {
     // Main routes
     ...mainRoutes,
 
-    // Components routes
-    ...componentsRoutes,
+    // // Components routes
+    // ...componentsRoutes,
 
     // No match 404
     { path: "*", element: <Navigate to="/404" replace /> },
