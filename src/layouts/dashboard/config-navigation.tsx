@@ -68,9 +68,18 @@ export function useNavData() {
           },
           {
             title: t("Graveyard"),
-            path: paths.fellerrad.graveyard,
+            path: paths.fellerrad.graveyard.new,
             icon: ICONS.ecommerce,
             roles: ["FELLESRAAD"],
+            children: [
+              { title: t("create"), path: paths.fellerrad.graveyard.new },
+              { title: t("edit"), path: paths.dashboard.product.demo.edit },
+              { title: t("list"), path: paths.dashboard.product.root },
+              {
+                title: t("details"),
+                path: paths.dashboard.product.demo.details,
+              },
+            ],
           },
           {
             title: t("Gravestone"),

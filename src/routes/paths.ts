@@ -12,7 +12,7 @@ const ROOTS = {
   AUTH: "/auth",
   AUTH_DEMO: "/auth-demo",
   DASHBOARD: "/dashboard",
-  FELLERRAD: "/fellerrad",
+  GRAVEYARD: "/graveyard",
 };
 
 // ----------------------------------------------------------------------
@@ -189,12 +189,15 @@ export const paths = {
     },
   },
   fellerrad: {
-    root: ROOTS.FELLERRAD,
-    graveyard: `${ROOTS.DASHBOARD}/product/new`,
-    gravestone: `${ROOTS.DASHBOARD}/user/new`,
+    root: ROOTS.GRAVEYARD,
+    new: `${ROOTS.DASHBOARD}/product/new`,
+    graveyard: {
+      new: `${ROOTS.GRAVEYARD}/new`,
+    },
+    gravestone: `${ROOTS.GRAVEYARD}/user/new`,
     general: {
-      app: `${ROOTS.DASHBOARD}/app`,
-      ecommerce: `${ROOTS.DASHBOARD}/ecommerce`,
+      app: `${ROOTS.GRAVEYARD}/app`,
+      ecommerce: `${ROOTS.GRAVEYARD}/ecommerce`,
     },
   },
 };
