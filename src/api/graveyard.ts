@@ -86,8 +86,12 @@ export const createGraveyard = async (query: IGraveyardItem) => {
 };
 
 export const upload = async (query: IImageType) => {
+  const formData = new FormData();
+
+  formData.append("images", query[0]);
+
   const res = await axiosInstance.post(endpoints.graveyard.upload, {
-    graveyard: query,
+    body: formData,
   });
 
   const memoizedValue = {
