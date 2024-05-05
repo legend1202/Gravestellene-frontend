@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useMemo, useEffect, useCallback, useState } from "react";
+import { useMemo, useState, useEffect, useCallback } from "react";
 
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -25,15 +25,12 @@ import FormProvider, {
   RHFTextField,
 } from "src/components/hook-form";
 
-import { IGraveyardItem } from "src/types/product";
+import { IGraveyardItem, IImageType } from "src/types/graveyard";
 // import { useAuthContext } from "src/auth/hooks";
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  currentProduct?: IGraveyardItem;
-};
-type ImageType = {
   currentProduct?: IGraveyardItem;
 };
 
@@ -44,7 +41,7 @@ export default function GraveyardNewEditForm({ currentProduct }: Props) {
 
   // const { enqueueSnackbar } = useSnackbar();
 
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState([] as IImageType);
 
   const NewProductSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
@@ -104,17 +101,16 @@ export default function GraveyardNewEditForm({ currentProduct }: Props) {
   const handleDrop = useCallback(
     (acceptedFiles: File[]) => {
       const files = values.picture || [];
-      console.log("== inputed ==", acceptedFiles);
       const newFiles = acceptedFiles.map((file) =>
         Object.assign(file, {
           preview: URL.createObjectURL(file),
         })
       );
 
-      // setImages([...images, newFiles]);
+      setImages([...images, ...acceptedFiles]);
       setValue("picture", [...files, ...newFiles], { shouldValidate: true });
     },
-    [setValue, values.picture]
+    [setValue, values.picture, images]
   );
 
   const handleRemoveFile = useCallback(
@@ -131,7 +127,7 @@ export default function GraveyardNewEditForm({ currentProduct }: Props) {
   }, [setValue]);
 
   const handleUploadImage = () => {
-    console.log("====", values);
+    console.log("====", images);
   };
   const renderDetails = (
     <Grid xs={12} md={12}>
