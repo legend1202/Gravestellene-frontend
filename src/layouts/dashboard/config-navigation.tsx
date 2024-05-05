@@ -75,9 +75,9 @@ export function useNavData() {
               { title: t('create'), path: paths.fellesraad.graveyard.create },
               {
                 title: t('details'),
-                path: paths.fellesraad.graveyard.details,
+                path: paths.fellesraad.graveyard.demo.details,
               },
-              { title: t('edit'), path: paths.fellesraad.graveyard.edit },
+              { title: t('edit'), path: paths.fellesraad.graveyard.demo.edit },
             ],
           },
           {
@@ -89,17 +89,11 @@ export function useNavData() {
               { title: t('create'), path: paths.fellesraad.gravestone.create },
               {
                 title: t('details'),
-                path: paths.fellesraad.gravestone.details,
+                path: paths.fellesraad.gravestone.demo.details,
               },
-              { title: t('edit'), path: paths.fellesraad.gravestone.edit },
+              { title: t('edit'), path: paths.fellesraad.gravestone.demo.edit },
             ],
           },
-          // {
-          //   title: t("Gravestone"),
-          //   path: paths.fellerrad.gravestone,
-          //   icon: ICONS.analytics,
-          //   roles: ["FELLESRAAD"],
-          // },
           {
             title: t('Company'),
             path: paths.dashboard.general.booking,

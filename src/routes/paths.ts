@@ -194,16 +194,22 @@ export const paths = {
     graveyard: {
       root: ROOTS.GRAVEYARD,
       create: `${ROOTS.GRAVEYARD}/create`,
-      edit: `${ROOTS.GRAVEYARD}/edit`,
-      details: `${ROOTS.GRAVEYARD}/details`,
+      details: (id: string) => `${ROOTS.GRAVEYARD}/${id}`,
+      edit: (id: string) => `${ROOTS.GRAVEYARD}/${id}/edit`,
+      demo: {
+        details: `${ROOTS.GRAVEYARD}/${MOCK_ID}`,
+        edit: `${ROOTS.GRAVEYARD}/${MOCK_ID}/edit`,
+      },
     },
     gravestone: {
       root: ROOTS.GRAVESTONE,
-      create: `${ROOTS.GRAVESTONE}/create`,
-      edit: `${ROOTS.GRAVESTONE}/edit`,
-      details: `${ROOTS.GRAVESTONE}/detail`,
-      // details: (id: string) => `${ROOTS.GRAVESTONE}/${id}`,
-      // edit: (id: string) => `${ROOTS.GRAVESTONE}/${id}/edit`,
+      create: `${ROOTS.GRAVESTONE}/create`,      
+      details: (id: string) => `${ROOTS.GRAVESTONE}/${id}`,
+      edit: (id: string) => `${ROOTS.GRAVESTONE}/${id}/edit`,
+      demo: {
+        details: `${ROOTS.GRAVESTONE}/${MOCK_ID}`,
+        edit: `${ROOTS.GRAVESTONE}/${MOCK_ID}/edit`,
+      },
     },
     general: {
       app: `${ROOTS.GRAVEYARD}/app`,
