@@ -68,16 +68,16 @@ export default function GraveyardDetailsView({ id }: Props) {
     }
   }, []);
 
-  const handleChangePublish = useCallback((newValue: string) => {
-    setPublish(newValue);
-  }, []);
+  // const handleChangePublish = useCallback((newValue: string) => {
+  //   setPublish(newValue);
+  // }, []);
 
-  const handleChangeTab = useCallback(
-    (event: React.SyntheticEvent, newValue: string) => {
-      setCurrentTab(newValue);
-    },
-    []
-  );
+  // const handleChangeTab = useCallback(
+  //   (event: React.SyntheticEvent, newValue: string) => {
+  //     setCurrentTab(newValue);
+  //   },
+  //   []
+  // );
 
   const renderSkeleton = <ProductDetailsSkeleton />;
 

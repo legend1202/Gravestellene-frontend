@@ -1,41 +1,41 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback } from "react";
 
-import Stack from '@mui/material/Stack';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
+import Stack from "@mui/material/Stack";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
 
-import { paths } from 'src/routes/paths';
-import { useRouter, useSearchParams } from 'src/routes/hooks';
+import { paths } from "src/routes/paths";
+import { useRouter, useSearchParams } from "src/routes/hooks";
 
-import { useBoolean } from 'src/hooks/use-boolean';
-import { useResponsive } from 'src/hooks/use-responsive';
+import { useBoolean } from "src/hooks/use-boolean";
+import { useResponsive } from "src/hooks/use-responsive";
 
-import { useGetMail, useGetMails, useGetLabels } from 'src/api/mail';
+import { useGetMail, useGetMails, useGetLabels } from "src/api/mail";
 
-import EmptyContent from 'src/components/empty-content';
-import { useSettingsContext } from 'src/components/settings';
-import { LoadingScreen } from 'src/components/loading-screen';
+import EmptyContent from "src/components/empty-content";
+import { useSettingsContext } from "src/components/settings";
+import { LoadingScreen } from "src/components/loading-screen";
 
-import MailNav from '../mail-nav';
-import MailList from '../mail-list';
-import MailHeader from '../mail-header';
-import MailCompose from '../mail-compose';
-import MailDetails from '../mail-details';
+import MailNav from "../mail-nav";
+import MailList from "../mail-list";
+import MailHeader from "../mail-header";
+import MailCompose from "../mail-compose";
+import MailDetails from "../mail-details";
 
 // ----------------------------------------------------------------------
 
-const LABEL_INDEX = 'inbox';
+const LABEL_INDEX = "inbox";
 
 export default function MailView() {
   const router = useRouter();
 
   const searchParams = useSearchParams();
 
-  const selectedLabelId = searchParams.get('label') || LABEL_INDEX;
+  const selectedLabelId = searchParams.get("label") || LABEL_INDEX;
 
-  const selectedMailId = searchParams.get('id') || '';
+  const selectedMailId = searchParams.get("id") || "";
 
-  const mdUp = useResponsive('up', 'md');
+  const mdUp = useResponsive("up", "md");
 
   const settings = useSettingsContext();
 
@@ -47,11 +47,13 @@ export default function MailView() {
 
   const { labels, labelsLoading } = useGetLabels();
 
-  const { mails, mailsLoading, mailsError, mailsEmpty } = useGetMails(selectedLabelId);
+  const { mails, mailsLoading, mailsError, mailsEmpty } = useGetMails(
+    selectedLabelId
+  );
 
   const { mail, mailLoading, mailError } = useGetMail(selectedMailId);
 
-  const firstMailId = mails.allIds[0] || '';
+  const firstMailId = mails.allIds[0] || "";
 
   const handleToggleCompose = useCallback(() => {
     if (openNav.value) {
@@ -107,9 +109,9 @@ export default function MailView() {
 
   useEffect(() => {
     if (openCompose.value) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     }
   }, [openCompose.value]);
 
@@ -117,7 +119,7 @@ export default function MailView() {
     <LoadingScreen
       sx={{
         borderRadius: 1.5,
-        bgcolor: 'background.default',
+        bgcolor: "background.default",
       }}
     />
   );
@@ -130,7 +132,7 @@ export default function MailView() {
       sx={{
         borderRadius: 1.5,
         maxWidth: { md: 320 },
-        bgcolor: 'background.default',
+        bgcolor: "background.default",
       }}
     />
   );
@@ -170,16 +172,18 @@ export default function MailView() {
           imgUrl="/assets/icons/empty/ic_email_disabled.svg"
           sx={{
             borderRadius: 1.5,
-            bgcolor: 'background.default',
+            bgcolor: "background.default",
             ...(!mdUp && {
-              display: 'none',
+              display: "none",
             }),
           }}
         />
       ) : (
         <MailDetails
           mail={mail}
-          renderLabel={(id: string) => labels.filter((label) => label.id === id)[0]}
+          renderLabel={(id: string) =>
+            labels.filter((label) => label.id === id)[0]
+          }
         />
       )}
     </>
@@ -187,7 +191,7 @@ export default function MailView() {
 
   return (
     <>
-      <Container maxWidth={settings.themeStretch ? false : 'xl'}>
+      <Container maxWidth={settings.themeStretch ? false : "xl"}>
         <Typography
           variant="h4"
           sx={{
@@ -202,9 +206,9 @@ export default function MailView() {
           sx={{
             p: 1,
             borderRadius: 2,
-            overflow: 'hidden',
-            position: 'relative',
-            bgcolor: 'background.neutral',
+            overflow: "hidden",
+            position: "relative",
+            bgcolor: "background.neutral",
           }}
         >
           {!mdUp && (
@@ -219,7 +223,7 @@ export default function MailView() {
             direction="row"
             sx={{
               minHeight: { md: 720 },
-              height: { xs: 800, md: '72vh' },
+              height: { xs: 800, md: "72vh" },
             }}
           >
             {renderMailNav}
@@ -231,7 +235,9 @@ export default function MailView() {
         </Stack>
       </Container>
 
-      {openCompose.value && <MailCompose onCloseCompose={openCompose.onFalse} />}
+      {openCompose.value && (
+        <MailCompose onCloseCompose={openCompose.onFalse} />
+      )}
     </>
   );
 }

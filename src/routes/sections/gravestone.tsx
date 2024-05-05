@@ -7,11 +7,11 @@ import DashboardLayout from 'src/layouts/dashboard';
 import { LoadingScreen } from 'src/components/loading-screen';
 
 // PRODUCT
-const ProductDetailsPage = lazy(() => import('src/pages/dashboard/gravestone/details'));
-const GravestoneListPage = lazy(() => import('src/pages/dashboard/gravestone/list'));
-const ProductEditPage = lazy(() => import('src/pages/dashboard/gravestone/edit'));
+const ProductDetailsPage = lazy(() => import('src/pages/fellesraad/gravestone/details'));
+const GravestoneListPage = lazy(() => import('src/pages/fellesraad/gravestone/list'));
+const ProductEditPage = lazy(() => import('src/pages/fellesraad/gravestone/edit'));
 
-const GravestoneCreatePage = lazy(() => import('src/pages/dashboard/gravestone/new'));
+const GravestoneCreatePage = lazy(() => import('src/pages/fellesraad/gravestone/new'));
 
 // ----------------------------------------------------------------------
 
