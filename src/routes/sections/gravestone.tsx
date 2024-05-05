@@ -7,11 +7,11 @@ import DashboardLayout from 'src/layouts/dashboard';
 import { LoadingScreen } from 'src/components/loading-screen';
 
 // PRODUCT
-const ProductDetailsPage = lazy(() => import('src/pages/dashboard/product/details'));
-const ProductListPage = lazy(() => import('src/pages/dashboard/product/list'));
-const ProductEditPage = lazy(() => import('src/pages/dashboard/product/edit'));
+const ProductDetailsPage = lazy(() => import('src/pages/dashboard/gravestone/details'));
+const GravestoneListPage = lazy(() => import('src/pages/dashboard/gravestone/list'));
+const ProductEditPage = lazy(() => import('src/pages/dashboard/gravestone/edit'));
 
-const GraveyardCreateView = lazy(() => import('src/pages/fellesraad/graveyard/create'));
+const GravestoneCreatePage = lazy(() => import('src/pages/dashboard/gravestone/new'));
 
 // ----------------------------------------------------------------------
 
@@ -28,10 +28,10 @@ export const gravestoneRoutes = [
       </AuthGuard>
     ),
     children: [
-      { element: <ProductListPage />, index: true },
-      { path: 'list', element: <ProductListPage /> },
+      { element: <GravestoneListPage />, index: true },
+      { path: 'list', element: <GravestoneListPage /> },
       { path: ':id', element: <ProductDetailsPage /> },
-      { path: 'create', element: <GraveyardCreateView /> },
+      { path: 'create', element: <GravestoneCreatePage /> },
       { path: ':id/edit', element: <ProductEditPage /> },
     ],
   },
