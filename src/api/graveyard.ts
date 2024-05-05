@@ -3,7 +3,8 @@ import { useMemo } from "react";
 
 import axiosInstance, { fetcher, endpoints } from "src/utils/axios";
 
-import { IProductItem, IGraveyardItem } from "src/types/product";
+import { IProductItem } from "src/types/product";
+import { IImageType, IGraveyardItem } from "src/types/graveyard";
 
 // ----------------------------------------------------------------------
 
@@ -81,4 +82,16 @@ export const createGraveyard = async (query: IGraveyardItem) => {
   };
 
   return memoizedValue;
+};
+
+export const upload = async (query: IImageType) => {
+  const formData = new FormData();
+
+  query.forEach((image) => {
+    formData.append("images", image);
+  });
+
+  const res = await axiosInstance.post(endpoints.graveyard.upload, formData);
+
+  return res.data?.result?.image_urls;
 };
