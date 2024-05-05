@@ -73,11 +73,11 @@ export function useNavData() {
             children: [
               { title: t('list'), path: paths.fellesraad.graveyard.root },
               { title: t('create'), path: paths.fellesraad.graveyard.create },
-              {
-                title: t('details'),
-                path: paths.fellesraad.graveyard.demo.details,
-              },
-              { title: t('edit'), path: paths.fellesraad.graveyard.demo.edit },
+              // {
+              //   title: t('details'),
+              //   path: paths.fellesraad.graveyard.demo.details,
+              // },
+              // { title: t('edit'), path: paths.fellesraad.graveyard.demo.edit },
             ],
           },
           {
@@ -87,11 +87,11 @@ export function useNavData() {
             children: [
               { title: t('list'), path: paths.fellesraad.gravestone.root },
               { title: t('create'), path: paths.fellesraad.gravestone.create },
-              {
-                title: t('details'),
-                path: paths.fellesraad.gravestone.demo.details,
-              },
-              { title: t('edit'), path: paths.fellesraad.gravestone.demo.edit },
+              // {
+              //   title: t('details'),
+              //   path: paths.fellesraad.gravestone.demo.details,
+              // },
+              // { title: t('edit'), path: paths.fellesraad.gravestone.demo.edit },
             ],
           },
           {
