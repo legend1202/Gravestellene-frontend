@@ -41,12 +41,12 @@ import FormProvider, {
   RHFMultiCheckbox,
 } from "src/components/hook-form";
 
-import { GraveyardItem } from "src/types/graveyard";
+import { IProductItem } from "src/types/product";
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  currentProduct?: GraveyardItem;
+  currentProduct?: IProductItem;
 };
 
 export default function ProductNewEditForm({ currentProduct }: Props) {
@@ -60,44 +60,43 @@ export default function ProductNewEditForm({ currentProduct }: Props) {
 
   const NewProductSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
-    location: Yup.string().required("Location is required"),
-    picture: Yup.array().min(1, "Images is required"),
-    content: Yup.string().required("Location is required"),
-    newsLink: Yup.string().required("Location is required"),
-    forecastLink: Yup.string().required("Location is required"),
-
-    // tags: Yup.array().min(2, "Must have at least 2 tags"),
-    // category: Yup.string().required("Category is required"),
-    // price: Yup.number().moreThan(0, "Price should not be $0.00"),
-    // description: Yup.string().required("Description is required"),
-    // // not required
-    // taxes: Yup.number(),
-    // newLabel: Yup.object().shape({
-    //   enabled: Yup.boolean(),
-    //   content: Yup.string(),
-    // }),
-    // saleLabel: Yup.object().shape({
-    //   enabled: Yup.boolean(),
-    //   content: Yup.string(),
-    // }),
+    images: Yup.array().min(1, "Images is required"),
+    tags: Yup.array().min(2, "Must have at least 2 tags"),
+    category: Yup.string().required("Category is required"),
+    price: Yup.number().moreThan(0, "Price should not be $0.00"),
+    description: Yup.string().required("Description is required"),
+    // not required
+    taxes: Yup.number(),
+    newLabel: Yup.object().shape({
+      enabled: Yup.boolean(),
+      content: Yup.string(),
+    }),
+    saleLabel: Yup.object().shape({
+      enabled: Yup.boolean(),
+      content: Yup.string(),
+    }),
   });
-
-  // fellesraadId: string;
-  // name: string;
-  // location: string;
-  // picture?: string[];
-  // content?: string;
-  // newsLink?: string;
-  // forecastLink?: string;
 
   const defaultValues = useMemo(
     () => ({
       name: currentProduct?.name || "",
-      location: currentProduct?.location || "",
-      picture: currentProduct?.picture || [],
-      content: currentProduct?.content || "",
-      newsLink: currentProduct?.newsLink || "",
-      forecastLink: currentProduct?.forecastLink || "",
+      description: currentProduct?.description || "",
+      subDescription: currentProduct?.subDescription || "",
+      images: currentProduct?.images || [],
+      //
+      code: currentProduct?.code || "",
+      sku: currentProduct?.sku || "",
+      price: currentProduct?.price || 0,
+      quantity: currentProduct?.quantity || 0,
+      priceSale: currentProduct?.priceSale || 0,
+      tags: currentProduct?.tags || [],
+      taxes: currentProduct?.taxes || 0,
+      gender: currentProduct?.gender || "",
+      category: currentProduct?.category || "",
+      colors: currentProduct?.colors || [],
+      sizes: currentProduct?.sizes || [],
+      newLabel: currentProduct?.newLabel || { enabled: false, content: "" },
+      saleLabel: currentProduct?.saleLabel || { enabled: false, content: "" },
     }),
     [currentProduct]
   );
@@ -123,13 +122,13 @@ export default function ProductNewEditForm({ currentProduct }: Props) {
     }
   }, [currentProduct, defaultValues, reset]);
 
-  // useEffect(() => {
-  //   if (includeTaxes) {
-  //     setValue("taxes", 0);
-  //   } else {
-  //     setValue("taxes", currentProduct?.taxes || 0);
-  //   }
-  // }, [currentProduct?.taxes, includeTaxes, setValue]);
+  useEffect(() => {
+    if (includeTaxes) {
+      setValue("taxes", 0);
+    } else {
+      setValue("taxes", currentProduct?.taxes || 0);
+    }
+  }, [currentProduct?.taxes, includeTaxes, setValue]);
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -145,7 +144,7 @@ export default function ProductNewEditForm({ currentProduct }: Props) {
 
   const handleDrop = useCallback(
     (acceptedFiles: File[]) => {
-      const files = values.picture || [];
+      const files = values.images || [];
 
       const newFiles = acceptedFiles.map((file) =>
         Object.assign(file, {
@@ -153,22 +152,22 @@ export default function ProductNewEditForm({ currentProduct }: Props) {
         })
       );
 
-      setValue("picture", [...files, ...newFiles], { shouldValidate: true });
+      setValue("images", [...files, ...newFiles], { shouldValidate: true });
     },
-    [setValue, values.picture]
+    [setValue, values.images]
   );
 
   const handleRemoveFile = useCallback(
     (inputFile: File | string) => {
       const filtered =
-        values.picture && values.picture?.filter((file) => file !== inputFile);
-      setValue("picture", filtered);
+        values.images && values.images?.filter((file) => file !== inputFile);
+      setValue("images", filtered);
     },
-    [setValue, values.picture]
+    [setValue, values.images]
   );
 
   const handleRemoveAllFiles = useCallback(() => {
-    setValue("picture", []);
+    setValue("images", []);
   }, [setValue]);
 
   const handleChangeIncludeTaxes = useCallback(
@@ -191,7 +190,7 @@ export default function ProductNewEditForm({ currentProduct }: Props) {
         </Grid>
       )}
 
-      {/* <Grid xs={12} md={8}>
+      <Grid xs={12} md={8}>
         <Card>
           {!mdUp && <CardHeader title="Details" />}
 
@@ -225,7 +224,7 @@ export default function ProductNewEditForm({ currentProduct }: Props) {
             </Stack>
           </Stack>
         </Card>
-      </Grid> */}
+      </Grid>
     </>
   );
 
@@ -256,14 +255,51 @@ export default function ProductNewEditForm({ currentProduct }: Props) {
                 md: "repeat(2, 1fr)",
               }}
             >
-              <RHFTextField name="name" label="Name" />
+              <RHFTextField name="code" label="Product Code" />
 
-              <RHFTextField name="content" label="Location" />
-              <RHFTextField name="location" label="Location" />
-              <RHFTextField name="location" label="Location" />
+              <RHFTextField name="sku" label="Product SKU" />
+
+              <RHFTextField
+                name="quantity"
+                label="Quantity"
+                placeholder="0"
+                type="number"
+                InputLabelProps={{ shrink: true }}
+              />
+
+              <RHFSelect
+                native
+                name="category"
+                label="Category"
+                InputLabelProps={{ shrink: true }}
+              >
+                {PRODUCT_CATEGORY_GROUP_OPTIONS.map((category) => (
+                  <optgroup key={category.group} label={category.group}>
+                    {category.classify.map((classify) => (
+                      <option key={classify} value={classify}>
+                        {classify}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
+              </RHFSelect>
+
+              <RHFMultiSelect
+                checkbox
+                name="colors"
+                label="Colors"
+                options={PRODUCT_COLOR_NAME_OPTIONS}
+              />
+
+              <RHFMultiSelect
+                checkbox
+                name="sizes"
+                label="Sizes"
+                options={PRODUCT_SIZE_OPTIONS}
+              />
             </Box>
 
-            {/* <RHFAutocomplete
+            <RHFAutocomplete
               name="tags"
               label="Tags"
               placeholder="+ Tags"
@@ -288,9 +324,9 @@ export default function ProductNewEditForm({ currentProduct }: Props) {
                   />
                 ))
               }
-            /> */}
+            />
 
-            {/* <Stack spacing={1}>
+            <Stack spacing={1}>
               <Typography variant="subtitle2">Gender</Typography>
               <RHFMultiCheckbox
                 row
@@ -298,11 +334,11 @@ export default function ProductNewEditForm({ currentProduct }: Props) {
                 spacing={2}
                 options={PRODUCT_GENDER_OPTIONS}
               />
-            </Stack> */}
+            </Stack>
 
-            {/* <Divider sx={{ borderStyle: "dashed" }} /> */}
+            <Divider sx={{ borderStyle: "dashed" }} />
 
-            {/* <Stack direction="row" alignItems="center" spacing={3}>
+            <Stack direction="row" alignItems="center" spacing={3}>
               <RHFSwitch name="saleLabel.enabled" label={null} sx={{ m: 0 }} />
               <RHFTextField
                 name="saleLabel.content"
@@ -310,9 +346,9 @@ export default function ProductNewEditForm({ currentProduct }: Props) {
                 fullWidth
                 disabled={!values.saleLabel.enabled}
               />
-            </Stack> */}
+            </Stack>
 
-            {/* <Stack direction="row" alignItems="center" spacing={3}>
+            <Stack direction="row" alignItems="center" spacing={3}>
               <RHFSwitch name="newLabel.enabled" label={null} sx={{ m: 0 }} />
               <RHFTextField
                 name="newLabel.content"
@@ -320,7 +356,7 @@ export default function ProductNewEditForm({ currentProduct }: Props) {
                 fullWidth
                 disabled={!values.newLabel.enabled}
               />
-            </Stack> */}
+            </Stack>
           </Stack>
         </Card>
       </Grid>
@@ -438,13 +474,13 @@ export default function ProductNewEditForm({ currentProduct }: Props) {
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
       <Grid container spacing={3}>
-        {/* {renderDetails} */}
+        {renderDetails}
 
         {renderProperties}
 
-        {/* {renderPricing}
+        {renderPricing}
 
-        {renderActions} */}
+        {renderActions}
       </Grid>
     </FormProvider>
   );

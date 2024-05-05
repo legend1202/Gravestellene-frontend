@@ -66,27 +66,27 @@ export function useNavData() {
             icon: ICONS.dashboard,
             roles: ["ADMIN", "FELLESRAAD", "COMPANY"],
           },
+          // PRODUCT
           {
             title: t("Graveyard"),
-            path: paths.fellerrad.graveyard.new,
-            icon: ICONS.ecommerce,
-            roles: ["FELLESRAAD"],
+            path: paths.fellesraad.graveyard.root,
+            icon: ICONS.product,
             children: [
-              { title: t("create"), path: paths.fellerrad.graveyard.new },
-              { title: t("edit"), path: paths.dashboard.product.demo.edit },
-              { title: t("list"), path: paths.dashboard.product.root },
+              { title: t("list"), path: paths.fellesraad.graveyard.root },
+              { title: t("create"), path: paths.fellesraad.graveyard.create },
               {
                 title: t("details"),
-                path: paths.dashboard.product.demo.details,
+                path: paths.fellesraad.graveyard.details,
               },
+              { title: t("edit"), path: paths.fellesraad.graveyard.edit },
             ],
           },
-          {
-            title: t("Gravestone"),
-            path: paths.fellerrad.gravestone,
-            icon: ICONS.analytics,
-            roles: ["FELLESRAAD"],
-          },
+          // {
+          //   title: t("Gravestone"),
+          //   path: paths.fellerrad.gravestone,
+          //   icon: ICONS.analytics,
+          //   roles: ["FELLESRAAD"],
+          // },
           {
             title: t("Company"),
             path: paths.dashboard.general.booking,

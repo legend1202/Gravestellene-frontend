@@ -3,11 +3,9 @@ import { Navigate, useRoutes } from "react-router-dom";
 import MainLayout from "src/layouts/main";
 
 import { authRoutes } from "./auth";
-import { graveyardRoutes } from "./graveyard";
-// import { adminRoutes } from "./admin";
-// import { companyRoutes } from "./company";
 import { HomePage, mainRoutes } from "./main";
 import { dashboardRoutes } from "./dashboard";
+import { fellesraadRoutes } from "./fellesraad";
 
 // ----------------------------------------------------------------------
 
@@ -29,8 +27,8 @@ export default function Router() {
     // // ADMIN routes
     // ...adminRoutes,
 
-    // // Fellesrad routes
-    ...graveyardRoutes,
+    // Fellerrad routes
+    ...fellesraadRoutes,
 
     // // Company routes
     // ...companyRoutes,

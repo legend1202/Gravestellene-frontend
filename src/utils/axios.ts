@@ -4,6 +4,12 @@ import { HOST_API } from "src/config-global";
 
 // ----------------------------------------------------------------------
 
+if (sessionStorage.getItem("accessToken")) {
+  axios.defaults.headers.common.Authorization = sessionStorage.getItem(
+    "accessToken"
+  );
+}
+
 const axiosInstance = axios.create({ baseURL: HOST_API });
 
 axiosInstance.interceptors.response.use(
@@ -54,9 +60,9 @@ export const endpoints = {
     search: "/api/product/search",
   },
   graveyard: {
+    create: "/api/graveyard/create",
     list: "/api/product/list",
     details: "/api/product/details",
     search: "/api/product/search",
-    create: "/api/graveyard/create",
   },
 };
