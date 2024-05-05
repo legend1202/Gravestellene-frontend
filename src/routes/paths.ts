@@ -13,6 +13,7 @@ const ROOTS = {
   AUTH_DEMO: "/auth-demo",
   DASHBOARD: "/dashboard",
   GRAVEYARD: "/graveyard",
+  GRAVESTONE: "/gravestone"
 };
 
 // ----------------------------------------------------------------------
@@ -196,7 +197,14 @@ export const paths = {
       edit: `${ROOTS.GRAVEYARD}/edit`,
       details: `${ROOTS.GRAVEYARD}/details`,
     },
-    gravestone: `${ROOTS.GRAVEYARD}/user/new`,
+    gravestone: {
+      root: ROOTS.GRAVESTONE,
+      create: `${ROOTS.GRAVESTONE}/create`,
+      edit: `${ROOTS.GRAVESTONE}/edit`,
+      details: `${ROOTS.GRAVESTONE}/detail`,
+      // details: (id: string) => `${ROOTS.GRAVESTONE}/${id}`,
+      // edit: (id: string) => `${ROOTS.GRAVESTONE}/${id}/edit`,
+    },
     general: {
       app: `${ROOTS.GRAVEYARD}/app`,
       ecommerce: `${ROOTS.GRAVEYARD}/ecommerce`,

@@ -43,6 +43,8 @@ const ICONS = {
   ecommerce: icon('ic_ecommerce'),
   analytics: icon('ic_analytics'),
   dashboard: icon('ic_dashboard'),
+  gravestone: icon('ic_gravestone'),
+  graveyard: icon('ic_graveyard'),
 };
 
 // ----------------------------------------------------------------------
@@ -63,11 +65,11 @@ export function useNavData() {
             icon: ICONS.dashboard,
             roles: ['ADMIN', 'FELLESRAAD', 'COMPANY'],
           },
-          // PRODUCT
+          // Graveyard
           {
             title: t('Graveyard'),
             path: paths.fellesraad.graveyard.root,
-            icon: ICONS.product,
+            icon: ICONS.graveyard,
             children: [
               { title: t('list'), path: paths.fellesraad.graveyard.root },
               { title: t('create'), path: paths.fellesraad.graveyard.create },
@@ -80,16 +82,16 @@ export function useNavData() {
           },
           {
             title: t('Gravestone'),
-            path: paths.fellesraad.graveyard.root,
-            icon: ICONS.product,
+            path: paths.fellesraad.gravestone.root,
+            icon: ICONS.gravestone,
             children: [
-              { title: t('list'), path: paths.fellesraad.graveyard.root },
-              { title: t('create'), path: paths.fellesraad.graveyard.create },
+              { title: t('list'), path: paths.fellesraad.gravestone.root },
+              { title: t('create'), path: paths.fellesraad.gravestone.create },
               {
                 title: t('details'),
-                path: paths.fellesraad.graveyard.details,
+                path: paths.fellesraad.gravestone.details,
               },
-              { title: t('edit'), path: paths.fellesraad.graveyard.edit },
+              { title: t('edit'), path: paths.fellesraad.gravestone.edit },
             ],
           },
           // {

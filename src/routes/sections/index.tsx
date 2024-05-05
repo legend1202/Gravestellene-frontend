@@ -1,11 +1,12 @@
-import { Navigate, useRoutes } from "react-router-dom";
+import { Navigate, useRoutes } from 'react-router-dom';
 
-import MainLayout from "src/layouts/main";
+import MainLayout from 'src/layouts/main';
 
-import { authRoutes } from "./auth";
-import { HomePage, mainRoutes } from "./main";
-import { dashboardRoutes } from "./dashboard";
-import { fellesraadRoutes } from "./fellesraad";
+import { authRoutes } from './auth';
+import { HomePage, mainRoutes } from './main';
+import { dashboardRoutes } from './dashboard';
+import { graveyardRoutes } from './graveyard';
+import { gravestoneRoutes } from './gravestone';
 
 // ----------------------------------------------------------------------
 
@@ -13,7 +14,7 @@ export default function Router() {
   return useRoutes([
     // SET INDEX PAGE WITH HOME PAGE
     {
-      path: "/",
+      path: '/',
       element: (
         <MainLayout>
           <HomePage />
@@ -28,7 +29,9 @@ export default function Router() {
     // ...adminRoutes,
 
     // Fellerrad routes
-    ...fellesraadRoutes,
+    ...graveyardRoutes,
+
+    ...gravestoneRoutes,
 
     // // Company routes
     // ...companyRoutes,
@@ -43,6 +46,6 @@ export default function Router() {
     ...mainRoutes,
 
     // No match 404
-    { path: "*", element: <Navigate to="/404" replace /> },
+    { path: '*', element: <Navigate to="/404" replace /> },
   ]);
 }
