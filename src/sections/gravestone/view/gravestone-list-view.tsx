@@ -1,10 +1,10 @@
-import isEqual from 'lodash/isEqual';
-import { useState, useEffect, useCallback } from 'react';
+import isEqual from "lodash/isEqual";
+import { useState, useEffect, useCallback } from "react";
 
-import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
+import Card from "@mui/material/Card";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
 import {
   DataGrid,
   GridColDef,
@@ -16,41 +16,44 @@ import {
   GridToolbarFilterButton,
   GridToolbarColumnsButton,
   GridColumnVisibilityModel,
-} from '@mui/x-data-grid';
+} from "@mui/x-data-grid";
 
-import { paths } from 'src/routes/paths';
-import { useRouter } from 'src/routes/hooks';
-import { RouterLink } from 'src/routes/components';
+import { paths } from "src/routes/paths";
+import { useRouter } from "src/routes/hooks";
+import { RouterLink } from "src/routes/components";
 
-import { useBoolean } from 'src/hooks/use-boolean';
+import { useBoolean } from "src/hooks/use-boolean";
 
-import { useGetProducts } from 'src/api/product';
-import { PRODUCT_STOCK_OPTIONS } from 'src/_mock';
+import { useGetProducts } from "src/api/product";
+import { PRODUCT_STOCK_OPTIONS } from "src/_mock";
 
-import Iconify from 'src/components/iconify';
-import { useSnackbar } from 'src/components/snackbar';
-import EmptyContent from 'src/components/empty-content';
-import { ConfirmDialog } from 'src/components/custom-dialog';
-import { useSettingsContext } from 'src/components/settings';
-import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import Iconify from "src/components/iconify";
+import { useSnackbar } from "src/components/snackbar";
+import EmptyContent from "src/components/empty-content";
+import { ConfirmDialog } from "src/components/custom-dialog";
+import { useSettingsContext } from "src/components/settings";
+import CustomBreadcrumbs from "src/components/custom-breadcrumbs";
 
-import { IProductItem, IProductTableFilters, IProductTableFilterValue } from 'src/types/product';
-
-import ProductTableToolbar from '../product-table-toolbar';
-import ProductTableFiltersResult from '../product-table-filters-result';
 import {
-  RenderCellStock,
+  IProductItem,
+  IProductTableFilters,
+  IProductTableFilterValue,
+} from "src/types/product";
+
+import ProductTableToolbar from "../product-table-toolbar";
+import ProductTableFiltersResult from "../product-table-filters-result";
+import {
   RenderCellPrice,
   RenderCellPublish,
   RenderCellProduct,
   RenderCellCreatedAt,
-} from '../product-table-row';
+} from "../product-table-row";
 
 // ----------------------------------------------------------------------
 
 const PUBLISH_OPTIONS = [
-  { value: 'published', label: 'Published' },
-  { value: 'draft', label: 'Draft' },
+  { value: "published", label: "Published" },
+  { value: "draft", label: "Draft" },
 ];
 
 const defaultFilters: IProductTableFilters = {
@@ -62,7 +65,7 @@ const HIDE_COLUMNS = {
   category: false,
 };
 
-const HIDE_COLUMNS_TOGGLABLE = ['category', 'actions'];
+const HIDE_COLUMNS_TOGGLABLE = ["category", "actions"];
 
 // ----------------------------------------------------------------------
 
@@ -81,10 +84,13 @@ export default function GravestoneListView() {
 
   const [filters, setFilters] = useState(defaultFilters);
 
-  const [selectedRowIds, setSelectedRowIds] = useState<GridRowSelectionModel>([]);
+  const [selectedRowIds, setSelectedRowIds] = useState<GridRowSelectionModel>(
+    []
+  );
 
-  const [columnVisibilityModel, setColumnVisibilityModel] =
-    useState<GridColumnVisibilityModel>(HIDE_COLUMNS);
+  const [columnVisibilityModel, setColumnVisibilityModel] = useState<
+    GridColumnVisibilityModel
+  >(HIDE_COLUMNS);
 
   useEffect(() => {
     if (products.length) {
@@ -99,12 +105,15 @@ export default function GravestoneListView() {
 
   const canReset = !isEqual(defaultFilters, filters);
 
-  const handleFilters = useCallback((name: string, value: IProductTableFilterValue) => {
-    setFilters((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  }, []);
+  const handleFilters = useCallback(
+    (name: string, value: IProductTableFilterValue) => {
+      setFilters((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    },
+    []
+  );
 
   const handleResetFilters = useCallback(() => {
     setFilters(defaultFilters);
@@ -114,7 +123,7 @@ export default function GravestoneListView() {
     (id: string) => {
       const deleteRow = tableData.filter((row) => row.id !== id);
 
-      enqueueSnackbar('Delete success!');
+      enqueueSnackbar("Delete success!");
 
       setTableData(deleteRow);
     },
@@ -122,9 +131,11 @@ export default function GravestoneListView() {
   );
 
   const handleDeleteRows = useCallback(() => {
-    const deleteRows = tableData.filter((row) => !selectedRowIds.includes(row.id));
+    const deleteRows = tableData.filter(
+      (row) => !selectedRowIds.includes(row.id)
+    );
 
-    enqueueSnackbar('Delete success!');
+    enqueueSnackbar("Delete success!");
 
     setTableData(deleteRows);
   }, [enqueueSnackbar, selectedRowIds, tableData]);
@@ -145,13 +156,13 @@ export default function GravestoneListView() {
 
   const columns: GridColDef[] = [
     {
-      field: 'category',
-      headerName: 'Category',
+      field: "category",
+      headerName: "Category",
       filterable: false,
     },
     {
-      field: 'name',
-      headerName: 'Gravestone',
+      field: "name",
+      headerName: "Gravestone",
       flex: 1,
       minWidth: 160,
       hideable: false,
@@ -167,68 +178,68 @@ export default function GravestoneListView() {
     //   renderCell: (params) => <RenderCellStock params={params} />,
     // },
     {
-      field: 'gender',
-      headerName: 'gender',
+      field: "gender",
+      headerName: "gender",
       width: 140,
       editable: true,
       renderCell: (params) => <RenderCellPrice params={params} />,
     },
     {
-      field: 'birthday',
-      headerName: 'Birthday',
+      field: "birthday",
+      headerName: "Birthday",
       width: 140,
       editable: true,
       renderCell: (params) => <RenderCellPrice params={params} />,
     },
     {
-      field: 'deceasedDate',
-      headerName: 'Deceased Date',
+      field: "deceasedDate",
+      headerName: "Deceased Date",
       width: 140,
       editable: true,
       renderCell: (params) => <RenderCellPrice params={params} />,
     },
     {
-      field: 'buriedDate',
-      headerName: 'Buried Date',
+      field: "buriedDate",
+      headerName: "Buried Date",
       width: 140,
       editable: true,
       renderCell: (params) => <RenderCellPrice params={params} />,
     },
     {
-      field: 'quarter',
-      headerName: 'Quarter',
+      field: "quarter",
+      headerName: "Quarter",
       width: 140,
       editable: true,
       renderCell: (params) => <RenderCellPrice params={params} />,
     },
     {
-      field: 'graveSite',
-      headerName: 'Grave Site',
+      field: "graveSite",
+      headerName: "Grave Site",
       width: 140,
       editable: true,
       renderCell: (params) => <RenderCellPrice params={params} />,
     },
     {
-      field: 'publish',
-      headerName: 'Publish',
+      field: "publish",
+      headerName: "Publish",
       width: 110,
-      type: 'singleSelect',
+      type: "singleSelect",
       editable: true,
       valueOptions: PUBLISH_OPTIONS,
       renderCell: (params) => <RenderCellPublish params={params} />,
     },
     {
-      field: 'createdAt',
-      headerName: 'Create at',
+      field: "createdAt",
+      headerName: "Create at",
       width: 160,
       renderCell: (params) => <RenderCellCreatedAt params={params} />,
     },
     {
-      type: 'actions',
-      field: 'actions',
-      headerName: ' ',
-      align: 'right',
-      headerAlign: 'right',
+      type: "actions",
+      field: "actions",
+      headerName: " ",
+      align: "right",
+      headerAlign: "right",
       width: 80,
       sortable: false,
       filterable: false,
@@ -253,7 +264,7 @@ export default function GravestoneListView() {
           onClick={() => {
             handleDeleteRow(params.row.id);
           }}
-          sx={{ color: 'error.main' }}
+          sx={{ color: "error.main" }}
         />,
       ],
     },
@@ -267,22 +278,22 @@ export default function GravestoneListView() {
   return (
     <>
       <Container
-        maxWidth={settings.themeStretch ? false : 'lg'}
+        maxWidth={settings.themeStretch ? false : "lg"}
         sx={{
           flexGrow: 1,
-          display: 'flex',
-          flexDirection: 'column',
+          display: "flex",
+          flexDirection: "column",
         }}
       >
         <CustomBreadcrumbs
           heading="List"
           links={[
-            { name: 'Dashboard', href: paths.dashboard.root },
+            { name: "Dashboard", href: paths.dashboard.root },
             {
-              name: 'Gravestone',
+              name: "Gravestone",
               href: paths.fellesraad.gravestone.root,
             },
-            { name: 'List' },
+            { name: "List" },
           ]}
           action={
             <Button
@@ -306,8 +317,8 @@ export default function GravestoneListView() {
           sx={{
             height: { xs: 800, md: 2 },
             flexGrow: { md: 1 },
-            display: { md: 'flex' },
-            flexDirection: { md: 'column' },
+            display: { md: "flex" },
+            flexDirection: { md: "column" },
           }}
         >
           <DataGrid
@@ -316,7 +327,7 @@ export default function GravestoneListView() {
             rows={dataFiltered}
             columns={columns}
             loading={productsLoading}
-            getRowHeight={() => 'auto'}
+            getRowHeight={() => "auto"}
             pageSizeOptions={[5, 10, 25]}
             initialState={{
               pagination: {
@@ -327,7 +338,9 @@ export default function GravestoneListView() {
               setSelectedRowIds(newSelectionModel);
             }}
             columnVisibilityModel={columnVisibilityModel}
-            onColumnVisibilityModelChange={(newModel) => setColumnVisibilityModel(newModel)}
+            onColumnVisibilityModelChange={(newModel) =>
+              setColumnVisibilityModel(newModel)
+            }
             slots={{
               toolbar: () => (
                 <>
@@ -352,7 +365,9 @@ export default function GravestoneListView() {
                         <Button
                           size="small"
                           color="error"
-                          startIcon={<Iconify icon="solar:trash-bin-trash-bold" />}
+                          startIcon={
+                            <Iconify icon="solar:trash-bin-trash-bold" />
+                          }
                           onClick={confirmRows.onTrue}
                         >
                           Delete ({selectedRowIds.length})
@@ -394,7 +409,8 @@ export default function GravestoneListView() {
         title="Delete"
         content={
           <>
-            Are you sure want to delete <strong> {selectedRowIds.length} </strong> items?
+            Are you sure want to delete{" "}
+            <strong> {selectedRowIds.length} </strong> items?
           </>
         }
         action={
@@ -426,11 +442,15 @@ function applyFilter({
   const { stock, publish } = filters;
 
   if (stock.length) {
-    inputData = inputData.filter((product) => stock.includes(product.inventoryType));
+    inputData = inputData.filter((product) =>
+      stock.includes(product.inventoryType)
+    );
   }
 
   if (publish.length) {
-    inputData = inputData.filter((product) => publish.includes(product.publish));
+    inputData = inputData.filter((product) =>
+      publish.includes(product.publish)
+    );
   }
 
   return inputData;

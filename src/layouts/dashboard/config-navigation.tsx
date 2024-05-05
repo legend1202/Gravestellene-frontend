@@ -1,17 +1,20 @@
-import { useMemo } from 'react';
+import { useMemo } from "react";
 
-import { paths } from 'src/routes/paths';
+import { paths } from "src/routes/paths";
 
-import { useTranslate } from 'src/locales';
+import { useTranslate } from "src/locales";
 
 // import Label from "src/components/label";
 // import Iconify from "src/components/iconify";
-import SvgColor from 'src/components/svg-color';
+import SvgColor from "src/components/svg-color";
 
 // ----------------------------------------------------------------------
 
 const icon = (name: string) => (
-  <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />
+  <SvgColor
+    src={`/assets/icons/navbar/${name}.svg`}
+    sx={{ width: 1, height: 1 }}
+  />
   // OR
   // <Iconify icon="fluent:mail-24-filled" />
   // https://icon-sets.iconify.design/solar/
@@ -19,32 +22,32 @@ const icon = (name: string) => (
 );
 
 const ICONS = {
-  job: icon('ic_job'),
-  blog: icon('ic_blog'),
-  chat: icon('ic_chat'),
-  mail: icon('ic_mail'),
-  user: icon('ic_user'),
-  file: icon('ic_file'),
-  lock: icon('ic_lock'),
-  tour: icon('ic_tour'),
-  order: icon('ic_order'),
-  label: icon('ic_label'),
-  blank: icon('ic_blank'),
-  kanban: icon('ic_kanban'),
-  folder: icon('ic_folder'),
-  banking: icon('ic_banking'),
-  booking: icon('ic_booking'),
-  invoice: icon('ic_invoice'),
-  product: icon('ic_product'),
-  calendar: icon('ic_calendar'),
-  disabled: icon('ic_disabled'),
-  external: icon('ic_external'),
-  menuItem: icon('ic_menu_item'),
-  ecommerce: icon('ic_ecommerce'),
-  analytics: icon('ic_analytics'),
-  dashboard: icon('ic_dashboard'),
-  gravestone: icon('ic_gravestone'),
-  graveyard: icon('ic_graveyard'),
+  job: icon("ic_job"),
+  blog: icon("ic_blog"),
+  chat: icon("ic_chat"),
+  mail: icon("ic_mail"),
+  user: icon("ic_user"),
+  file: icon("ic_file"),
+  lock: icon("ic_lock"),
+  tour: icon("ic_tour"),
+  order: icon("ic_order"),
+  label: icon("ic_label"),
+  blank: icon("ic_blank"),
+  kanban: icon("ic_kanban"),
+  folder: icon("ic_folder"),
+  banking: icon("ic_banking"),
+  booking: icon("ic_booking"),
+  invoice: icon("ic_invoice"),
+  product: icon("ic_product"),
+  calendar: icon("ic_calendar"),
+  disabled: icon("ic_disabled"),
+  external: icon("ic_external"),
+  menuItem: icon("ic_menu_item"),
+  ecommerce: icon("ic_ecommerce"),
+  analytics: icon("ic_analytics"),
+  dashboard: icon("ic_dashboard"),
+  gravestone: icon("ic_gravestone"),
+  graveyard: icon("ic_graveyard"),
 };
 
 // ----------------------------------------------------------------------
@@ -56,23 +59,23 @@ export function useNavData() {
     () => [
       // Overview
       {
-        subheader: t('Overview'),
-        roles: ['ADMIN', 'FELLESRAAD'],
+        subheader: t("Overview"),
+        roles: ["ADMIN", "FELLESRAAD"],
         items: [
           {
-            title: t('Welcome'),
+            title: t("Welcome"),
             path: paths.dashboard.root,
             icon: ICONS.dashboard,
-            roles: ['ADMIN', 'FELLESRAAD', 'COMPANY'],
+            roles: ["ADMIN", "FELLESRAAD", "COMPANY"],
           },
           // Graveyard
           {
-            title: t('Graveyard'),
+            title: t("Graveyard"),
             path: paths.fellesraad.graveyard.root,
             icon: ICONS.graveyard,
             children: [
-              { title: t('list'), path: paths.fellesraad.graveyard.root },
-              { title: t('create'), path: paths.fellesraad.graveyard.create },
+              { title: t("list"), path: paths.fellesraad.graveyard.list },
+              { title: t("create"), path: paths.fellesraad.graveyard.create },
               // {
               //   title: t('details'),
               //   path: paths.fellesraad.graveyard.demo.details,
@@ -81,12 +84,12 @@ export function useNavData() {
             ],
           },
           {
-            title: t('Gravestone'),
+            title: t("Gravestone"),
             path: paths.fellesraad.gravestone.root,
             icon: ICONS.gravestone,
             children: [
-              { title: t('list'), path: paths.fellesraad.gravestone.root },
-              { title: t('create'), path: paths.fellesraad.gravestone.create },
+              { title: t("list"), path: paths.fellesraad.gravestone.root },
+              { title: t("create"), path: paths.fellesraad.gravestone.create },
               // {
               //   title: t('details'),
               //   path: paths.fellesraad.gravestone.demo.details,
@@ -95,16 +98,16 @@ export function useNavData() {
             ],
           },
           {
-            title: t('Company'),
+            title: t("Company"),
             path: paths.dashboard.general.booking,
             icon: ICONS.dashboard,
-            roles: ['ADMIN'],
+            roles: ["ADMIN"],
           },
           {
-            title: t('Sevices'),
+            title: t("Sevices"),
             path: paths.dashboard.general.banking,
             icon: ICONS.ecommerce,
-            roles: ['ADMIN'],
+            roles: ["ADMIN"],
           },
         ],
       },

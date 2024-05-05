@@ -1,9 +1,9 @@
-import useSWR from 'swr';
-import { useMemo } from 'react';
+import useSWR from "swr";
+import { useMemo } from "react";
 
-import { fetcher, endpoints } from 'src/utils/axios';
+import { fetcher, endpoints } from "src/utils/axios";
 
-import { IProductItem } from 'src/types/product';
+import { IProductItem } from "src/types/product";
 
 // ----------------------------------------------------------------------
 
@@ -29,7 +29,9 @@ export function useGetProducts() {
 // ----------------------------------------------------------------------
 
 export function useGetProduct(productId: string) {
-  const URL = productId ? [endpoints.product.details, { params: { productId } }] : '';
+  const URL = productId
+    ? [endpoints.product.details, { params: { productId } }]
+    : "";
 
   const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
 
@@ -49,7 +51,7 @@ export function useGetProduct(productId: string) {
 // ----------------------------------------------------------------------
 
 export function useSearchProducts(query: string) {
-  const URL = query ? [endpoints.product.search, { params: { query } }] : '';
+  const URL = query ? [endpoints.product.search, { params: { query } }] : "";
 
   const { data, isLoading, error, isValidating } = useSWR(URL, fetcher, {
     keepPreviousData: true,

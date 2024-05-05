@@ -4,7 +4,7 @@ import { GraveyardCreateView } from "src/sections/graveyard/view";
 
 // ----------------------------------------------------------------------
 
-export default function ProductCreatePage() {
+export default function GraveyardCreatePage() {
   return (
     <>
       <Helmet>

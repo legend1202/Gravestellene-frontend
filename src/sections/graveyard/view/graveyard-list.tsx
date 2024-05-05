@@ -1,4 +1,4 @@
-import isEqual from "lodash/isEqual";
+// import isEqual from "lodash/isEqual";
 import { useState, useEffect, useCallback } from "react";
 
 import Card from "@mui/material/Card";
@@ -8,13 +8,13 @@ import Container from "@mui/material/Container";
 import {
   DataGrid,
   GridColDef,
-  GridToolbarExport,
+  //   GridToolbarExport,
   GridActionsCellItem,
   GridToolbarContainer,
   GridRowSelectionModel,
   GridToolbarQuickFilter,
-  GridToolbarFilterButton,
-  GridToolbarColumnsButton,
+  //   GridToolbarFilterButton,
+  //   GridToolbarColumnsButton,
   GridColumnVisibilityModel,
 } from "@mui/x-data-grid";
 
@@ -24,31 +24,32 @@ import { RouterLink } from "src/routes/components";
 
 import { useBoolean } from "src/hooks/use-boolean";
 
-import { useGetProducts } from "src/api/product";
-import { PRODUCT_STOCK_OPTIONS } from "src/_mock";
+// import { useGetProducts } from "src/api/product";
+// import { PRODUCT_STOCK_OPTIONS } from "src/_mock";
+import { useGetGraveyards } from "src/api/graveyard";
 
 import Iconify from "src/components/iconify";
-import { useSnackbar } from "src/components/snackbar";
+// import { useSnackbar } from "src/components/snackbar";
 import EmptyContent from "src/components/empty-content";
 import { ConfirmDialog } from "src/components/custom-dialog";
 import { useSettingsContext } from "src/components/settings";
 import CustomBreadcrumbs from "src/components/custom-breadcrumbs";
 
 import {
-  IProductItem,
-  IProductTableFilters,
-  IProductTableFilterValue,
-} from "src/types/product";
+  IGraveyardItem,
+  // IGraveyardTableFilters,
+  // IGraveyardTableFilterValue,
+} from "src/types/graveyard";
 
-import ProductTableToolbar from "../product-table-toolbar";
-import ProductTableFiltersResult from "../product-table-filters-result";
+// import ProductTableToolbar from "../graveyard-table-toolbar";
+// import ProductTableFiltersResult from "../graveyard-table-filters-result";
 import {
-  RenderCellStock,
-  RenderCellPrice,
-  RenderCellPublish,
-  RenderCellProduct,
-  RenderCellCreatedAt,
-} from "../product-table-row";
+  //   RenderCellStock,
+  //   RenderCellPrice,
+  RenderCellApprove,
+  RenderCellLocation,
+  RenderCellGraveyard,
+} from "../graveyard-table-row";
 
 // ----------------------------------------------------------------------
 
@@ -57,10 +58,10 @@ const PUBLISH_OPTIONS = [
   { value: "draft", label: "Draft" },
 ];
 
-const defaultFilters: IProductTableFilters = {
-  publish: [],
-  stock: [],
-};
+// const defaultFilters: IGraveyardTableFilters = {
+//   name: "",
+//   approved: false,
+// };
 
 const HIDE_COLUMNS = {
   category: false,
@@ -71,7 +72,7 @@ const HIDE_COLUMNS_TOGGLABLE = ["category", "actions"];
 // ----------------------------------------------------------------------
 
 export default function GraveyardList() {
-  const { enqueueSnackbar } = useSnackbar();
+  //   const { enqueueSnackbar } = useSnackbar();
 
   const confirmRows = useBoolean();
 
@@ -79,11 +80,11 @@ export default function GraveyardList() {
 
   const settings = useSettingsContext();
 
-  const { products, productsLoading } = useGetProducts();
+  const { products, productsLoading } = useGetGraveyards();
 
-  const [tableData, setTableData] = useState<IProductItem[]>([]);
+  const [tableData, setTableData] = useState<IGraveyardItem[]>([]);
 
-  const [filters, setFilters] = useState(defaultFilters);
+  // const [filters, setFilters] = useState(defaultFilters);
 
   const [selectedRowIds, setSelectedRowIds] = useState<GridRowSelectionModel>(
     []
@@ -99,96 +100,74 @@ export default function GraveyardList() {
     }
   }, [products]);
 
-  const dataFiltered = applyFilter({
-    inputData: tableData,
-    filters,
-  });
+  //   const dataFiltered = applyFilter({
+  //     inputData: tableData,
+  //     filters,
+  //   });
 
-  const canReset = !isEqual(defaultFilters, filters);
+  //   const canReset = !isEqual(defaultFilters, filters);
 
-  const handleFilters = useCallback(
-    (name: string, value: IProductTableFilterValue) => {
-      setFilters((prevState) => ({
-        ...prevState,
-        [name]: value,
-      }));
-    },
-    []
-  );
+  // const handleFilters = useCallback(
+  //   (name: string, value: IGraveyardTableFilterValue) => {
+  //     setFilters((prevState) => ({
+  //       ...prevState,
+  //       [name]: value,
+  //     }));
+  //   },
+  //   []
+  // );
 
-  const handleResetFilters = useCallback(() => {
-    setFilters(defaultFilters);
-  }, []);
+  //   const handleResetFilters = useCallback(() => {
+  //     setFilters(defaultFilters);
+  //   }, []);
 
-  const handleDeleteRow = useCallback(
-    (id: string) => {
-      const deleteRow = tableData.filter((row) => row.id !== id);
+  //   const handleDeleteRow = useCallback(
+  //     (id: string) => {
+  //       const deleteRow = tableData.filter((row) => row.id !== id);
 
-      enqueueSnackbar("Delete success!");
+  //       enqueueSnackbar("Delete success!");
 
-      setTableData(deleteRow);
-    },
-    [enqueueSnackbar, tableData]
-  );
+  //       setTableData(deleteRow);
+  //     },
+  //     [enqueueSnackbar, tableData]
+  //   );
 
   const handleDeleteRows = useCallback(() => {
-    const deleteRows = tableData.filter(
-      (row) => !selectedRowIds.includes(row.id)
-    );
-
-    enqueueSnackbar("Delete success!");
-
-    setTableData(deleteRows);
-  }, [enqueueSnackbar, selectedRowIds, tableData]);
+    // const deleteRows = tableData.filter(
+    //   (row) => !selectedRowIds.includes(row?.id)
+    // );
+    // enqueueSnackbar("Delete success!");
+    // setTableData(deleteRows);
+  }, []);
 
   const handleEditRow = useCallback(
     (id: string) => {
-      router.push(paths.dashboard.product.edit(id));
+      router.push(paths.fellesraad.graveyard.edit(id));
     },
     [router]
   );
 
   const handleViewRow = useCallback(
     (id: string) => {
-      router.push(paths.dashboard.product.details(id));
+      router.push(paths.fellesraad.graveyard.details(id));
     },
     [router]
   );
 
   const columns: GridColDef[] = [
     {
-      field: "category",
-      headerName: "Category",
-      filterable: false,
-    },
-    {
       field: "name",
-      headerName: "Product",
+      headerName: "Graveyard",
       flex: 1,
-      minWidth: 360,
+      minWidth: 280,
       hideable: false,
-      renderCell: (params) => <RenderCellProduct params={params} />,
+      renderCell: (params) => <RenderCellGraveyard params={params} />,
     },
     {
-      field: "createdAt",
-      headerName: "Create at",
-      width: 160,
-      renderCell: (params) => <RenderCellCreatedAt params={params} />,
-    },
-    {
-      field: "inventoryType",
-      headerName: "Stock",
-      width: 160,
-      type: "singleSelect",
-      valueOptions: PRODUCT_STOCK_OPTIONS,
-      renderCell: (params) => <RenderCellStock params={params} />,
-    },
-    {
-      field: "price",
-      headerName: "Price",
-      width: 140,
-      editable: true,
-      renderCell: (params) => <RenderCellPrice params={params} />,
+      field: "location",
+      headerName: "location",
+      minWidth: 280,
+      renderCell: (params) => <RenderCellLocation params={params} />,
     },
     {
       field: "publish",
@@ -197,7 +176,7 @@ export default function GraveyardList() {
       type: "singleSelect",
       editable: true,
       valueOptions: PUBLISH_OPTIONS,
-      renderCell: (params) => <RenderCellPublish params={params} />,
+      renderCell: (params) => <RenderCellApprove params={params} />,
     },
     {
       type: "actions",
@@ -222,15 +201,6 @@ export default function GraveyardList() {
           label="Edit"
           onClick={() => handleEditRow(params.row.id)}
         />,
-        <GridActionsCellItem
-          showInMenu
-          icon={<Iconify icon="solar:trash-bin-trash-bold" />}
-          label="Delete"
-          onClick={() => {
-            handleDeleteRow(params.row.id);
-          }}
-          sx={{ color: "error.main" }}
-        />,
       ],
     },
   ];
@@ -253,21 +223,17 @@ export default function GraveyardList() {
         <CustomBreadcrumbs
           heading="List"
           links={[
-            { name: "Dashboard", href: paths.dashboard.root },
-            {
-              name: "Product",
-              href: paths.dashboard.product.root,
-            },
+            { name: "Graveyard", href: paths.dashboard.root },
             { name: "List" },
           ]}
           action={
             <Button
               component={RouterLink}
-              href={paths.dashboard.product.new}
+              href={paths.fellesraad.graveyard.create}
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >
-              New Product
+              New Graveyard
             </Button>
           }
           sx={{
@@ -289,7 +255,7 @@ export default function GraveyardList() {
           <DataGrid
             checkboxSelection
             disableRowSelectionOnClick
-            rows={dataFiltered}
+            rows={tableData}
             columns={columns}
             loading={productsLoading}
             getRowHeight={() => "auto"}
@@ -310,12 +276,12 @@ export default function GraveyardList() {
               toolbar: () => (
                 <>
                   <GridToolbarContainer>
-                    <ProductTableToolbar
+                    {/* <ProductTableToolbar
                       filters={filters}
                       onFilters={handleFilters}
                       stockOptions={PRODUCT_STOCK_OPTIONS}
                       publishOptions={PUBLISH_OPTIONS}
-                    />
+                    /> */}
 
                     <GridToolbarQuickFilter />
 
@@ -339,21 +305,21 @@ export default function GraveyardList() {
                         </Button>
                       )}
 
-                      <GridToolbarColumnsButton />
+                      {/* <GridToolbarColumnsButton />
                       <GridToolbarFilterButton />
-                      <GridToolbarExport />
+                      <GridToolbarExport /> */}
                     </Stack>
                   </GridToolbarContainer>
 
-                  {canReset && (
+                  {/* {canReset && (
                     <ProductTableFiltersResult
                       filters={filters}
                       onFilters={handleFilters}
                       onResetFilters={handleResetFilters}
-                      results={dataFiltered.length}
+                      results={tableData.length}
                       sx={{ p: 2.5, pt: 0 }}
                     />
-                  )}
+                  )} */}
                 </>
               ),
               noRowsOverlay: () => <EmptyContent title="No Data" />,
@@ -397,26 +363,26 @@ export default function GraveyardList() {
 
 // ----------------------------------------------------------------------
 
-function applyFilter({
-  inputData,
-  filters,
-}: {
-  inputData: IProductItem[];
-  filters: IProductTableFilters;
-}) {
-  const { stock, publish } = filters;
+// function applyFilter({
+//   inputData,
+//   filters,
+// }: {
+//   inputData: IProductItem[];
+//   filters: IGraveyardTableFilters;
+// }) {
+//   const { stock, publish } = filters;
 
-  if (stock.length) {
-    inputData = inputData.filter((product) =>
-      stock.includes(product.inventoryType)
-    );
-  }
+//   if (stock.length) {
+//     inputData = inputData.filter((product) =>
+//       stock.includes(product.inventoryType)
+//     );
+//   }
 
-  if (publish.length) {
-    inputData = inputData.filter((product) =>
-      publish.includes(product.publish)
-    );
-  }
+//   if (publish.length) {
+//     inputData = inputData.filter((product) =>
+//       publish.includes(product.publish)
+//     );
+//   }
 
-  return inputData;
-}
+//   return inputData;
+// }

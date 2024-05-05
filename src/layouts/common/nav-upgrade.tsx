@@ -1,30 +1,23 @@
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 
-import { paths } from 'src/routes/paths';
-
-import { useMockedUser } from 'src/hooks/use-mocked-user';
-
-import Label from 'src/components/label';
+// import { useMockedUser } from "src/hooks/use-mocked-user";
 
 // ----------------------------------------------------------------------
 
 export default function NavUpgrade() {
-  const { user } = useMockedUser();
+  // const { user } = useMockedUser();
 
   return (
     <Stack
       sx={{
         px: 2,
         py: 5,
-        textAlign: 'center',
+        textAlign: "center",
       }}
     >
       <Stack alignItems="center">
-        <Box sx={{ position: 'relative' }}></Box>
+        <Box sx={{ position: "relative" }}>Artem Sorokin</Box>
       </Stack>
     </Stack>
   );
