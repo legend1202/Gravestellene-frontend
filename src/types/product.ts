@@ -78,5 +78,3 @@ export type IProductTableFilters = {
   stock: string[];
   publish: string[];
 };
-
-type ImageType = File[];

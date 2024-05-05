@@ -13,7 +13,7 @@ import Typography from "@mui/material/Typography";
 import LoadingButton from "@mui/lab/LoadingButton";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
-import { createGraveyard, upload } from "src/api/graveyard";
+import { upload, createGraveyard } from "src/api/graveyard";
 
 // import { paths } from "src/routes/paths";
 // import { useRouter } from "src/routes/hooks";
@@ -25,7 +25,7 @@ import FormProvider, {
   RHFTextField,
 } from "src/components/hook-form";
 
-import { IGraveyardItem, IImageType } from "src/types/graveyard";
+import { IImageType, IGraveyardItem } from "src/types/graveyard";
 // import { useAuthContext } from "src/auth/hooks";
 
 // ----------------------------------------------------------------------
@@ -87,7 +87,6 @@ export default function GraveyardNewEditForm({ currentProduct }: Props) {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      console.info("DATA", data);
       const searchResults = createGraveyard(data);
       console.log(searchResults);
       // reset();
@@ -126,9 +125,10 @@ export default function GraveyardNewEditForm({ currentProduct }: Props) {
     setValue("picture", []);
   }, [setValue]);
 
-  const handleUploadImage = () => {
-    console.log("====", images);
-    upload(images);
+  const handleUploadImage = async () => {
+    const uploadResult = await upload(images);
+    console.log(uploadResult);
+    setValue("picture", uploadResult);
   };
   const renderDetails = (
     <Grid xs={12} md={12}>
