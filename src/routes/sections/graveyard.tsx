@@ -30,9 +30,9 @@ export const graveyardRoutes = [
     children: [
       { element: <ProductListPage />, index: true },
       { path: 'list', element: <ProductListPage /> },
-      { path: 'detail', element: <ProductDetailsPage /> },
+      { path: ':id', element: <ProductDetailsPage /> },
       { path: 'create', element: <GraveyardCreateView /> },
-      { path: 'edit', element: <ProductEditPage /> },
+      { path: ':id/edit', element: <ProductEditPage /> },
     ],
   },
 ];
