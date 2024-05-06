@@ -33,7 +33,6 @@ export default function AuthGuard({ children }: Props) {
 
 function Container({ children }: Props) {
   const router = useRouter();
-
   const { authenticated, method } = useAuthContext();
 
   const [checked, setChecked] = useState(false);
