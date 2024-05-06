@@ -48,7 +48,13 @@ export default memo(NavSectionVertical);
 
 // ----------------------------------------------------------------------
 
-function Group({ subheader, roles, userRole, items, slotProps }: NavGroupProps) {
+function Group({
+  subheader,
+  roles,
+  userRole,
+  items,
+  slotProps,
+}: NavGroupProps) {
   const [open, setOpen] = useState(true);
 
   const handleToggle = useCallback(() => {

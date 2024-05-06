@@ -14,6 +14,9 @@ const ROOTS = {
   DASHBOARD: "/dashboard",
   GRAVEYARD: "/graveyard",
   GRAVESTONE: "/gravestone",
+  SERVICE: "/service",
+  ORDER: "/order",
+  ADMIN: "/admin",
 };
 
 // ----------------------------------------------------------------------
@@ -212,9 +215,70 @@ export const paths = {
         edit: `${ROOTS.GRAVESTONE}/${MOCK_ID}/edit`,
       },
     },
+    service: {
+      root: ROOTS.SERVICE,
+      create: `${ROOTS.SERVICE}/create`,
+      list: `${ROOTS.SERVICE}/list`,
+      order: `${ROOTS.SERVICE}/order`,
+      details: (id: string) => `${ROOTS.SERVICE}/${id}`,
+      edit: (id: string) => `${ROOTS.SERVICE}/${id}/edit`,
+      approve: `${ROOTS.SERVICE}/approve`,
+      demo: {
+        details: `${ROOTS.SERVICE}/${MOCK_ID}`,
+        edit: `${ROOTS.SERVICE}/${MOCK_ID}/edit`,
+      },
+    },
+    order: {
+      root: ROOTS.ORDER,
+      approve: `${ROOTS.ORDER}/approve`,
+    },
     general: {
       app: `${ROOTS.GRAVEYARD}/app`,
       ecommerce: `${ROOTS.GRAVEYARD}/ecommerce`,
     },
+  },
+  admin: {
+    root: ROOTS.ADMIN,
+    user: {
+      root: ROOTS.ADMIN,
+      userList: `${ROOTS.ADMIN}/userlist`,
+      details: (id: string) => `${ROOTS.ADMIN}/${id}`,
+      // edit: (id: string) => `${ROOTS.GRAVEYARD}/${id}/edit`,
+      // demo: {
+      //   details: `${ROOTS.GRAVEYARD}/${MOCK_ID}`,
+      //   edit: `${ROOTS.GRAVEYARD}/${MOCK_ID}/edit`,
+      // },
+    },
+    // gravestone: {
+    //   root: ROOTS.GRAVESTONE,
+    //   create: `${ROOTS.GRAVESTONE}/create`,
+    //   details: (id: string) => `${ROOTS.GRAVESTONE}/${id}`,
+    //   edit: (id: string) => `${ROOTS.GRAVESTONE}/${id}/edit`,
+    //   demo: {
+    //     details: `${ROOTS.GRAVESTONE}/${MOCK_ID}`,
+    //     edit: `${ROOTS.GRAVESTONE}/${MOCK_ID}/edit`,
+    //   },
+    // },
+    // service: {
+    //   root: ROOTS.SERVICE,
+    //   create: `${ROOTS.SERVICE}/create`,
+    //   list: `${ROOTS.SERVICE}/list`,
+    //   order: `${ROOTS.SERVICE}/order`,
+    //   details: (id: string) => `${ROOTS.SERVICE}/${id}`,
+    //   edit: (id: string) => `${ROOTS.SERVICE}/${id}/edit`,
+    //   approve: `${ROOTS.SERVICE}/approve`,
+    //   demo: {
+    //     details: `${ROOTS.SERVICE}/${MOCK_ID}`,
+    //     edit: `${ROOTS.SERVICE}/${MOCK_ID}/edit`,
+    //   },
+    // },
+    // order: {
+    //   root: ROOTS.ORDER,
+    //   approve: `${ROOTS.ORDER}/approve`,
+    // },
+    // general: {
+    //   app: `${ROOTS.GRAVEYARD}/app`,
+    //   ecommerce: `${ROOTS.GRAVEYARD}/ecommerce`,
+    // },
   },
 };

@@ -57,7 +57,7 @@ export function useNavData() {
 
   const data = useMemo(
     () => [
-      // Overview
+      // fELLESRAAD
       {
         subheader: t("Overview"),
         roles: ["ADMIN", "FELLESRAAD"],
@@ -68,13 +68,18 @@ export function useNavData() {
             icon: ICONS.dashboard,
             roles: ["ADMIN", "FELLESRAAD", "COMPANY"],
           },
+
           // Graveyard
           {
             title: t("Graveyard"),
             path: paths.fellesraad.graveyard.root,
             icon: ICONS.graveyard,
+            roles: ["FELLESRAAD"],
             children: [
-              { title: t("list"), path: paths.fellesraad.graveyard.list },
+              {
+                title: t("list"),
+                path: paths.fellesraad.graveyard.list,
+              },
               { title: t("create"), path: paths.fellesraad.graveyard.create },
               // {
               //   title: t('details'),
@@ -83,10 +88,17 @@ export function useNavData() {
               // { title: t('edit'), path: paths.fellesraad.graveyard.demo.edit },
             ],
           },
+          // {
+          //   title: t("Graveyard"),
+          //   path: paths.fellesraad.graveyard.root,
+          //   icon: ICONS.graveyard,
+          //   roles: ["ADMIN"],
+          // },
           {
             title: t("Gravestone"),
             path: paths.fellesraad.gravestone.root,
             icon: ICONS.gravestone,
+            roles: ["FELLESRAAD"],
             children: [
               { title: t("list"), path: paths.fellesraad.gravestone.root },
               { title: t("create"), path: paths.fellesraad.gravestone.create },
@@ -97,17 +109,186 @@ export function useNavData() {
               // { title: t('edit'), path: paths.fellesraad.gravestone.demo.edit },
             ],
           },
-          {
-            title: t("Company"),
-            path: paths.dashboard.general.booking,
-            icon: ICONS.dashboard,
-            roles: ["ADMIN"],
-          },
+          // {
+          //   title: t("Company"),
+          //   path: paths.dashboard.general.booking,
+          //   icon: ICONS.dashboard,
+          //   roles: ["ADMIN"],
+          // },
           {
             title: t("Sevices"),
-            path: paths.dashboard.general.banking,
+            path: paths.fellesraad.service.approve,
             icon: ICONS.ecommerce,
+            roles: ["FELLESRAAD"],
+            children: [
+              { title: t("approve"), path: paths.fellesraad.service.approve },
+              // { title: t("create"), path: paths.fellesraad.graveyard.create },
+              // {
+              //   title: t('details'),
+              //   path: paths.fellesraad.graveyard.demo.details,
+              // },
+              // { title: t('edit'), path: paths.fellesraad.graveyard.demo.edit },
+            ],
+          },
+          {
+            title: t("Orders"),
+            path: paths.fellesraad.order.approve,
+            icon: ICONS.booking,
+            roles: ["FELLESRAAD"],
+            children: [
+              { title: t("approve"), path: paths.fellesraad.order.approve },
+              // { title: t("create"), path: paths.fellesraad.graveyard.create },
+              // {
+              //   title: t('details'),
+              //   path: paths.fellesraad.graveyard.demo.details,
+              // },
+              // { title: t('edit'), path: paths.fellesraad.graveyard.demo.edit },
+            ],
+          },
+        ],
+      },
+      // fELLESRAAD
+      {
+        subheader: t("Approve"),
+        roles: ["ADMIN"],
+        items: [
+          // Approve
+          {
+            title: t("User"),
+            path: paths.admin.user.userList,
+            icon: ICONS.graveyard,
             roles: ["ADMIN"],
+            // children: [
+            //   {
+            //     title: t("Approve"),
+            //     path: paths.fellesraad.graveyard.list,
+            //   },
+            //   { title: t("create"), path: paths.fellesraad.graveyard.create },
+            //   // {
+            //   //   title: t('details'),
+            //   //   path: paths.fellesraad.graveyard.demo.details,
+            //   // },
+            //   // { title: t('edit'), path: paths.fellesraad.graveyard.demo.edit },
+            // ],
+          },
+          {
+            title: t("Graveyard"),
+            path: paths.fellesraad.graveyard.list,
+            icon: ICONS.graveyard,
+            roles: ["ADMIN"],
+            // children: [
+            //   {
+            //     title: t("Approve"),
+            //     path: paths.fellesraad.graveyard.list,
+            //   },
+            //   // { title: t("create"), path: paths.fellesraad.graveyard.create },
+            //   // {
+            //   //   title: t('details'),
+            //   //   path: paths.fellesraad.graveyard.demo.details,
+            //   // },
+            //   // { title: t('edit'), path: paths.fellesraad.graveyard.demo.edit },
+            // ],
+          },
+          {
+            title: t("Services"),
+            path: paths.fellesraad.service.approve,
+            icon: ICONS.graveyard,
+            roles: ["ADMIN"],
+            // children: [
+            //   {
+            //     title: t("Approve"),
+            //     path: paths.fellesraad.service.approve,
+            //   },
+            //   // { title: t("create"), path: paths.fellesraad.graveyard.create },
+            //   // {
+            //   //   title: t('details'),
+            //   //   path: paths.fellesraad.graveyard.demo.details,
+            //   // },
+            //   // { title: t('edit'), path: paths.fellesraad.graveyard.demo.edit },
+            // ],
+          },
+          {
+            title: t("Orders"),
+            path: paths.fellesraad.order.approve,
+            icon: ICONS.graveyard,
+            roles: ["ADMIN"],
+            // children: [
+            //   {
+            //     title: t("Approve"),
+            //     path: paths.fellesraad.graveyard.list,
+            //   },
+            //   // { title: t("create"), path: paths.fellesraad.graveyard.create },
+            //   // {
+            //   //   title: t('details'),
+            //   //   path: paths.fellesraad.graveyard.demo.details,
+            //   // },
+            //   // { title: t('edit'), path: paths.fellesraad.graveyard.demo.edit },
+            // ],
+          },
+        ],
+      },
+      // COMPANY
+      {
+        subheader: t("Company"),
+        roles: ["COMPANY"],
+        items: [
+          {
+            title: t("Welcome"),
+            path: paths.dashboard.root,
+            icon: ICONS.dashboard,
+            roles: ["COMPANY"],
+          },
+          // Graveyard
+          {
+            title: t("Graveyard"),
+            path: paths.fellesraad.graveyard.list,
+            icon: ICONS.graveyard,
+            roles: ["COMPANY"],
+            // children: [
+            //   {
+            //     title: t("list"),
+            //     path: paths.fellesraad.graveyard.list,
+            //   },
+            //   // { title: t("create"), path: paths.fellesraad.graveyard.create },
+            //   // {
+            //   //   title: t('details'),
+            //   //   path: paths.fellesraad.graveyard.demo.details,
+            //   // },
+            //   // { title: t('edit'), path: paths.fellesraad.graveyard.demo.edit },
+            // ],
+          },
+
+          {
+            title: t("Sevices"),
+            path: paths.fellesraad.service.approve,
+            icon: ICONS.ecommerce,
+            roles: ["COMPANY"],
+            children: [
+              { title: t("create"), path: paths.fellesraad.service.create },
+              { title: t("list"), path: paths.fellesraad.service.list },
+              { title: t("order"), path: paths.fellesraad.service.order },
+              // { title: t("create"), path: paths.fellesraad.graveyard.create },
+              // {
+              //   title: t('details'),
+              //   path: paths.fellesraad.graveyard.demo.details,
+              // },
+              // { title: t('edit'), path: paths.fellesraad.graveyard.demo.edit },
+            ],
+          },
+          {
+            title: t("Orders"),
+            path: paths.fellesraad.order.approve,
+            icon: ICONS.booking,
+            roles: ["FELLESRAAD"],
+            children: [
+              { title: t("approve"), path: paths.fellesraad.order.approve },
+              // { title: t("create"), path: paths.fellesraad.graveyard.create },
+              // {
+              //   title: t('details'),
+              //   path: paths.fellesraad.graveyard.demo.details,
+              // },
+              // { title: t('edit'), path: paths.fellesraad.graveyard.demo.edit },
+            ],
           },
         ],
       },

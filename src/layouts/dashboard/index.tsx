@@ -10,6 +10,8 @@ import Header from "./header";
 import NavMini from "./nav-mini";
 import NavVertical from "./nav-vertical";
 import NavHorizontal from "./nav-horizontal";
+import { useAuthContext } from "src/auth/hooks";
+import { useEffect, useState } from "react";
 
 // ----------------------------------------------------------------------
 
@@ -18,7 +20,10 @@ type Props = {
 };
 
 export default function DashboardLayout({ children }: Props) {
+  const { user } = useAuthContext();
   const settings = useSettingsContext();
+
+  const [isClient, setClient] = useState(false);
 
   const lgUp = useResponsive("up", "lg");
 
@@ -36,12 +41,18 @@ export default function DashboardLayout({ children }: Props) {
     <NavVertical openNav={nav.value} onCloseNav={nav.onFalse} />
   );
 
+  useEffect(() => {
+    if (user?.role === "CLIENT") {
+      setClient(true);
+    }
+  });
+
   if (isHorizontal) {
     return (
       <>
         <Header onOpenNav={nav.onTrue} />
 
-        {lgUp ? renderHorizontal : renderNavVertical}
+        {!isClient && lgUp ? renderHorizontal : renderNavVertical}
 
         <Main>{children}</Main>
       </>
@@ -60,7 +71,7 @@ export default function DashboardLayout({ children }: Props) {
             flexDirection: { xs: "column", lg: "row" },
           }}
         >
-          {lgUp ? renderNavMini : renderNavVertical}
+          {!isClient && lgUp ? renderNavMini : renderNavVertical}
 
           <Main>{children}</Main>
         </Box>
@@ -79,7 +90,7 @@ export default function DashboardLayout({ children }: Props) {
           flexDirection: { xs: "column", lg: "row" },
         }}
       >
-        {renderNavVertical}
+        {!isClient && renderNavVertical}
 
         <Main>{children}</Main>
       </Box>

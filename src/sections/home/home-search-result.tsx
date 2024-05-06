@@ -2,11 +2,20 @@ import { m } from "framer-motion";
 
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
+import Link from "@mui/material/Link";
+import Stack from "@mui/material/Stack";
 import { alpha } from "@mui/material/styles";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
+import { Button, IconButton } from "@mui/material";
 
 import { varFade, MotionViewport } from "src/components/animate";
+
+import { useSearchGravestoneLists } from "src/api/gravestone";
+
+import { IGravestoneItem } from "src/types/gravestone";
+import { map } from "lodash";
+import { elementMatches } from "@fullcalendar/core/internal";
 
 // ----------------------------------------------------------------------
 
@@ -31,134 +40,200 @@ const CARDS = [
 
 // ----------------------------------------------------------------------
 
-export default function HomeSearchResult() {
+type ParamsProps = {
+  params: IGravestoneItem;
+};
+
+export default function HomeSearchResult({ params }: ParamsProps) {
+  const { products: searchResult } = useSearchGravestoneLists(params);
   return (
-    <Container
-      component={MotionViewport}
+    <Stack
+      spacing={3}
       sx={{
-        py: { xs: 10, md: 15 },
+        mb: { xs: 1, md: 2 },
       }}
     >
       <Box
-        gap={{ xs: 3, lg: 10 }}
-        display="grid"
-        alignItems="center"
-        gridTemplateColumns={{
-          xs: "repeat(1, 1fr)",
-          md: "repeat(3, 1fr)",
+        sx={{
+          pb: { xs: 3.75, md: 3.75 },
+          px: { xs: 1, md: 1.5 },
         }}
       >
-        {CARDS.map((card, index) => (
-          <m.div variants={varFade().inUp} key={card.title}>
-            <Card
+        {searchResult?.map((element) => (
+          <Box
+            sx={{
+              backgroundColor: "white",
+              p: { xs: 1, md: 1.5 },
+            }}
+          >
+            <Box
               sx={{
-                textAlign: "center",
-                boxShadow: { md: "none" },
-                bgcolor: "background.default",
-                p: (theme) => theme.spacing(10, 5),
-                ...(index === 1 && {
-                  boxShadow: (theme) => ({
-                    md: `-40px 40px 80px ${
-                      theme.palette.mode === "light"
-                        ? alpha(theme.palette.grey[500], 0.16)
-                        : alpha(theme.palette.common.black, 0.4)
-                    }`,
-                  }),
-                }),
+                display: "flex",
+                justifyContent: "space-between",
               }}
             >
-              <Box
-                component="img"
-                src={card.icon}
-                alt={card.title}
-                sx={{ mx: "auto", width: 48, height: 48 }}
-              />
-
-              <Typography variant="h5" sx={{ mt: 8, mb: 2 }}>
-                {card.title}
+              <Typography
+                sx={{
+                  display: "block",
+                  p: { xs: 1.5, md: 1.5 },
+                  fontSize: "18px",
+                }}
+                color="primary"
+              >
+                <Link href="/customer/service-order">{element?.name}</Link>
               </Typography>
-
-              <Typography sx={{ color: "text.secondary" }}>
-                {card.description}
-              </Typography>
-            </Card>
-          </m.div>
-        ))}
-
-        {CARDS.map((card, index) => (
-          <m.div variants={varFade().inUp} key={card.title}>
-            <Card
-              sx={{
-                textAlign: "center",
-                boxShadow: { md: "none" },
-                bgcolor: "background.default",
-                p: (theme) => theme.spacing(10, 5),
-                ...(index === 1 && {
-                  boxShadow: (theme) => ({
-                    md: `-40px 40px 80px ${
-                      theme.palette.mode === "light"
-                        ? alpha(theme.palette.grey[500], 0.16)
-                        : alpha(theme.palette.common.black, 0.4)
-                    }`,
-                  }),
-                }),
+              <Button
+                variant="contained"
+                color="success"
+                sx={{
+                  display: { xs: "none", md: "block" },
+                }}
+              >
+                {element?.fellesraadName}
+              </Button>
+            </Box>
+            <Box
+              gap={{ xs: 3, lg: 10 }}
+              display="grid"
+              alignItems="center"
+              gridTemplateColumns={{
+                xs: "repeat(1, 1fr)",
+                md: "repeat(3, 1fr)",
               }}
             >
-              <Box
-                component="img"
-                src={card.icon}
-                alt={card.title}
-                sx={{ mx: "auto", width: 48, height: 48 }}
-              />
-
-              <Typography variant="h5" sx={{ mt: 8, mb: 2 }}>
-                {card.title}
-              </Typography>
-
-              <Typography sx={{ color: "text.secondary" }}>
-                {card.description}
-              </Typography>
-            </Card>
-          </m.div>
-        ))}
-
-        {CARDS.map((card, index) => (
-          <m.div variants={varFade().inUp} key={card.title}>
-            <Card
-              sx={{
-                textAlign: "center",
-                boxShadow: { md: "none" },
-                bgcolor: "background.default",
-                p: (theme) => theme.spacing(10, 5),
-                ...(index === 1 && {
-                  boxShadow: (theme) => ({
-                    md: `-40px 40px 80px ${
-                      theme.palette.mode === "light"
-                        ? alpha(theme.palette.grey[500], 0.16)
-                        : alpha(theme.palette.common.black, 0.4)
-                    }`,
-                  }),
-                }),
+              <m.div variants={varFade().inUp}>
+                <Typography
+                  sx={{
+                    py: { xs: 0.5, md: 0.5 },
+                    px: { xs: 1.5, md: 1.5 },
+                    fontSize: "14px",
+                  }}
+                  color="common.black"
+                >
+                  Born: {element?.born}
+                </Typography>
+              </m.div>
+              <m.div variants={varFade().inUp}>
+                <Typography
+                  sx={{
+                    py: { xs: 0.5, md: 0.5 },
+                    px: { xs: 1.5, md: 1.5 },
+                    fontSize: "14px",
+                  }}
+                  color="common.black"
+                >
+                  Deceased: {element?.deceased}
+                </Typography>
+              </m.div>
+              <m.div variants={varFade().inUp}>
+                <Typography
+                  sx={{
+                    py: { xs: 0.5, md: 0.5 },
+                    px: { xs: 1.5, md: 1.5 },
+                    fontSize: "14px",
+                  }}
+                  color="common.black"
+                >
+                  Buried: {element?.buried}
+                </Typography>
+              </m.div>
+            </Box>
+            <Box
+              gap={{ xs: 3, lg: 10 }}
+              display="grid"
+              alignItems="center"
+              gridTemplateColumns={{
+                xs: "repeat(1, 1fr)",
+                md: "repeat(3, 1fr)",
               }}
             >
-              <Box
-                component="img"
-                src={card.icon}
-                alt={card.title}
-                sx={{ mx: "auto", width: 48, height: 48 }}
-              />
-
-              <Typography variant="h5" sx={{ mt: 8, mb: 2 }}>
-                {card.title}
-              </Typography>
-
-              <Typography sx={{ color: "text.secondary" }}>
-                {card.description}
-              </Typography>
-            </Card>
-          </m.div>
+              <m.div variants={varFade().inUp}>
+                <Typography
+                  sx={{
+                    py: { xs: 0.5, md: 0.5 },
+                    px: { xs: 1.5, md: 1.5 },
+                    fontSize: "14px",
+                    fontStyle: "bold",
+                  }}
+                  color="common.black"
+                >
+                  {element?.graveyardName}
+                </Typography>
+              </m.div>
+              <m.div variants={varFade().inUp}>
+                <Typography
+                  sx={{
+                    py: { xs: 0.5, md: 0.5 },
+                    px: { xs: 1.5, md: 1.5 },
+                    fontSize: "14px",
+                  }}
+                  color="common.black"
+                >
+                  Quarter: {element?.quater}
+                </Typography>
+              </m.div>
+              <m.div variants={varFade().inUp}>
+                <Typography
+                  sx={{
+                    py: { xs: 0.5, md: 0.5 },
+                    px: { xs: 1.5, md: 1.5 },
+                    fontSize: "14px",
+                  }}
+                  color="common.black"
+                >
+                  Grave site: {element?.graveSite}
+                </Typography>
+              </m.div>
+            </Box>
+            <Box
+              gap={{ xs: 3, lg: 10 }}
+              display="grid"
+              alignItems="center"
+              gridTemplateColumns={{
+                xs: "repeat(1, 1fr)",
+                md: "repeat(3, 1fr)",
+              }}
+            >
+              <m.div variants={varFade().inUp}>
+                <Typography
+                  sx={{
+                    py: { xs: 0.5, md: 0.5 },
+                    px: { xs: 1.5, md: 1.5 },
+                    fontSize: "14px",
+                    fontStyle: "bold",
+                  }}
+                  color="common.black"
+                >
+                  Hometown: {element?.hometown}
+                </Typography>
+              </m.div>
+            </Box>
+            <Box
+              gap={{ xs: 3, lg: 10 }}
+              display="grid"
+              alignItems="center"
+              gridTemplateColumns={{
+                xs: "repeat(1, 1fr)",
+                md: "repeat(3, 1fr)",
+              }}
+            >
+              <m.div variants={varFade().inUp}>
+                <Typography
+                  sx={{
+                    py: { xs: 0.5, md: 0.5 },
+                    px: { xs: 1.5, md: 1.5 },
+                    fontSize: "14px",
+                    fontStyle: "bold",
+                  }}
+                  color="common.black"
+                >
+                  Grave site number: {element?.siteNumber}
+                </Typography>
+              </m.div>
+            </Box>
+          </Box>
         ))}
       </Box>
-    </Container>
+    </Stack>
   );
 }
