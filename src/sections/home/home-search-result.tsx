@@ -2,18 +2,22 @@ import { m } from "framer-motion";
 
 import Box from "@mui/material/Box";
 // import Card from "@mui/material/Card";
-import Link from "@mui/material/Link";
+// import Link from "@mui/material/Link";
 import { Button } from "@mui/material";
 import Stack from "@mui/material/Stack";
 // import { alpha } from "@mui/material/styles";
 // import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 
+import { RouterLink } from "src/routes/components";
+
+import { PATH_SEARCH_GRAVESTONE } from "src/config-global";
 import { useSearchGravestoneLists } from "src/api/gravestone";
 
 import { varFade } from "src/components/animate";
 
 import { IGravestoneItem } from "src/types/gravestone";
+
 // import { map } from "lodash";
 // import { elementMatches } from "@fullcalendar/core/internal";
 
@@ -80,7 +84,14 @@ export default function HomeSearchResult({ params }: ParamsProps) {
                 }}
                 color="primary"
               >
-                <Link href="/customer/service-order">{element?.name}</Link>
+                <Button
+                  component={RouterLink}
+                  href={PATH_SEARCH_GRAVESTONE}
+                  variant="text"
+                >
+                  {element?.name}
+                </Button>
+                {/* <Link href="/customer/serviceorder">{element?.name}</Link> */}
               </Typography>
               <Button
                 variant="contained"

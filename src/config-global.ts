@@ -43,3 +43,4 @@ export const PATH_AFTER_REGISTER = paths.auth.jwt.login; // as '/dashboard'
 export const CUSTOM_PATH = paths.dashboard.mail;
 
 export const PATH_SEARCH_GRAVESTONE = paths.search;
+

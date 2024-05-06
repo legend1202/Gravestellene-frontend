@@ -22,7 +22,8 @@ export const customerRoutes = [
       </AuthGuard>
     ),
     children: [
-      { path: "service-order", element: <ServiceOrderPage /> },
+      { element: <ServiceOrderPage />, index: true },
+      { path: "serviceorder", element: <ServiceOrderPage /> },
       // { path: "contact-us", element: <ContactPage /> },
       // { path: "faqs", element: <FaqsPage /> },
       // {

@@ -17,6 +17,7 @@ const ROOTS = {
   SERVICE: "/service",
   ORDER: "/order",
   ADMIN: "/admin",
+  CLIENT: "/customer",
 };
 
 // ----------------------------------------------------------------------
@@ -26,7 +27,7 @@ export const paths = {
   maintenance: "/maintenance",
   pricing: "/pricing",
   payment: "/payment",
-  search: "/search-gravestone",
+  search: "/customer/serviceorder",
   about: "/about-us",
   contact: "/contact-us",
   faqs: "/faqs",
