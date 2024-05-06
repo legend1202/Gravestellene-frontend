@@ -1,1 +1,0 @@
-import{j as l}from"./index-0EEk4iZQ.js";import{T as s}from"./TableHead-IcxvDeGd.js";import{T as t}from"./TableCell-TVr2Gjmr.js";function i({emptyRows:r,height:o}){return r?l.jsx(s,{sx:{...o&&{height:o*r}},children:l.jsx(t,{colSpan:9})}):null}export{i as T};
