@@ -1,30 +1,30 @@
-import { useEffect, useCallback } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import Rating from "@mui/material/Rating";
-import Button from "@mui/material/Button";
+// import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
-import MenuItem from "@mui/material/MenuItem";
+// import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
-import { formHelperTextClasses } from "@mui/material/FormHelperText";
+// import { formHelperTextClasses } from "@mui/material/FormHelperText";
 
 import { paths } from "src/routes/paths";
 import { useRouter } from "src/routes/hooks";
 
-import { fCurrency, fShortenNumber } from "src/utils/format-number";
+// import { fCurrency, fShortenNumber } from "src/utils/format-number";
 
 import Label from "src/components/label";
 import Iconify from "src/components/iconify";
-import { ColorPicker } from "src/components/color-utils";
-import FormProvider, { RHFSelect } from "src/components/hook-form";
+// import { ColorPicker } from "src/components/color-utils";
+import FormProvider from "src/components/hook-form";
 
 import { IProductItem } from "src/types/product";
 import { ICheckoutItem } from "src/types/checkout";
 
-import IncrementerButton from "./common/incrementer-button";
+// import IncrementerButton from "./common/incrementer-button";
 
 // ----------------------------------------------------------------------
 
@@ -55,21 +55,21 @@ export default function GraveyardDetailsSummary({
     colors,
     newLabel,
     available,
-    priceSale,
+    // priceSale,
     saleLabel,
-    totalRatings,
-    totalReviews,
-    inventoryType,
-    subDescription,
+    // totalRatings,
+    // totalReviews,
+    // inventoryType,
+    // subDescription,
   } = product;
 
   const existProduct =
     !!items?.length && items.map((item) => item.id).includes(id);
 
-  const isMaxQuantity =
-    !!items?.length &&
-    items.filter((item) => item.id === id).map((item) => item.quantity)[0] >=
-      available;
+  // const isMaxQuantity =
+  //   !!items?.length &&
+  //   items.filter((item) => item.id === id).map((item) => item.quantity)[0] >=
+  //     available;
 
   const defaultValues = {
     id,
@@ -86,7 +86,7 @@ export default function GraveyardDetailsSummary({
     defaultValues,
   });
 
-  const { reset, watch, control, setValue, handleSubmit } = methods;
+  const { reset, watch, handleSubmit } = methods;
 
   const values = watch();
 
@@ -113,17 +113,17 @@ export default function GraveyardDetailsSummary({
     }
   });
 
-  const handleAddCart = useCallback(() => {
-    try {
-      onAddCart?.({
-        ...values,
-        colors: [values.colors],
-        subTotal: values.price * values.quantity,
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  }, [onAddCart, values]);
+  // const handleAddCart = useCallback(() => {
+  //   try {
+  //     onAddCart?.({
+  //       ...values,
+  //       colors: [values.colors],
+  //       subTotal: values.price * values.quantity,
+  //     });
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }, [onAddCart, values]);
 
   const renderContactinfoTitle = (
     <Box sx={{ typography: "h5" }}>
@@ -228,91 +228,91 @@ export default function GraveyardDetailsSummary({
     </>
   );
 
-  const renderSizeOptions = (
-    <Stack direction="row">
-      <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
-        Size
-      </Typography>
+  // const renderSizeOptions = (
+  //   <Stack direction="row">
+  //     <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
+  //       Size
+  //     </Typography>
 
-      <RHFSelect
-        name="size"
-        size="small"
-        helperText={
-          <Link underline="always" color="textPrimary">
-            Size Chart
-          </Link>
-        }
-        sx={{
-          maxWidth: 88,
-          [`& .${formHelperTextClasses.root}`]: {
-            mx: 0,
-            mt: 1,
-            textAlign: "right",
-          },
-        }}
-      >
-        {sizes.map((size) => (
-          <MenuItem key={size} value={size}>
-            {size}
-          </MenuItem>
-        ))}
-      </RHFSelect>
-    </Stack>
-  );
+  //     <RHFSelect
+  //       name="size"
+  //       size="small"
+  //       helperText={
+  //         <Link underline="always" color="textPrimary">
+  //           Size Chart
+  //         </Link>
+  //       }
+  //       sx={{
+  //         maxWidth: 88,
+  //         [`& .${formHelperTextClasses.root}`]: {
+  //           mx: 0,
+  //           mt: 1,
+  //           textAlign: "right",
+  //         },
+  //       }}
+  //     >
+  //       {sizes.map((size) => (
+  //         <MenuItem key={size} value={size}>
+  //           {size}
+  //         </MenuItem>
+  //       ))}
+  //     </RHFSelect>
+  //   </Stack>
+  // );
 
-  const renderQuantity = (
-    <Stack direction="row">
-      <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
-        Quantity
-      </Typography>
+  // const renderQuantity = (
+  //   <Stack direction="row">
+  //     <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
+  //       Quantity
+  //     </Typography>
 
-      <Stack spacing={1}>
-        <IncrementerButton
-          name="quantity"
-          quantity={values.quantity}
-          disabledDecrease={values.quantity <= 1}
-          disabledIncrease={values.quantity >= available}
-          onIncrease={() => setValue("quantity", values.quantity + 1)}
-          onDecrease={() => setValue("quantity", values.quantity - 1)}
-        />
+  //     <Stack spacing={1}>
+  //       <IncrementerButton
+  //         name="quantity"
+  //         quantity={values.quantity}
+  //         disabledDecrease={values.quantity <= 1}
+  //         disabledIncrease={values.quantity >= available}
+  //         onIncrease={() => setValue("quantity", values.quantity + 1)}
+  //         onDecrease={() => setValue("quantity", values.quantity - 1)}
+  //       />
 
-        <Typography
-          variant="caption"
-          component="div"
-          sx={{ textAlign: "right" }}
-        >
-          Available: {available}
-        </Typography>
-      </Stack>
-    </Stack>
-  );
+  //       <Typography
+  //         variant="caption"
+  //         component="div"
+  //         sx={{ textAlign: "right" }}
+  //       >
+  //         Available: {available}
+  //       </Typography>
+  //     </Stack>
+  //   </Stack>
+  // );
 
-  const renderActions = (
-    <Stack direction="row" spacing={2}>
-      <Button
-        fullWidth
-        disabled={isMaxQuantity || disabledActions}
-        size="large"
-        color="warning"
-        variant="contained"
-        startIcon={<Iconify icon="solar:cart-plus-bold" width={24} />}
-        onClick={handleAddCart}
-        sx={{ whiteSpace: "nowrap" }}
-      >
-        Add to Cart
-      </Button>
+  // const renderActions = (
+  //   <Stack direction="row" spacing={2}>
+  //     <Button
+  //       fullWidth
+  //       disabled={isMaxQuantity || disabledActions}
+  //       size="large"
+  //       color="warning"
+  //       variant="contained"
+  //       startIcon={<Iconify icon="solar:cart-plus-bold" width={24} />}
+  //       onClick={handleAddCart}
+  //       sx={{ whiteSpace: "nowrap" }}
+  //     >
+  //       Add to Cart
+  //     </Button>
 
-      <Button
-        fullWidth
-        size="large"
-        type="submit"
-        variant="contained"
-        disabled={disabledActions}
-      >
-        Buy Now
-      </Button>
-    </Stack>
-  );
+  //     <Button
+  //       fullWidth
+  //       size="large"
+  //       type="submit"
+  //       variant="contained"
+  //       disabled={disabledActions}
+  //     >
+  //       Buy Now
+  //     </Button>
+  //   </Stack>
+  // );
 
   const renderContactinfo = (
     <>
@@ -323,7 +323,7 @@ export default function GraveyardDetailsSummary({
         E-mail: sorokin@mail.co
       </Typography>
       <Typography variant="body2" sx={{ color: "text.secondary" }}>
-        Address: Artists' tombs in an 1808 burial ground
+        Address: Artists&apos; tombs in an 1808 burial ground
       </Typography>
     </>
   );
@@ -349,20 +349,20 @@ export default function GraveyardDetailsSummary({
     </Stack>
   );
 
-  const renderInventoryType = (
-    <Box
-      component="span"
-      sx={{
-        typography: "overline",
-        color:
-          (inventoryType === "out of stock" && "error.main") ||
-          (inventoryType === "low stock" && "warning.main") ||
-          "success.main",
-      }}
-    >
-      {inventoryType}
-    </Box>
-  );
+  // const renderInventoryType = (
+  //   <Box
+  //     component="span"
+  //     sx={{
+  //       typography: "overline",
+  //       color:
+  //         (inventoryType === "out of stock" && "error.main") ||
+  //         (inventoryType === "low stock" && "warning.main") ||
+  //         "success.main",
+  //     }}
+  //   >
+  //     {inventoryType}
+  //   </Box>
+  // );
 
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>

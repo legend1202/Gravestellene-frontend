@@ -1,51 +1,51 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 
-import Tab from "@mui/material/Tab";
+// import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-import Tabs from "@mui/material/Tabs";
+// import Tabs from "@mui/material/Tabs";
 import Card from "@mui/material/Card";
-import Button from "@mui/material/Button";
-import { alpha } from "@mui/material/styles";
+// import Button from "@mui/material/Button";
+// import { alpha } from "@mui/material/styles";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Unstable_Grid2";
-import Typography from "@mui/material/Typography";
+// import Typography from "@mui/material/Typography";
 
-import { paths } from "src/routes/paths";
-import { RouterLink } from "src/routes/components";
+// import { paths } from "src/routes/paths";
+// import { RouterLink } from "src/routes/components";
 
 import { useGetGraveyard } from "src/api/graveyard";
-import { PRODUCT_PUBLISH_OPTIONS } from "src/_mock";
+// import { PRODUCT_PUBLISH_OPTIONS } from "src/_mock";
 
-import Iconify from "src/components/iconify";
-import EmptyContent from "src/components/empty-content";
+// import Iconify from "src/components/iconify";
+// import EmptyContent from "src/components/empty-content";
 import { useSettingsContext } from "src/components/settings";
 
 import { ProductDetailsSkeleton } from "../product-skeleton";
-import ProductDetailsReview from "../product-details-review";
+// import ProductDetailsReview from "../product-details-review";
 import GraveyardDetailsSummary from "../graveyard-details-summary";
-import ProductDetailsToolbar from "../product-details-toolbar";
+// import ProductDetailsToolbar from "../product-details-toolbar";
 import GraveyardDetailsCarousel from "../graveyard-details-carousel";
 import ProductDetailsDescription from "../product-details-description";
 
 // ----------------------------------------------------------------------
 
-const SUMMARY = [
-  {
-    title: "100% Original",
-    description: "Chocolate bar candy canes ice cream toffee cookie halvah.",
-    icon: "solar:verified-check-bold",
-  },
-  {
-    title: "10 Day Replacement",
-    description: "Marshmallow biscuit donut dragée fruitcake wafer.",
-    icon: "solar:clock-circle-bold",
-  },
-  {
-    title: "Year Warranty",
-    description: "Cotton candy gingerbread cake I love sugar sweet.",
-    icon: "solar:shield-check-bold",
-  },
-];
+// const SUMMARY = [
+//   {
+//     title: "100% Original",
+//     description: "Chocolate bar candy canes ice cream toffee cookie halvah.",
+//     icon: "solar:verified-check-bold",
+//   },
+//   {
+//     title: "10 Day Replacement",
+//     description: "Marshmallow biscuit donut dragée fruitcake wafer.",
+//     icon: "solar:clock-circle-bold",
+//   },
+//   {
+//     title: "Year Warranty",
+//     description: "Cotton candy gingerbread cake I love sugar sweet.",
+//     icon: "solar:shield-check-bold",
+//   },
+// ];
 
 // ----------------------------------------------------------------------
 
@@ -54,19 +54,22 @@ type Props = {
 };
 
 export default function GraveyardDetailsView({ id }: Props) {
-  const { product, productLoading, productError } = useGetGraveyard(id);
+  const { product, productLoading } = useGetGraveyard(id);
 
   const settings = useSettingsContext();
 
-  const [currentTab, setCurrentTab] = useState("description");
+  // const [currentTab, setCurrentTab] = useState("description");
 
   const [publish, setPublish] = useState("");
 
   useEffect(() => {
     if (product) {
       setPublish(product?.publish);
+      if (publish) {
+        console.log("===");
+      }
     }
-  }, []);
+  }, [product, publish]);
 
   // const handleChangePublish = useCallback((newValue: string) => {
   //   setPublish(newValue);

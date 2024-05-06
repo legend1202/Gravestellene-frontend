@@ -15,9 +15,9 @@ import {
   ICheckoutDeliveryOption,
 } from "src/types/checkout";
 
-import { useCheckoutContext } from "../checkout/context";
 import CheckoutSummary from "./checkout-summary";
 import CheckoutDelivery from "./checkout-delivery";
+import { useCheckoutContext } from "../checkout/context";
 import CheckoutBillingInfo from "./checkout-billing-info";
 import CheckoutPaymentMethods from "./checkout-payment-methods";
 

@@ -1,7 +1,11 @@
+import { useState, useEffect } from "react";
+
 import Box from "@mui/material/Box";
 
 import { useBoolean } from "src/hooks/use-boolean";
 import { useResponsive } from "src/hooks/use-responsive";
+
+import { useAuthContext } from "src/auth/hooks";
 
 import { useSettingsContext } from "src/components/settings";
 
@@ -10,8 +14,6 @@ import Header from "./header";
 import NavMini from "./nav-mini";
 import NavVertical from "./nav-vertical";
 import NavHorizontal from "./nav-horizontal";
-import { useAuthContext } from "src/auth/hooks";
-import { useEffect, useState } from "react";
 
 // ----------------------------------------------------------------------
 
@@ -45,7 +47,7 @@ export default function DashboardLayout({ children }: Props) {
     if (user?.role === "CLIENT") {
       setClient(true);
     }
-  });
+  }, [user]);
 
   if (isHorizontal) {
     return (

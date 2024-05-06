@@ -8,7 +8,7 @@ import { orderRoutes } from "./order";
 import { serviceRoutes } from "./service";
 import { customerRoutes } from "./customer";
 import { HomePage, mainRoutes } from "./main";
-import { dashboardRoutes } from "./dashboard";
+// import { dashboardRoutes } from "./dashboard";
 import { graveyardRoutes } from "./graveyard";
 import { gravestoneRoutes } from "./gravestone";
 

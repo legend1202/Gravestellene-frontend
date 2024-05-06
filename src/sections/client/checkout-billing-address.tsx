@@ -9,10 +9,8 @@ import { _addressBooks } from "src/_mock";
 import Iconify from "src/components/iconify";
 
 import CheckoutSummary from "./checkout-summary";
-
-import { useCheckoutContext } from "../checkout/context";
-
 import { AddressItem, AddressNewForm } from "../address";
+import { useCheckoutContext } from "../checkout/context";
 
 // ----------------------------------------------------------------------
 

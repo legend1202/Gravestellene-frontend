@@ -47,17 +47,17 @@ import {
 import {
   //   RenderCellStock,
   //   RenderCellPrice,
-  RenderCellApprove,
+  // RenderCellApprove,
   RenderCellLocation,
   RenderCellGraveyard,
 } from "../graveyard-table-row";
 
 // ----------------------------------------------------------------------
 
-const PUBLISH_OPTIONS = [
-  { value: "published", label: "Published" },
-  { value: "draft", label: "Draft" },
-];
+// const PUBLISH_OPTIONS = [
+//   { value: "published", label: "Published" },
+//   { value: "draft", label: "Draft" },
+// ];
 
 // const defaultFilters: IGraveyardTableFilters = {
 //   name: "",

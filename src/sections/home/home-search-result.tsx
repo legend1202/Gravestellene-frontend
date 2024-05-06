@@ -1,42 +1,42 @@
 import { m } from "framer-motion";
 
 import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
+// import Card from "@mui/material/Card";
 import Link from "@mui/material/Link";
+import { Button } from "@mui/material";
 import Stack from "@mui/material/Stack";
-import { alpha } from "@mui/material/styles";
-import Container from "@mui/material/Container";
+// import { alpha } from "@mui/material/styles";
+// import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import { Button, IconButton } from "@mui/material";
-
-import { varFade, MotionViewport } from "src/components/animate";
 
 import { useSearchGravestoneLists } from "src/api/gravestone";
 
+import { varFade } from "src/components/animate";
+
 import { IGravestoneItem } from "src/types/gravestone";
-import { map } from "lodash";
-import { elementMatches } from "@fullcalendar/core/internal";
+// import { map } from "lodash";
+// import { elementMatches } from "@fullcalendar/core/internal";
 
 // ----------------------------------------------------------------------
 
-const CARDS = [
-  {
-    icon: " /assets/icons/home/ic_make_brand.svg",
-    title: "Branding",
-    description: "Consistent design makes it easy to brand your own.",
-  },
-  {
-    icon: " /assets/icons/home/ic_design.svg",
-    title: "UI & UX Design",
-    description:
-      "The kit is built on the principles of the atomic design system. It helps you to create projects fastest and easily customized packages for your projects.",
-  },
-  {
-    icon: " /assets/icons/home/ic_development.svg",
-    title: "Development",
-    description: "Easy to customize and extend, saving you time and money.",
-  },
-];
+// const CARDS = [
+//   {
+//     icon: " /assets/icons/home/ic_make_brand.svg",
+//     title: "Branding",
+//     description: "Consistent design makes it easy to brand your own.",
+//   },
+//   {
+//     icon: " /assets/icons/home/ic_design.svg",
+//     title: "UI & UX Design",
+//     description:
+//       "The kit is built on the principles of the atomic design system. It helps you to create projects fastest and easily customized packages for your projects.",
+//   },
+//   {
+//     icon: " /assets/icons/home/ic_development.svg",
+//     title: "Development",
+//     description: "Easy to customize and extend, saving you time and money.",
+//   },
+// ];
 
 // ----------------------------------------------------------------------
 

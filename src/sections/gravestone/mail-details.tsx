@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
+import { useMemo, useEffect } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useMemo, useState, useEffect, useCallback } from "react";
 
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -13,7 +13,7 @@ import CardHeader from "@mui/material/CardHeader";
 import LoadingButton from "@mui/lab/LoadingButton";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
-import { upload, createGraveyard } from "src/api/graveyard";
+import { createGraveyard } from "src/api/graveyard";
 
 // import { paths } from "src/routes/paths";
 // import { useRouter } from "src/routes/hooks";
@@ -25,7 +25,7 @@ import FormProvider, {
   RHFTextField,
 } from "src/components/hook-form";
 
-import { IImageType, IGraveyardItem } from "src/types/graveyard";
+import { IGraveyardItem } from "src/types/graveyard";
 // import { useAuthContext } from "src/auth/hooks";
 
 // ----------------------------------------------------------------------
@@ -83,7 +83,7 @@ export default function MailDetails({ currentProduct }: Props) {
 
   // const { enqueueSnackbar } = useSnackbar();
 
-  const [images, setImages] = useState([] as IImageType);
+  // const [images, setImages] = useState([] as IImageType);
 
   const NewProductSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
@@ -113,13 +113,13 @@ export default function MailDetails({ currentProduct }: Props) {
 
   const {
     reset,
-    watch,
-    setValue,
+    // watch,
+    // setValue,
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
 
-  const values = watch();
+  // const values = watch();
 
   useEffect(() => {
     if (currentProduct) {

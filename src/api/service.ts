@@ -4,7 +4,7 @@
 // import axiosInstance, { fetcher, endpoints } from "src/utils/axios";
 
 // import { IProductItem } from "src/types/product";
-import { IGraveItem } from "src/types/graveyard";
+import { IServiceItem } from "src/types/service";
 // import { IImageType, IGraveyardItem } from "src/types/graveyard";
 
 // ----------------------------------------------------------------------
@@ -62,36 +62,27 @@ export function useGetServicesLists() {
       id: "e99f09a7-dd88-49d5-b1c8-1daf80c2d7b1",
       fellesraadId: "fe99f09a7-dd88-49d5-b1c8-1daf80c2d7b1",
       name: "Service 1",
-      location: "$350",
-      content: "string",
-      newsLink: "string",
-      forecastLink: "string",
-      approved: true,
+      price: "$350",
+      graveyardName: "string",
     },
     {
       id: "e99f09a7-dd88-49d5-b1c8-1daf80c2d7b2",
       fellesraadId: "fe99f09a7-dd88-49d5-b1c8-1daf80c2d7b2",
       name: "Service 1",
-      location: "$499",
-      content: "string",
-      newsLink: "string",
-      forecastLink: "string",
-      approved: true,
+      price: "$499",
+      graveyardName: "string",
     },
     {
       id: "e99f09a7-dd88-49d5-b1c8-1daf80c2d7b3",
       fellesraadId: "fe99f09a7-dd88-49d5-b1c8-1daf80c2d7b3",
       name: "Service 2",
-      location: "$612",
-      content: "string",
-      newsLink: "string",
-      forecastLink: "string",
-      approved: false,
+      price: "$612",
+      graveyardName: "string",
     },
   ];
   // const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
   const tempData = {
-    products: tempProducts,
+    products: tempProducts as IServiceItem[],
     productsLoading: false,
     productsValidating: false,
     productsEmpty: false,

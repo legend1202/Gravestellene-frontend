@@ -9,16 +9,17 @@ import { useResponsive } from "src/hooks/use-responsive";
 import Iconify from "src/components/iconify";
 import Scrollbar from "src/components/scrollbar";
 
-import { IMails } from "src/types/mail";
+// import { IMails } from "src/types/mail";
 
 import MailItem from "./mail-item";
 import { MailItemSkeleton } from "./mail-skeleton";
+// import { Key } from "react";
 
 // ----------------------------------------------------------------------
 
 type Props = {
   loading: boolean;
-  mails: IMails;
+  mails: any;
   //
   openMail: boolean;
   onCloseMail: VoidFunction;
@@ -51,7 +52,7 @@ export default function MailList({
 
   const renderList = (
     <>
-      {mails.allIds.map((mailId) => (
+      {mails.allIds.map((mailId: string) => (
         <MailItem
           key={mailId}
           mail={mails.byId[mailId]}

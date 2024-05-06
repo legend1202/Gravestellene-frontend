@@ -20,13 +20,13 @@ import {
 
 import { paths } from "src/routes/paths";
 import { useRouter } from "src/routes/hooks";
-import { RouterLink } from "src/routes/components";
+// import { RouterLink } from "src/routes/components";
 
 import { useBoolean } from "src/hooks/use-boolean";
 
 // import { useGetProducts } from "src/api/product";
 // import { PRODUCT_STOCK_OPTIONS } from "src/_mock";
-import { useGetGraveyards } from "src/api/graveyard";
+// import { useGetGraveyards } from "src/api/graveyard";
 // import { useGetServiceLists } from "src/api/service";
 import { useGetOrderedServiceLists } from "src/api/order";
 
@@ -77,6 +77,8 @@ export default function OrderListApprove() {
   //   const { enqueueSnackbar } = useSnackbar();
 
   const confirmRows = useBoolean();
+
+  const tempFlag = false;
 
   const router = useRouter();
 
@@ -145,15 +147,20 @@ export default function OrderListApprove() {
   const handleEditRow = useCallback(
     (id: string) => {
       // router.push(paths.fellesraad.graveyard.edit(id));
+      if (tempFlag) {
+        router.push(paths.fellesraad.graveyard.details(id));
+      }
     },
-    [router]
+    [router, tempFlag]
   );
 
   const handleViewRow = useCallback(
     (id: string) => {
-      // router.push(paths.fellesraad.graveyard.details(id));
+      if (tempFlag) {
+        router.push(paths.fellesraad.graveyard.details(id));
+      }
     },
-    [router]
+    [router, tempFlag]
   );
 
   const columns: GridColDef[] = [

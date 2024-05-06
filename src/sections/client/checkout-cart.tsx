@@ -10,10 +10,9 @@ import { RouterLink } from "src/routes/components";
 import Iconify from "src/components/iconify";
 import EmptyContent from "src/components/empty-content";
 
-import { useGetServicesLists } from "src/api/service";
-import { useCheckoutContext } from "../checkout/context";
-
 import CheckoutSummary from "./checkout-summary";
+// import { useGetServicesLists } from "src/api/service";
+import { useCheckoutContext } from "../checkout/context";
 import CheckoutCartProductList from "./checkout-cart-product-list";
 
 // ----------------------------------------------------------------------
@@ -21,9 +20,9 @@ import CheckoutCartProductList from "./checkout-cart-product-list";
 export default function CheckoutCart() {
   const checkout = useCheckoutContext();
 
-  const { products, productsLoading } = useGetServicesLists();
+  // const { products, productsLoading } = useGetServicesLists();
 
-  const empty = !products.length;
+  const empty = !checkout.items.length;
 
   return (
     <Grid container spacing={3}>
@@ -50,7 +49,7 @@ export default function CheckoutCart() {
             />
           ) : (
             <CheckoutCartProductList
-              products={checkout.items}
+              products={checkout?.items}
               onDelete={checkout.onDeleteCart}
               onIncreaseQuantity={checkout.onIncreaseQuantity}
               onDecreaseQuantity={checkout.onDecreaseQuantity}

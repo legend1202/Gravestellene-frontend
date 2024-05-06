@@ -4,10 +4,10 @@ import { useRef, useState, useEffect, useCallback } from "react";
 
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
+import { IconButton } from "@mui/material";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { Button, IconButton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { alpha, styled } from "@mui/material/styles";
 
@@ -107,6 +107,7 @@ export default function HomeSplash() {
   }, [scrollY]);
 
   const handleShowSearchResult = () => {
+    setSearchKey("");
     setSearchKeyState(true);
   };
 

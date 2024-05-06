@@ -4,8 +4,7 @@ import keyBy from "lodash/keyBy";
 
 import { fetcher, endpoints } from "src/utils/axios";
 
-import { IMail, IMails, IMailLabel } from "src/types/mail";
-
+import { IMail, IMailLabel } from "src/types/mail";
 import { IGravestoneItem } from "src/types/gravestone";
 
 // ----------------------------------------------------------------------
@@ -34,7 +33,7 @@ export function useGetLabels() {
 export function useGetGraveyards(labelId: string) {
   const URL = labelId ? [endpoints.mail.list, { params: { labelId } }] : "";
 
-  const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
+  const { isLoading, error, isValidating } = useSWR(URL, fetcher);
 
   const tempById = {
     "e99f09a7-dd88-49d5-b1c8-1daf80c2d7b1": {

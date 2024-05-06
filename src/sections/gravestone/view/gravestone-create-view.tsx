@@ -333,7 +333,7 @@ export default function GravestoneCreateView() {
 
   const { mails, mailsLoading, mailsEmpty } = tempMails;
 
-  const { mail, mailLoading } = tempMail;
+  const { mailLoading } = tempMail;
 
   // const { products, productsLoading } = useGetGraveyards();
 

@@ -1,11 +1,11 @@
-import useSWR from "swr";
-import { useMemo } from "react";
+// import useSWR from "swr";
+// import { useMemo } from "react";
 
-import axiosInstance, { fetcher, endpoints } from "src/utils/axios";
+// import axiosInstance, { fetcher, endpoints } from "src/utils/axios";
 
-import { IProductItem } from "src/types/product";
-// import { IGraveItem } from "src/types/graveyard";
-import { IImageType, IGraveyardItem } from "src/types/graveyard";
+// import { IProductItem } from "src/types/product";
+// // import { IGraveItem } from "src/types/graveyard";
+// import { IImageType, IGraveyardItem } from "src/types/graveyard";
 
 // ----------------------------------------------------------------------
 

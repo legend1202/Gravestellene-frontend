@@ -13,7 +13,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 
 import { paths } from "src/routes/paths";
 import { RouterLink } from "src/routes/components";
-import { useRouter, useSearchParams } from "src/routes/hooks";
+import { useSearchParams } from "src/routes/hooks";
 
 import { useBoolean } from "src/hooks/use-boolean";
 
@@ -28,7 +28,7 @@ import FormProvider, { RHFTextField } from "src/components/hook-form";
 export default function JwtLoginView() {
   const { login } = useAuthContext();
 
-  const router = useRouter();
+  // const router = useRouter();
 
   const [errorMsg, setErrorMsg] = useState("");
 

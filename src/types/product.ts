@@ -55,8 +55,8 @@ export type IProductItem = {
   inventoryType: string;
   subDescription: string;
   priceSale: number | null;
-  reviews: IProductReview[];
-  createdAt: Date;
+  reviews: IProductReview[] | any;
+  createdAt: any;
   ratings: {
     name: string;
     starCount: number;
