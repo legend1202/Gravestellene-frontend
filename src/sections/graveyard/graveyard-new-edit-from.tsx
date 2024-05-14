@@ -126,7 +126,7 @@ export default function GraveyardNewEditForm({ currentProduct }: Props) {
     try {
       const saveData = { ...values, picture: uploadUrls };
       const saveResults: any = await createGraveyard(saveData);
-      if (saveResults?.success) {
+      if (saveResults.searchResults?.success) {
         reset();
         enqueueSnackbar(currentProduct ? "Update success!" : "Create success!");
       } else {

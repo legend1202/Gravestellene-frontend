@@ -1,5 +1,5 @@
 // import isEqual from "lodash/isEqual";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 
 import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
@@ -35,11 +35,11 @@ import { ConfirmDialog } from "src/components/custom-dialog";
 import { useSettingsContext } from "src/components/settings";
 import CustomBreadcrumbs from "src/components/custom-breadcrumbs";
 
-import {
-  IGraveyardItem,
-  // IGraveyardTableFilters,
-  // IGraveyardTableFilterValue,
-} from "src/types/graveyard";
+// import {
+//   IGraveyardItem,
+//   // IGraveyardTableFilters,
+//   // IGraveyardTableFilterValue,
+// } from "src/types/graveyard";
 
 // import ProductTableToolbar from "../graveyard-table-toolbar";
 // import ProductTableFiltersResult from "../graveyard-table-filters-result";
@@ -82,7 +82,7 @@ export default function GraveyardList() {
 
   const { products, productsLoading } = useGetGraveyards();
 
-  const [tableData, setTableData] = useState<IGraveyardItem[]>([]);
+  // const [tableData, setTableData] = useState<IGraveyardItem[]>([]);
 
   // const [filters, setFilters] = useState(defaultFilters);
 
@@ -93,12 +93,6 @@ export default function GraveyardList() {
   const [columnVisibilityModel, setColumnVisibilityModel] = useState<
     GridColumnVisibilityModel
   >(HIDE_COLUMNS);
-
-  useEffect(() => {
-    if (products.length) {
-      setTableData(products);
-    }
-  }, [products]);
 
   //   const dataFiltered = applyFilter({
   //     inputData: tableData,
@@ -121,16 +115,14 @@ export default function GraveyardList() {
   //     setFilters(defaultFilters);
   //   }, []);
 
-  //   const handleDeleteRow = useCallback(
-  //     (id: string) => {
-  //       const deleteRow = tableData.filter((row) => row.id !== id);
+  const handleDeleteRow = useCallback((id: string) => {
+    // const deleteRow = tableData.filter((row) => row.id !== id);
 
-  //       enqueueSnackbar("Delete success!");
+    // enqueueSnackbar("Delete success!");
 
-  //       setTableData(deleteRow);
-  //     },
-  //     [enqueueSnackbar, tableData]
-  //   );
+    // setTableData(deleteRow);
+    console.log("delete id", id);
+  }, []);
 
   const handleDeleteRows = useCallback(() => {
     // const deleteRows = tableData.filter(
@@ -138,6 +130,7 @@ export default function GraveyardList() {
     // );
     // enqueueSnackbar("Delete success!");
     // setTableData(deleteRows);
+    console.log("delete id");
   }, []);
 
   const handleEditRow = useCallback(
@@ -147,12 +140,12 @@ export default function GraveyardList() {
     [router]
   );
 
-  const handleViewRow = useCallback(
-    (id: string) => {
-      router.push(paths.fellesraad.graveyard.details(id));
-    },
-    [router]
-  );
+  // const handleViewRow = useCallback(
+  //   (id: string) => {
+  //     router.push(paths.fellesraad.graveyard.details(id));
+  //   },
+  //   [router]
+  // );
 
   const columns: GridColDef[] = [
     {
@@ -191,9 +184,9 @@ export default function GraveyardList() {
       getActions: (params) => [
         <GridActionsCellItem
           showInMenu
-          icon={<Iconify icon="solar:eye-bold" />}
-          label="View"
-          onClick={() => handleViewRow(params.row.id)}
+          icon={<Iconify icon="solar:trash-bin-trash-bold" />}
+          label="Delete"
+          onClick={() => handleDeleteRow(params.row.id)}
         />,
         <GridActionsCellItem
           showInMenu
@@ -252,66 +245,67 @@ export default function GraveyardList() {
             flexDirection: { md: "column" },
           }}
         >
-          <DataGrid
-            checkboxSelection
-            disableRowSelectionOnClick
-            rows={tableData}
-            columns={columns}
-            loading={productsLoading}
-            getRowHeight={() => "auto"}
-            pageSizeOptions={[5, 10, 25]}
-            initialState={{
-              pagination: {
-                paginationModel: { pageSize: 10 },
-              },
-            }}
-            onRowSelectionModelChange={(newSelectionModel) => {
-              setSelectedRowIds(newSelectionModel);
-            }}
-            columnVisibilityModel={columnVisibilityModel}
-            onColumnVisibilityModelChange={(newModel) =>
-              setColumnVisibilityModel(newModel)
-            }
-            slots={{
-              toolbar: () => (
-                <>
-                  <GridToolbarContainer>
-                    {/* <ProductTableToolbar
+          {products && (
+            <DataGrid
+              checkboxSelection
+              disableRowSelectionOnClick
+              rows={products}
+              columns={columns}
+              loading={productsLoading}
+              getRowHeight={() => "auto"}
+              pageSizeOptions={[5, 10, 25]}
+              initialState={{
+                pagination: {
+                  paginationModel: { pageSize: 10 },
+                },
+              }}
+              onRowSelectionModelChange={(newSelectionModel) => {
+                setSelectedRowIds(newSelectionModel);
+              }}
+              columnVisibilityModel={columnVisibilityModel}
+              onColumnVisibilityModelChange={(newModel) =>
+                setColumnVisibilityModel(newModel)
+              }
+              slots={{
+                toolbar: () => (
+                  <>
+                    <GridToolbarContainer>
+                      {/* <ProductTableToolbar
                       filters={filters}
                       onFilters={handleFilters}
                       stockOptions={PRODUCT_STOCK_OPTIONS}
                       publishOptions={PUBLISH_OPTIONS}
                     /> */}
 
-                    <GridToolbarQuickFilter />
+                      <GridToolbarQuickFilter />
 
-                    <Stack
-                      spacing={1}
-                      flexGrow={1}
-                      direction="row"
-                      alignItems="center"
-                      justifyContent="flex-end"
-                    >
-                      {!!selectedRowIds.length && (
-                        <Button
-                          size="small"
-                          color="error"
-                          startIcon={
-                            <Iconify icon="solar:trash-bin-trash-bold" />
-                          }
-                          onClick={confirmRows.onTrue}
-                        >
-                          Delete ({selectedRowIds.length})
-                        </Button>
-                      )}
+                      <Stack
+                        spacing={1}
+                        flexGrow={1}
+                        direction="row"
+                        alignItems="center"
+                        justifyContent="flex-end"
+                      >
+                        {!!selectedRowIds.length && (
+                          <Button
+                            size="small"
+                            color="error"
+                            startIcon={
+                              <Iconify icon="solar:trash-bin-trash-bold" />
+                            }
+                            onClick={confirmRows.onTrue}
+                          >
+                            Delete ({selectedRowIds.length})
+                          </Button>
+                        )}
 
-                      {/* <GridToolbarColumnsButton />
+                        {/* <GridToolbarColumnsButton />
                       <GridToolbarFilterButton />
                       <GridToolbarExport /> */}
-                    </Stack>
-                  </GridToolbarContainer>
+                      </Stack>
+                    </GridToolbarContainer>
 
-                  {/* {canReset && (
+                    {/* {canReset && (
                     <ProductTableFiltersResult
                       filters={filters}
                       onFilters={handleFilters}
@@ -320,17 +314,20 @@ export default function GraveyardList() {
                       sx={{ p: 2.5, pt: 0 }}
                     />
                   )} */}
-                </>
-              ),
-              noRowsOverlay: () => <EmptyContent title="No Data" />,
-              noResultsOverlay: () => <EmptyContent title="No results found" />,
-            }}
-            slotProps={{
-              columnsPanel: {
-                getTogglableColumns,
-              },
-            }}
-          />
+                  </>
+                ),
+                noRowsOverlay: () => <EmptyContent title="No Data" />,
+                noResultsOverlay: () => (
+                  <EmptyContent title="No results found" />
+                ),
+              }}
+              slotProps={{
+                columnsPanel: {
+                  getTogglableColumns,
+                },
+              }}
+            />
+          )}
         </Card>
       </Container>
 

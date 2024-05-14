@@ -62,7 +62,7 @@ export const endpoints = {
   graveyard: {
     create: "/api/graveyard/create",
     upload: "/api/upload/images",
-    list: "/api/product/list",
+    list: "api/graveyard/getByToken",
     details: "/api/product/details",
     search: "/api/product/search",
   },
