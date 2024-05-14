@@ -5,6 +5,7 @@ import { useMemo, useState, useEffect, useCallback } from "react";
 
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
+import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
 import Switch from "@mui/material/Switch";
 import Grid from "@mui/material/Unstable_Grid2";
@@ -15,18 +16,14 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 
 import { upload, createGraveyard } from "src/api/graveyard";
 
-// import { paths } from "src/routes/paths";
-// import { useRouter } from "src/routes/hooks";
-
-// import { useSnackbar } from "src/components/snackbar";
+import { useSnackbar } from "src/components/snackbar";
 import FormProvider, {
   RHFEditor,
   RHFUpload,
   RHFTextField,
 } from "src/components/hook-form";
 
-import { IImageType, IGraveyardItem } from "src/types/graveyard";
-// import { useAuthContext } from "src/auth/hooks";
+import { IUploadUrlTYpe, IGraveyardItem } from "src/types/graveyard";
 
 // ----------------------------------------------------------------------
 
@@ -77,15 +74,11 @@ const tempDesc = `
 `;
 
 export default function GraveyardNewEditForm({ currentProduct }: Props) {
-  // const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
 
-  // const { user } = useAuthContext();
+  const [errorMsg, setErrorMsg] = useState("");
 
-  // const { enqueueSnackbar } = useSnackbar();
-
-  console.log(" list edit", currentProduct);
-
-  const [images, setImages] = useState([] as IImageType);
+  const [uploadUrls, setUploadUrls] = useState([] as IUploadUrlTYpe);
 
   const NewProductSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
@@ -131,18 +124,22 @@ export default function GraveyardNewEditForm({ currentProduct }: Props) {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      const searchResults = createGraveyard(data);
-      console.log(searchResults);
-      // reset();
-      // enqueueSnackbar(currentProduct ? "Update success!" : "Create success!");
-      // router.push(paths.dashboard.product.root);
+      const saveData = { ...values, picture: uploadUrls };
+      const saveResults: any = await createGraveyard(saveData);
+      if (saveResults?.success) {
+        reset();
+        enqueueSnackbar(currentProduct ? "Update success!" : "Create success!");
+      } else {
+        setErrorMsg(saveResults?.message);
+      }
     } catch (error) {
+      setErrorMsg(error?.message);
       console.error(error);
     }
   });
 
   const handleDrop = useCallback(
-    (acceptedFiles: File[]) => {
+    async (acceptedFiles: File[]) => {
       const files = values.picture || [];
       const newFiles = acceptedFiles.map((file) =>
         Object.assign(file, {
@@ -150,29 +147,39 @@ export default function GraveyardNewEditForm({ currentProduct }: Props) {
         })
       );
 
-      setImages([...images, ...acceptedFiles]);
+      const uploadResult = await upload(acceptedFiles);
+
+      const newUploadUrls = [...uploadUrls, ...uploadResult];
+
+      setUploadUrls([...newUploadUrls]);
       setValue("picture", [...files, ...newFiles], { shouldValidate: true });
     },
-    [setValue, values.picture, images]
+    [setValue, values.picture, uploadUrls]
   );
 
   const handleRemoveFile = useCallback(
     (inputFile: File | string) => {
       const filtered =
         values.picture && values.picture?.filter((file) => file !== inputFile);
+
+      values.picture?.forEach((file, index) => {
+        if (file === inputFile) {
+          const urlFiltered = uploadUrls?.filter((_, pos) => index !== pos);
+          setUploadUrls(urlFiltered);
+        }
+      });
       setValue("picture", filtered);
     },
-    [setValue, values.picture]
+    [setValue, values.picture, uploadUrls]
   );
 
   const handleRemoveAllFiles = useCallback(() => {
     setValue("picture", []);
+    setUploadUrls([]);
   }, [setValue]);
 
   const handleUploadImage = async () => {
-    const uploadResult = await upload(images);
-    console.log(uploadResult);
-    setValue("picture", uploadResult);
+    console.log("");
   };
   const renderDetails = (
     <Grid xs={12} md={12}>
@@ -195,7 +202,7 @@ export default function GraveyardNewEditForm({ currentProduct }: Props) {
               multiple
               thumbnail
               name="picture"
-              maxSize={3145728}
+              maxSize={13145728}
               onDrop={handleDrop}
               onRemove={handleRemoveFile}
               onRemoveAll={handleRemoveAllFiles}
@@ -253,6 +260,12 @@ export default function GraveyardNewEditForm({ currentProduct }: Props) {
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
       <Grid container spacing={3}>
+        {!!errorMsg && (
+          <Alert severity="error" sx={{ mb: 3 }}>
+            {errorMsg}
+          </Alert>
+        )}
+
         {renderDetails}
 
         {renderProperties}

@@ -5,7 +5,7 @@ import axiosInstance, { fetcher, endpoints } from "src/utils/axios";
 
 import { IProductItem } from "src/types/product";
 // import { IGraveItem } from "src/types/graveyard";
-import { IImageType, IGraveyardItem } from "src/types/graveyard";
+import { IImageType, IGraveyardItem, IResponseType } from "src/types/graveyard";
 
 // ----------------------------------------------------------------------
 

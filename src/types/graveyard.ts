@@ -12,6 +12,8 @@ export type IGraveyardItem = {
 
 export type IImageType = File[];
 
+export type IUploadUrlTYpe = string[];
+
 export type IGraveyardTableFilterValue = string | string[];
 
 export type IGraveyardTableFilters = {
@@ -70,4 +72,10 @@ export type IGraveItem = {
     enabled: boolean;
     content: string;
   };
+};
+
+export type IResponseType = {
+  success: boolean;
+  message: string;
+  result: any;
 };
