@@ -26,6 +26,7 @@ import FormProvider, {
 } from "src/components/hook-form";
 
 import { IGraveyardItem } from "src/types/graveyard";
+import { useTranslate } from "src/locales";
 // import { useAuthContext } from "src/auth/hooks";
 
 // ----------------------------------------------------------------------
@@ -78,7 +79,7 @@ const tempDesc = `
 
 export default function MailDetails({ currentProduct }: Props) {
   // const router = useRouter();
-
+  const { t } = useTranslate();
   // const { user } = useAuthContext();
 
   // const { enqueueSnackbar } = useSnackbar();
@@ -139,43 +140,10 @@ export default function MailDetails({ currentProduct }: Props) {
     }
   });
 
-  // const handleDrop = useCallback(
-  //   (acceptedFiles: File[]) => {
-  //     const files = values.picture || [];
-  //     const newFiles = acceptedFiles.map((file) =>
-  //       Object.assign(file, {
-  //         preview: URL.createObjectURL(file),
-  //       })
-  //     );
-
-  //     setImages([...images, ...acceptedFiles]);
-  //     setValue("picture", [...files, ...newFiles], { shouldValidate: true });
-  //   },
-  //   [setValue, values.picture, images]
-  // );
-
-  // const handleRemoveFile = useCallback(
-  //   (inputFile: File | string) => {
-  //     const filtered =
-  //       values.picture && values.picture?.filter((file) => file !== inputFile);
-  //     setValue("picture", filtered);
-  //   },
-  //   [setValue, values.picture]
-  // );
-
-  // const handleRemoveAllFiles = useCallback(() => {
-  //   setValue("picture", []);
-  // }, [setValue]);
-
-  // const handleUploadImage = async () => {
-  //   const uploadResult = await upload(images);
-  //   console.log(uploadResult);
-  //   setValue("picture", uploadResult);
-  // };
   const renderDetails = (
     <Grid xs={12} md={12}>
       <Card>
-        <CardHeader title="Details" />
+        <CardHeader title={t("gravestone")} />
 
         <Stack spacing={3} sx={{ p: 3 }}>
           <RHFTextField name="name" label="Last Name and First Name" />
@@ -244,7 +212,7 @@ export default function MailDetails({ currentProduct }: Props) {
       <Grid container spacing={3}>
         {renderDetails}
 
-        {renderProperties}
+        {/* {renderProperties} */}
 
         {renderActions}
       </Grid>

@@ -52,16 +52,17 @@ export default function MailList({
 
   const renderList = (
     <>
-      {mails.allIds.map((mailId: string) => (
-        <MailItem
-          key={mailId}
-          mail={mails.byId[mailId]}
-          selected={selectedMailId === mailId}
-          onClick={() => {
-            onClickMail(mailId);
-          }}
-        />
-      ))}
+      {mails &&
+        mails.map((item: any, index: number) => (
+          <MailItem
+            key={index}
+            mail={item}
+            selected={selectedMailId === item.id}
+            onClick={() => {
+              onClickMail(item.id);
+            }}
+          />
+        ))}
     </>
   );
 
@@ -92,7 +93,7 @@ export default function MailList({
       <Scrollbar sx={{ px: 2 }}>
         {loading && renderSkeleton}
 
-        {!!mails.allIds.length && renderList}
+        {mails && !!mails.length && renderList}
       </Scrollbar>
     </>
   );

@@ -214,12 +214,16 @@ export default function GraveyardNewEditForm({ currentProduct }: Props) {
   );
 
   const renderActions = (
-    <Grid xs={12} md={12} sx={{ display: "flex", alignItems: "center" }}>
-      <FormControlLabel
+    <Grid
+      xs={12}
+      md={12}
+      sx={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}
+    >
+      {/* <FormControlLabel
         control={<Switch defaultChecked />}
         label=""
         sx={{ flexGrow: 1, pl: 3 }}
-      />
+      /> */}
 
       <LoadingButton
         type="submit"

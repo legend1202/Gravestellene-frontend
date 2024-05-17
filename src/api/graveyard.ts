@@ -280,10 +280,10 @@ export function useGetGraveyards() {
   const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
   const memoizedValue = useMemo(
     () => ({
-      products: data?.result as IGraveyardItem[],
-      productsLoading: isLoading,
-      productsError: error,
-      productsValidating: isValidating,
+      graveyards: data?.result as IGraveyardItem[],
+      graveyardsLoading: isLoading,
+      graveyardsError: error,
+      graveyardsValidating: isValidating,
     }),
     [data?.result, error, isLoading, isValidating]
   );

@@ -1,15 +1,16 @@
 export type IGravestoneItem = {
-  id: string;
-  fellesraadId: string;
+  id?: string;
+  graveyardId: string;
   name: string;
-  fellesraadName: string;
-  born: string;
-  deceased: string;
-  buried: string;
-  graveyardName: string;
-  quater: string;
+  gender: 'MAN' | 'WOMEN';
+  birthday: string;
+  deceasedDate: string;
+  buriedDate: string;
+  quarter: string;
   graveSite: string;
-  hometown: string;
-  siteNumber: string;
-  approved: boolean;
+  homeTown: string;
+  graveSiteNumber: string;
+  approved?: boolean;
+  createdAt?: Date;
+  updateAt?: Date;
 };

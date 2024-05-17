@@ -8,6 +8,8 @@ export type IGraveyardItem = {
   newsLink?: string;
   forecastLink?: string;
   approved?: boolean;
+  cratedAt?: Date;
+  updatedAt?: Date;
 };
 
 export type IImageType = File[];

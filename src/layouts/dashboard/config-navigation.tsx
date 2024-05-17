@@ -95,7 +95,7 @@ export function useNavData() {
           //   roles: ["ADMIN"],
           // },
           {
-            title: t("Gravestone"),
+            title: t("gravestone"),
             path: paths.fellesraad.gravestone.root,
             icon: ICONS.gravestone,
             roles: ["FELLESRAAD"],

@@ -69,4 +69,14 @@ export const endpoints = {
     details: "/api/product/details",
     search: "/api/product/search",
   },
+  gravestone: {
+    create: "/api/gravestone/create",
+    update: "/api/gravestone/update",
+    upload: "/api/upload/images",
+    list: "api/gravestone/getByToken",
+    delete: "api/gravestone/delete",
+    getbyid: "api/gravestone/getById",
+    details: "/api/gravestone/details",
+    search: "/api/gravestone/search",
+  },
 };

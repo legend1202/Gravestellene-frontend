@@ -80,7 +80,7 @@ export default function GraveyardList() {
 
   const settings = useSettingsContext();
 
-  const { products, productsLoading } = useGetGraveyards();
+  const { graveyards, graveyardsLoading } = useGetGraveyards();
 
   const [tableData, setTableData] = useState<IGraveyardItem[]>([]);
 
@@ -95,10 +95,10 @@ export default function GraveyardList() {
   >(HIDE_COLUMNS);
 
   useMemo(() => {
-    if (!productsLoading) {
-      setTableData(products);
+    if (!graveyardsLoading) {
+      setTableData(graveyards);
     }
-  }, [products, productsLoading]);
+  }, [graveyards, graveyardsLoading]);
 
   //   const dataFiltered = applyFilter({
   //     inputData: tableData,
@@ -257,13 +257,13 @@ export default function GraveyardList() {
             flexDirection: { md: "column" },
           }}
         >
-          {products && (
+          {graveyards && (
             <DataGrid
               checkboxSelection
               disableRowSelectionOnClick
               rows={tableData}
               columns={columns}
-              loading={productsLoading}
+              loading={graveyardsLoading}
               getRowHeight={() => "auto"}
               pageSizeOptions={[5, 10, 25]}
               initialState={{

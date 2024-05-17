@@ -2,12 +2,25 @@ import useSWR from "swr";
 import { useMemo } from "react";
 import keyBy from "lodash/keyBy";
 
-import { fetcher, endpoints } from "src/utils/axios";
+import axiosInstance, { fetcher, endpoints } from "src/utils/axios";
 
 import { IMail, IMailLabel } from "src/types/mail";
 import { IGravestoneItem } from "src/types/gravestone";
+import { IGraveyardItem } from "src/types/graveyard";
 
 // ----------------------------------------------------------------------
+
+export const createGravestone = async (query: IGraveyardItem) => {
+  const res = await axiosInstance.post(endpoints.gravestone.create, {
+    gravestone: query,
+  });
+
+  const memoizedValue = {
+    searchResults: res?.data || [],
+  };
+
+  return memoizedValue;
+};
 
 export function useGetLabels() {
   const URL = endpoints.mail.labels;
@@ -414,7 +427,7 @@ export function useSearchGravestoneLists(params: IGravestoneItem | any) {
   ];
   // const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
   const tempData = {
-    products: tempGravestones as IGravestoneItem[],
+    products: tempGravestones,
     productsLoading: false,
     productsValidating: false,
     productsEmpty: false,

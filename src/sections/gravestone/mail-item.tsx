@@ -10,11 +10,12 @@ import ListItemButton, {
 } from "@mui/material/ListItemButton";
 
 import { IMail } from "src/types/mail";
+import { IGraveyardItem } from "src/types/graveyard";
 
 // ----------------------------------------------------------------------
 
 type Props = ListItemButtonProps & {
-  mail: IMail;
+  mail: IGraveyardItem;
   selected: boolean;
 };
 
@@ -33,7 +34,7 @@ export default function MailItem({ mail, selected, sx, ...other }: Props) {
       {...other}
     >
       <ListItemText
-        primary="Graveyard name"
+        primary={mail.name}
         primaryTypographyProps={{
           noWrap: true,
           variant: "subtitle2",
@@ -42,8 +43,8 @@ export default function MailItem({ mail, selected, sx, ...other }: Props) {
         secondaryTypographyProps={{
           noWrap: true,
           component: "span",
-          variant: mail.isUnread ? "subtitle2" : "body2",
-          color: mail.isUnread ? "text.primary" : "text.secondary",
+          variant: "body2",
+          color: "text.secondary",
         }}
       />
 
@@ -58,21 +59,11 @@ export default function MailItem({ mail, selected, sx, ...other }: Props) {
             color: "text.disabled",
           }}
         >
-          {formatDistanceToNowStrict(new Date(mail.createdAt), {
-            addSuffix: false,
-          })}
+          {mail.cratedAt &&
+            formatDistanceToNowStrict(new Date(mail.cratedAt), {
+              addSuffix: false,
+            })}
         </Typography>
-
-        {!!mail.isUnread && (
-          <Box
-            sx={{
-              bgcolor: "info.main",
-              width: 8,
-              height: 8,
-              borderRadius: "50%",
-            }}
-          />
-        )}
       </Stack>
     </ListItemButton>
   );
