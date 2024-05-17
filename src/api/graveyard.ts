@@ -3,13 +3,25 @@ import { useMemo } from "react";
 
 import axiosInstance, { fetcher, endpoints } from "src/utils/axios";
 
+import { HOST_API } from "src/config-global";
+
 import { IProductItem } from "src/types/product";
 import { IImageType, IGraveyardItem } from "src/types/graveyard";
 
-import { HOST_API } from "src/config-global";
-
 export const createGraveyard = async (query: IGraveyardItem) => {
   const res = await axiosInstance.post(endpoints.graveyard.create, {
+    graveyard: query,
+  });
+
+  const memoizedValue = {
+    searchResults: res?.data || [],
+  };
+
+  return memoizedValue;
+};
+
+export const updateGraveyard = async (query: IGraveyardItem) => {
+  const res = await axiosInstance.put(endpoints.graveyard.update, {
     graveyard: query,
   });
 
@@ -29,24 +41,24 @@ export const upload = async (query: IImageType) => {
 
   const res = await axiosInstance.post(endpoints.graveyard.upload, formData);
 
-  return HOST_API + "/" + res.data?.result?.image_urls[0];
+  return `${HOST_API}/${res.data?.result?.image_urls[0]}`;
 };
 
 export function useGetGraveyard(graveyardId: string) {
   const URL = graveyardId
-    ? [endpoints.graveyard.getbyid + "/" + graveyardId]
+    ? [`${endpoints.graveyard.getbyid}/${graveyardId}`]
     : "";
 
   const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
 
   const memoizedValue = useMemo(
     () => ({
-      product: data?.result as IGraveyardItem,
+      product: data?.result,
       productLoading: isLoading,
       productError: error,
       productValidating: isValidating,
     }),
-    [data?.product, error, isLoading, isValidating]
+    [data?.result, error, isLoading, isValidating]
   );
 
   return memoizedValue;

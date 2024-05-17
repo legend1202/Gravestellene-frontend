@@ -170,7 +170,7 @@ export default function ServiceNewEditForm({ currentProduct }: Props) {
   const handleUploadImage = async () => {
     const uploadResult = await upload(images);
     console.log(uploadResult);
-    setValue("picture", uploadResult);
+    setValue("picture", [uploadResult]);
   };
   const renderDetails = (
     <Grid xs={12} md={12}>

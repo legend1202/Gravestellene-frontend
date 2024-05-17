@@ -7,7 +7,6 @@ import Card from "@mui/material/Card";
 // import Button from "@mui/material/Button";
 // import { alpha } from "@mui/material/styles";
 import Container from "@mui/material/Container";
-import Grid from "@mui/material/Unstable_Grid2";
 // import Typography from "@mui/material/Typography";
 
 // import { paths } from "src/routes/paths";
@@ -22,10 +21,10 @@ import { useSettingsContext } from "src/components/settings";
 
 import { ProductDetailsSkeleton } from "../product-skeleton";
 // import ProductDetailsReview from "../product-details-review";
-import GraveyardDetailsSummary from "../graveyard-details-summary";
+// import GraveyardDetailsSummary from "../graveyard-details-summary";
 // import ProductDetailsToolbar from "../product-details-toolbar";
-import GraveyardDetailsCarousel from "../graveyard-details-carousel";
-import ProductDetailsDescription from "../product-details-description";
+// import GraveyardDetailsCarousel from "../graveyard-details-carousel";
+// import ProductDetailsDescription from "../product-details-description";
 
 // ----------------------------------------------------------------------
 
@@ -60,7 +59,7 @@ export default function GraveyardDetailsView({ id }: Props) {
 
   // const [currentTab, setCurrentTab] = useState("description");
 
-  const [publish, setPublish] = useState("");
+  const [publish, setPublish] = useState<boolean | undefined>(false);
 
   useEffect(() => {
     if (product) {

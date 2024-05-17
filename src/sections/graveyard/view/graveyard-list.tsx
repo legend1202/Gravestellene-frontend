@@ -1,5 +1,5 @@
 // import isEqual from "lodash/isEqual";
-import { useMemo, useState, useEffect, useCallback } from "react";
+import { useMemo, useState, useCallback } from "react";
 
 import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
