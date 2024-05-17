@@ -1,5 +1,5 @@
 // import isEqual from "lodash/isEqual";
-import { useState, useCallback } from "react";
+import { useMemo, useState, useEffect, useCallback } from "react";
 
 import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
@@ -26,20 +26,20 @@ import { useBoolean } from "src/hooks/use-boolean";
 
 // import { useGetProducts } from "src/api/product";
 // import { PRODUCT_STOCK_OPTIONS } from "src/_mock";
-import { useGetGraveyards } from "src/api/graveyard";
+import { deleteGraveyard, useGetGraveyards } from "src/api/graveyard";
 
 import Iconify from "src/components/iconify";
-// import { useSnackbar } from "src/components/snackbar";
+import { useSnackbar } from "src/components/snackbar";
 import EmptyContent from "src/components/empty-content";
 import { ConfirmDialog } from "src/components/custom-dialog";
 import { useSettingsContext } from "src/components/settings";
 import CustomBreadcrumbs from "src/components/custom-breadcrumbs";
 
-// import {
-//   IGraveyardItem,
-//   // IGraveyardTableFilters,
-//   // IGraveyardTableFilterValue,
-// } from "src/types/graveyard";
+import {
+  IGraveyardItem,
+  // IGraveyardTableFilters,
+  // IGraveyardTableFilterValue,
+} from "src/types/graveyard";
 
 // import ProductTableToolbar from "../graveyard-table-toolbar";
 // import ProductTableFiltersResult from "../graveyard-table-filters-result";
@@ -72,7 +72,7 @@ const HIDE_COLUMNS_TOGGLABLE = ["category", "actions"];
 // ----------------------------------------------------------------------
 
 export default function GraveyardList() {
-  //   const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
 
   const confirmRows = useBoolean();
 
@@ -82,7 +82,7 @@ export default function GraveyardList() {
 
   const { products, productsLoading } = useGetGraveyards();
 
-  // const [tableData, setTableData] = useState<IGraveyardItem[]>([]);
+  const [tableData, setTableData] = useState<IGraveyardItem[]>([]);
 
   // const [filters, setFilters] = useState(defaultFilters);
 
@@ -93,6 +93,12 @@ export default function GraveyardList() {
   const [columnVisibilityModel, setColumnVisibilityModel] = useState<
     GridColumnVisibilityModel
   >(HIDE_COLUMNS);
+
+  useMemo(() => {
+    if (!productsLoading) {
+      setTableData(products);
+    }
+  }, [products, productsLoading]);
 
   //   const dataFiltered = applyFilter({
   //     inputData: tableData,
@@ -115,14 +121,20 @@ export default function GraveyardList() {
   //     setFilters(defaultFilters);
   //   }, []);
 
-  const handleDeleteRow = useCallback((id: string) => {
-    // const deleteRow = tableData.filter((row) => row.id !== id);
+  const handleDeleteRow = async (id: string) => {
+    try {
+      const result = await deleteGraveyard(id);
+      if (result.success) {
+        const deleteRow = tableData.filter((row) => row.id !== id);
 
-    // enqueueSnackbar("Delete success!");
+        enqueueSnackbar("Delete success!");
 
-    // setTableData(deleteRow);
-    console.log("delete id", id);
-  }, []);
+        setTableData(deleteRow);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleDeleteRows = useCallback(() => {
     // const deleteRows = tableData.filter(
@@ -249,7 +261,7 @@ export default function GraveyardList() {
             <DataGrid
               checkboxSelection
               disableRowSelectionOnClick
-              rows={products}
+              rows={tableData}
               columns={columns}
               loading={productsLoading}
               getRowHeight={() => "auto"}

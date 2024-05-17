@@ -25,53 +25,54 @@ import FormProvider, {
 
 import { IUploadUrlTYpe, IGraveyardItem } from "src/types/graveyard";
 
+import { HOST_API } from "src/config-global";
+
 // ----------------------------------------------------------------------
 
 type Props = {
   currentProduct?: IGraveyardItem;
 };
 
-const tempDesc = `
-  <h6>The Cemetery of Our Saviour</h6>
-  
-  
-  <br/>
-  <br/>
-  
-  <h6>About US</h6>
-  <br/>
-  <ul>
-    <li><p>The Cemetery of Our Saviour is a cemetery in Oslo, Norway, located north of Hammersborg in Gamle Aker district.</p></li>
-    <li><p>It is located adjacent to the older Old Aker Cemetery and was created in 1808 as a result of the great famine and cholera epidemic of the Napoleonic Wars.</p></li>
-    <li><p>Its grounds were extended in 1911</p></li>
-  </ul>
-  
-  <br/>
-  <br/>
-  
-  <h6>Benefits</h6>
-  <br/>
-  <ul>
-    <li>
-      <p>Mesh and synthetic materials on the upper keep the fluid look of the OG while adding comfort</p>
-      and durability.
-    </li>
-    <li>
-      <p>Originally designed for performance running, the full-length Max Air unit adds soft, comfortable cushio</p>
-      ning underfoot.
-    </li>
-    <li><p>The foam midsole feels springy and soft.</p></li>
-    <li><p>The rubber outsole adds traction and durability.</p></li>
-  </ul>
-  
-  <br/>
-  <br/>
-  
-  <h6>Delivery and Returns</h6>
-  <br/>
-  <p>Your order of $200 or more gets free standard delivery.</p>
-  <br/>
-`;
+// const tempDesc = `
+//   <h6>The Cemetery of Our Saviour</h6>
+
+//   <br/>
+//   <br/>
+
+//   <h6>About US</h6>
+//   <br/>
+//   <ul>
+//     <li><p>The Cemetery of Our Saviour is a cemetery in Oslo, Norway, located north of Hammersborg in Gamle Aker district.</p></li>
+//     <li><p>It is located adjacent to the older Old Aker Cemetery and was created in 1808 as a result of the great famine and cholera epidemic of the Napoleonic Wars.</p></li>
+//     <li><p>Its grounds were extended in 1911</p></li>
+//   </ul>
+
+//   <br/>
+//   <br/>
+
+//   <h6>Benefits</h6>
+//   <br/>
+//   <ul>
+//     <li>
+//       <p>Mesh and synthetic materials on the upper keep the fluid look of the OG while adding comfort</p>
+//       and durability.
+//     </li>
+//     <li>
+//       <p>Originally designed for performance running, the full-length Max Air unit adds soft, comfortable cushio</p>
+//       ning underfoot.
+//     </li>
+//     <li><p>The foam midsole feels springy and soft.</p></li>
+//     <li><p>The rubber outsole adds traction and durability.</p></li>
+//   </ul>
+
+//   <br/>
+//   <br/>
+
+//   <h6>Delivery and Returns</h6>
+//   <br/>
+//   <p>Your order of $200 or more gets free standard delivery.</p>
+//   <br/>
+// `;
 
 export default function GraveyardNewEditForm({ currentProduct }: Props) {
   const { enqueueSnackbar } = useSnackbar();
@@ -91,10 +92,10 @@ export default function GraveyardNewEditForm({ currentProduct }: Props) {
 
   const defaultValues = useMemo(
     () => ({
-      name: currentProduct ? "The Cemetery of Our Saviour" : "",
-      location: currentProduct ? "Hammersborg in Gamle Aker district" : "",
+      name: currentProduct?.name || "",
+      location: currentProduct?.location || "",
       picture: currentProduct?.picture || [],
-      content: currentProduct ? tempDesc : "",
+      content: currentProduct?.content || "",
       newsLink: currentProduct?.newsLink || "",
       forecastLink: currentProduct?.forecastLink || "",
     }),
@@ -149,7 +150,7 @@ export default function GraveyardNewEditForm({ currentProduct }: Props) {
 
       const uploadResult = await upload(acceptedFiles);
 
-      const newUploadUrls = [...uploadUrls, ...uploadResult];
+      const newUploadUrls = [...uploadUrls, uploadResult];
 
       setUploadUrls([...newUploadUrls]);
       setValue("picture", [...files, ...newFiles], { shouldValidate: true });

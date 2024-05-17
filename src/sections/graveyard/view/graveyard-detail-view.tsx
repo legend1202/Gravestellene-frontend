@@ -64,7 +64,7 @@ export default function GraveyardDetailsView({ id }: Props) {
 
   useEffect(() => {
     if (product) {
-      setPublish(product?.publish);
+      setPublish(product?.approved);
       if (publish) {
         console.log("===");
       }
@@ -113,7 +113,7 @@ export default function GraveyardDetailsView({ id }: Props) {
         publishOptions={PRODUCT_PUBLISH_OPTIONS}
       /> */}
 
-      <Grid container spacing={{ xs: 3, md: 5, lg: 8 }}>
+      {/* <Grid container spacing={{ xs: 3, md: 5, lg: 8 }}>
         <Grid xs={12} md={6} lg={7}>
           <GraveyardDetailsCarousel product={product} />
         </Grid>
@@ -121,7 +121,7 @@ export default function GraveyardDetailsView({ id }: Props) {
         <Grid xs={12} md={6} lg={5}>
           <GraveyardDetailsSummary disabledActions product={product} />
         </Grid>
-      </Grid>
+      </Grid> */}
 
       <Box
         gap={5}
@@ -176,7 +176,7 @@ export default function GraveyardDetailsView({ id }: Props) {
         </Tabs> */}
 
         {/* {currentTab === "description" && ( */}
-        <ProductDetailsDescription description={product?.description} />
+        {/* <ProductDetailsDescription description={product?.description} /> */}
         {/* )} */}
 
         {/* {currentTab === "reviews" && ( */}

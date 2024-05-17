@@ -63,6 +63,8 @@ export const endpoints = {
     create: "/api/graveyard/create",
     upload: "/api/upload/images",
     list: "api/graveyard/getByToken",
+    delete: "api/graveyard/delete",
+    getbyid: "api/graveyard/getById",
     details: "/api/product/details",
     search: "/api/product/search",
   },
