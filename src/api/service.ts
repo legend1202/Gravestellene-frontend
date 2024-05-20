@@ -32,9 +32,7 @@ export const updateService = async (query: IServiceItem) => {
 };
 
 export function useGetServicesListsByCompanyId(companyId: string) {
-  const URL = companyId
-    ? [`${endpoints.services.getByCompanyId}/${companyId}`]
-    : "";
+  const URL = endpoints.services.getByCompanyId;
 
   const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
 
