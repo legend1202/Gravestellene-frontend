@@ -117,10 +117,8 @@ export default function ServiceListViewPage() {
       const result = await deleteService(id);
       if (result.success) {
         const updatedRows = servicesData.filter((row) => row.id !== id);
-
-        enqueueSnackbar("Delete success!");
-
         setServicesData(updatedRows);
+        enqueueSnackbar("Delete success!");
       }
     } catch (error) {
       console.error(error);
@@ -234,7 +232,7 @@ export default function ServiceListViewPage() {
           <DataGrid
             // checkboxSelection
             disableRowSelectionOnClick
-            rows={services}
+            rows={servicesData}
             columns={columns}
             loading={servicesLoading}
             getRowHeight={() => "auto"}

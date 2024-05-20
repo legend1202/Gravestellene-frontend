@@ -278,6 +278,7 @@ export default function GravestoneList() {
               label="Graveyard"
               InputLabelProps={{ shrink: true }}
               PaperPropsSx={{ textTransform: "capitalize" }}
+              sx={{ mb: 1 }}
             >
               {graveyards.map((option) => (
                 <MenuItem key={option.id} value={option?.id}>
