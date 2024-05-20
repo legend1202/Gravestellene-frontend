@@ -6,14 +6,10 @@ import DashboardLayout from "src/layouts/dashboard";
 
 import { LoadingScreen } from "src/components/loading-screen";
 
-// PRODUCT
-const ProductDetailsPage = lazy(() =>
-  import("src/pages/fellesraad/gravestone/details")
-);
 const GravestoneListPage = lazy(() =>
   import("src/pages/fellesraad/gravestone/list")
 );
-const ProductEditPage = lazy(() =>
+const GravestoneEditPage = lazy(() =>
   import("src/pages/fellesraad/gravestone/edit")
 );
 
@@ -38,9 +34,8 @@ export const gravestoneRoutes = [
     children: [
       { element: <GravestoneListPage />, index: true },
       { path: "list", element: <GravestoneListPage /> },
-      { path: ":id", element: <ProductDetailsPage /> },
       { path: "create", element: <GravestoneCreatePage /> },
-      { path: ":id/edit", element: <ProductEditPage /> },
+      { path: ":id/edit", element: <GravestoneEditPage /> },
     ],
   },
 ];

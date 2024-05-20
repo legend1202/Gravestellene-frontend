@@ -5,27 +5,14 @@ import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import Rating from "@mui/material/Rating";
-// import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
-// import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
-// import { formHelperTextClasses } from "@mui/material/FormHelperText";
 
-import { paths } from "src/routes/paths";
-import { useRouter } from "src/routes/hooks";
-
-// import { fCurrency, fShortenNumber } from "src/utils/format-number";
-
-import Label from "src/components/label";
 import Iconify from "src/components/iconify";
-// import { ColorPicker } from "src/components/color-utils";
 import FormProvider from "src/components/hook-form";
 
-import { IProductItem } from "src/types/product";
 import { ICheckoutItem } from "src/types/checkout";
 import { IGraveyardItem } from "src/types/graveyard";
-
-// import IncrementerButton from "./common/incrementer-button";
 
 // ----------------------------------------------------------------------
 
@@ -45,8 +32,6 @@ export default function GraveyardDetailsSummary({
   disabledActions,
   ...other
 }: Props) {
-  const router = useRouter();
-
   const {
     id,
     fellesraadId,
@@ -83,9 +68,7 @@ export default function GraveyardDetailsSummary({
   }, [graveyard]);
 
   const renderContactinfoTitle = (
-    <Box sx={{ typography: "h5" }}>
-      Contact me!
-    </Box>
+    <Box sx={{ typography: "h5" }}>Contact me!</Box>
   );
 
   const renderShare = (
@@ -205,7 +188,6 @@ export default function GraveyardDetailsSummary({
     <FormProvider methods={methods}>
       <Stack spacing={3} sx={{ pt: 3 }} {...other}>
         <Stack spacing={2} alignItems="flex-start">
-
           <Typography variant="h5">{name}</Typography>
 
           {renderLocation}

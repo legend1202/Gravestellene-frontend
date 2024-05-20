@@ -1,9 +1,7 @@
-// import isEqual from "lodash/isEqual";
 import * as Yup from "yup";
-// import { sub } from "date-fns";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useMemo, useState, useCallback, useEffect } from "react";
+import { useMemo, useState, useEffect, useCallback } from "react";
 
 import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
@@ -13,7 +11,6 @@ import Container from "@mui/material/Container";
 import {
   DataGrid,
   GridColDef,
-  //   GridToolbarExport,
   GridActionsCellItem,
   GridToolbarContainer,
   GridRowSelectionModel,
@@ -21,14 +18,13 @@ import {
   GridColumnVisibilityModel,
 } from "@mui/x-data-grid";
 
-import FormProvider, { RHFSelect } from "src/components/hook-form";
-
 import { paths } from "src/routes/paths";
 import { useRouter } from "src/routes/hooks";
 import { RouterLink } from "src/routes/components";
 
 import { useBoolean } from "src/hooks/use-boolean";
 
+import { GetGravestones } from "src/api/gravestone";
 import { deleteGraveyard, useGetGraveyards } from "src/api/graveyard";
 
 import Iconify from "src/components/iconify";
@@ -37,13 +33,18 @@ import EmptyContent from "src/components/empty-content";
 import { ConfirmDialog } from "src/components/custom-dialog";
 import { useSettingsContext } from "src/components/settings";
 import CustomBreadcrumbs from "src/components/custom-breadcrumbs";
+import FormProvider, { RHFSelect } from "src/components/hook-form";
 
-import { IGraveyardItem } from "src/types/graveyard";
+import { IGravestoneItem } from "src/types/gravestone";
 
 import {
-  RenderCellApprove,
-  RenderCellLocation,
-  RenderCellGraveyard,
+  RenderCellSite,
+  RenderCellQuarter,
+  RenderCellHomeTown,
+  RenderCellBirthday,
+  RenderCellGravestone,
+  RenderCellBuriedDate,
+  RenderCellDeceaseDate,
 } from "../graveyard-table-row";
 
 // ----------------------------------------------------------------------
@@ -72,7 +73,7 @@ export default function GravestoneList() {
 
   const { graveyards, graveyardsLoading } = useGetGraveyards();
 
-  const [tableData, setTableData] = useState<IGraveyardItem[]>([]);
+  const [tableData, setTableData] = useState<IGravestoneItem[]>([]);
 
   const [selectedRowIds, setSelectedRowIds] = useState<GridRowSelectionModel>(
     []
@@ -96,25 +97,15 @@ export default function GravestoneList() {
     resolver: yupResolver(newGravestoneSchema),
     defaultValues,
   });
-  const {
-    reset,
-    watch,
-    setValue,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = methods;
+  const { watch } = methods;
 
   const values = watch();
 
   useEffect(() => {
-    console.log(values.id);
-  }, [values?.id]);
-
-  useMemo(() => {
-    if (!graveyardsLoading) {
-      setTableData(graveyards);
+    if (values?.id) {
+      handleSearchResult(values?.id);
     }
-  }, [graveyards, graveyardsLoading]);
+  }, [values?.id]);
 
   const handleDeleteRow = async (id: string) => {
     try {
@@ -142,7 +133,8 @@ export default function GravestoneList() {
 
   const handleEditRow = useCallback(
     (id: string) => {
-      router.push(paths.fellesraad.graveyard.edit(id));
+      // console.log(paths.fellesraad.gravestone.edit(id));
+      router.push(paths.fellesraad.gravestone.edit(id));
     },
     [router]
   );
@@ -150,26 +142,62 @@ export default function GravestoneList() {
   const columns: GridColDef[] = [
     {
       field: "name",
-      headerName: "Graveyard",
+      headerName: "Name",
       flex: 1,
-      minWidth: 280,
+      minWidth: 220,
       hideable: false,
-      renderCell: (params) => <RenderCellGraveyard params={params} />,
+      renderCell: (params) => <RenderCellGravestone params={params} />,
     },
     {
-      field: "location",
-      headerName: "location",
-      minWidth: 280,
-      renderCell: (params) => <RenderCellLocation params={params} />,
+      field: "birthday",
+      headerName: "Birthday",
+      minWidth: 150,
+      renderCell: (params) => <RenderCellBirthday params={params} />,
     },
     {
-      field: "publish",
-      headerName: "Publish",
+      field: "deceasedDate",
+      headerName: "Deceased Date",
+      width: 150,
+      type: "singleSelect",
+      editable: true,
+      valueOptions: PUBLISH_OPTIONS,
+      renderCell: (params) => <RenderCellDeceaseDate params={params} />,
+    },
+    {
+      field: "buriedDate",
+      headerName: "Beried Date",
+      width: 150,
+      type: "singleSelect",
+      editable: true,
+      valueOptions: PUBLISH_OPTIONS,
+      renderCell: (params) => <RenderCellBuriedDate params={params} />,
+    },
+    {
+      field: "homeTown",
+      headerName: "Home Town",
+      width: 180,
+      type: "singleSelect",
+      editable: true,
+      valueOptions: PUBLISH_OPTIONS,
+      renderCell: (params) => <RenderCellHomeTown params={params} />,
+    },
+    {
+      field: "graveSiteNumber",
+      headerName: "Site",
       width: 110,
       type: "singleSelect",
       editable: true,
       valueOptions: PUBLISH_OPTIONS,
-      renderCell: (params) => <RenderCellApprove params={params} />,
+      renderCell: (params) => <RenderCellSite params={params} />,
+    },
+    {
+      field: "quarter",
+      headerName: "Quarter",
+      width: 110,
+      type: "singleSelect",
+      editable: true,
+      valueOptions: PUBLISH_OPTIONS,
+      renderCell: (params) => <RenderCellQuarter params={params} />,
     },
     {
       type: "actions",
@@ -197,6 +225,13 @@ export default function GravestoneList() {
       ],
     },
   ];
+
+  const handleSearchResult = async (graveyardId: string) => {
+    const searchResult = await GetGravestones(graveyardId);
+    if (searchResult) {
+      setTableData(searchResult?.gravestones);
+    }
+  };
   const getTogglableColumns = () =>
     columns
       .filter((column) => !HIDE_COLUMNS_TOGGLABLE.includes(column.field))
@@ -239,7 +274,7 @@ export default function GravestoneList() {
           <FormProvider methods={methods}>
             <RHFSelect
               fullWidth
-              name="graveyardId"
+              name="id"
               label="Graveyard"
               InputLabelProps={{ shrink: true }}
               PaperPropsSx={{ textTransform: "capitalize" }}
@@ -261,7 +296,7 @@ export default function GravestoneList() {
             flexDirection: { md: "column" },
           }}
         >
-          {graveyards && (
+          {tableData && (
             <DataGrid
               checkboxSelection
               disableRowSelectionOnClick

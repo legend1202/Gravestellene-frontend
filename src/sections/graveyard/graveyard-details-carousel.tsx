@@ -13,7 +13,6 @@ import Carousel, {
   CarouselArrowIndex,
 } from "src/components/carousel";
 
-import { IProductItem } from "src/types/product";
 import { IGraveyardItem } from "src/types/graveyard";
 
 // ----------------------------------------------------------------------

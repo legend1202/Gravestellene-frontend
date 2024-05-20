@@ -1,8 +1,8 @@
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from "react-helmet-async";
 
-import { useParams } from 'src/routes/hooks';
+import { useParams } from "src/routes/hooks";
 
-import { ProductEditView } from 'src/sections/gravestone/view';
+import { GravestoneEditView } from "src/sections/gravestone/view";
 
 // ----------------------------------------------------------------------
 
@@ -14,10 +14,10 @@ export default function ProductEditPage() {
   return (
     <>
       <Helmet>
-        <title> Dashboard: Product Edit</title>
+        <title> Fellesraad: Gravestone Edit</title>
       </Helmet>
 
-      <ProductEditView id={`${id}`} />
+      <GravestoneEditView id={`${id}`} />
     </>
   );
 }

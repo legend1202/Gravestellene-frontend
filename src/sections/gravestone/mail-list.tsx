@@ -1,7 +1,6 @@
 import Stack from "@mui/material/Stack";
 import Drawer from "@mui/material/Drawer";
 import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
 import InputAdornment from "@mui/material/InputAdornment";
 
 import { useResponsive } from "src/hooks/use-responsive";
@@ -9,11 +8,8 @@ import { useResponsive } from "src/hooks/use-responsive";
 import Iconify from "src/components/iconify";
 import Scrollbar from "src/components/scrollbar";
 
-// import { IMails } from "src/types/mail";
-
 import MailItem from "./mail-item";
 import { MailItemSkeleton } from "./mail-skeleton";
-// import { Key } from "react";
 
 // ----------------------------------------------------------------------
 

@@ -1,15 +1,15 @@
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from "react-helmet-async";
 
-import { useParams } from 'src/routes/hooks';
+// import { useParams } from "src/routes/hooks";
 
-import { ProductDetailsView } from 'src/sections/gravestone/view';
+// import { ProductDetailsView } from 'src/sections/gravestone/view';
 
 // ----------------------------------------------------------------------
 
 export default function ProductDetailsPage() {
-  const params = useParams();
+  // const params = useParams();
 
-  const { id } = params;
+  // const { id } = params;
 
   return (
     <>
@@ -17,7 +17,7 @@ export default function ProductDetailsPage() {
         <title> Dashboard: Product Details</title>
       </Helmet>
 
-      <ProductDetailsView id={`${id}`} />
+      {/* <ProductDetailsView id={`${id}`} /> */}
     </>
   );
 }

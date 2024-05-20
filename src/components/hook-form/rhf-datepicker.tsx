@@ -1,16 +1,20 @@
-import { Controller, useFormContext } from "react-hook-form";
 import parseISO from "date-fns/parseISO";
-import { TextFieldProps } from "@mui/material/TextField";
+import { Controller, useFormContext } from "react-hook-form";
+
 import { DatePicker } from "@mui/x-date-pickers";
+import { TextFieldProps } from "@mui/material/TextField";
 
 // ----------------------------------------------------------------------
 
 type Props = TextFieldProps & {
   name: string;
+  label: string;
+  defaultValue: string;
 };
 
-export default function RHFDatePicker({ name, label }: Props) {
+export default function RHFDatePicker({ name, label, defaultValue }: Props) {
   const { control } = useFormContext();
+  console.log("=========", new Date(defaultValue));
 
   return (
     <Controller
@@ -19,7 +23,7 @@ export default function RHFDatePicker({ name, label }: Props) {
       render={({ field, fieldState: { error } }) => (
         <DatePicker
           label={label}
-          value={parseISO(field.value)}
+          value={parseISO(defaultValue)}
           onChange={(newValue) => {
             field.onChange(newValue);
           }}

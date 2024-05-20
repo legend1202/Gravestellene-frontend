@@ -22,6 +22,8 @@ import EmptyContent from "src/components/empty-content";
 import { useSettingsContext } from "src/components/settings";
 // import { LoadingScreen } from "src/components/loading-screen";
 
+import { fmDate } from "src/utils/format-time";
+
 import { useGetGraveyards } from "src/api/graveyard";
 import { createGravestone } from "src/api/gravestone";
 
@@ -29,27 +31,28 @@ import { useSnackbar } from "src/components/snackbar";
 
 // import { useTranslate } from "src/locales";
 
+import { useTranslate } from "src/locales";
+
 import FormProvider, {
+  RHFSelect,
   RHFTextField,
   RHFDatePicker,
-  RHFSelect,
 } from "src/components/hook-form";
 
 import { IGravestoneItem } from "src/types/gravestone";
 
 import MailList from "../mail-list";
 
-import { fmDate } from "src/utils/format-time";
 // ----------------------------------------------------------------------
 
 const LABEL_INDEX = "inbox";
 
 type Props = {
-  currentProduct?: IGravestoneItem;
+  currentGravestone?: IGravestoneItem;
 };
 
-export default function GravestoneCreateView({ currentProduct }: Props) {
-  // const { t } = useTranslate();
+export default function GravestoneCreateView({ currentGravestone }: Props) {
+  const { t } = useTranslate();
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -82,17 +85,19 @@ export default function GravestoneCreateView({ currentProduct }: Props) {
   const defaultValues = useMemo(
     () => ({
       // graveyardId: currentProduct ? currentProduct.graveyardId : selectedMailId,
-      name: currentProduct ? currentProduct.name : "",
-      gender: currentProduct ? currentProduct.gender : "",
-      birthday: currentProduct ? currentProduct.birthday : "",
-      deceasedDate: currentProduct ? currentProduct.deceasedDate : "",
-      buriedDate: currentProduct ? currentProduct.buriedDate : "",
-      quarter: currentProduct ? currentProduct.quarter : "",
-      graveSite: currentProduct ? currentProduct.graveSite : "",
-      homeTown: currentProduct ? currentProduct.homeTown : "",
-      graveSiteNumber: currentProduct ? currentProduct.graveSiteNumber : "",
+      name: currentGravestone ? currentGravestone.name : "",
+      gender: currentGravestone ? currentGravestone.gender : "",
+      birthday: currentGravestone ? currentGravestone.birthday : "",
+      deceasedDate: currentGravestone ? currentGravestone.deceasedDate : "",
+      buriedDate: currentGravestone ? currentGravestone.buriedDate : "",
+      quarter: currentGravestone ? currentGravestone.quarter : "",
+      graveSite: currentGravestone ? currentGravestone.graveSite : "",
+      homeTown: currentGravestone ? currentGravestone.homeTown : "",
+      graveSiteNumber: currentGravestone
+        ? currentGravestone.graveSiteNumber
+        : "",
     }),
-    [currentProduct]
+    [currentGravestone]
   );
 
   const methods = useForm({
@@ -103,24 +108,28 @@ export default function GravestoneCreateView({ currentProduct }: Props) {
   const {
     reset,
     watch,
-    setValue,
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
 
   const values = watch();
+  console.log(values);
 
   const handleClickMail = useCallback((graveyardId: string) => {
-    console.log(graveyardId);
     setSelectedGraveyardId(graveyardId);
-
-    // router.push(href);
   }, []);
+
   useEffect(() => {
     if (graveyards && graveyards.length > 0 && graveyards[0].id) {
       setSelectedGraveyardId(graveyards[0].id);
     }
   }, [graveyards]);
+
+  useEffect(() => {
+    if (currentGravestone) {
+      setSelectedGraveyardId(currentGravestone.graveyardId);
+    }
+  }, [currentGravestone]);
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -135,9 +144,17 @@ export default function GravestoneCreateView({ currentProduct }: Props) {
           deceasedDate,
           graveyardId: selectedGraveyardId,
         };
-        const result = createGravestone(saveData);
+        const result = await createGravestone(saveData);
+        if (result?.searchResults.success) {
+          enqueueSnackbar(
+            currentGravestone ? t("update_success") : t("create_success")
+          );
+        } else {
+          enqueueSnackbar(
+            currentGravestone ? t("update_success") : t("create_success")
+          );
+        }
         reset();
-        enqueueSnackbar(currentProduct ? "Update success!" : "Create success!");
       } else {
         enqueueSnackbar("Select the Graveyard!");
       }
@@ -146,28 +163,6 @@ export default function GravestoneCreateView({ currentProduct }: Props) {
       console.error(error);
     }
   });
-
-  // const renderLoading = (
-  //   <LoadingScreen
-  //     sx={{
-  //       borderRadius: 1.5,
-  //       bgcolor: "background.default",
-  //     }}
-  //   />
-  // );
-
-  // const renderEmpty = (
-  //   <EmptyContent
-  //     title={`Nothing in ${selectedLabelId}`}
-  //     description="This folder is empty"
-  //     imgUrl="/assets/icons/empty/ic_folder_empty.svg"
-  //     sx={{
-  //       borderRadius: 1.5,
-  //       maxWidth: { md: 320 },
-  //       bgcolor: "background.default",
-  //     }}
-  //   />
-  // );
 
   const renderMailList = (
     <MailList
@@ -216,11 +211,23 @@ export default function GravestoneCreateView({ currentProduct }: Props) {
             ))}
           </RHFSelect>
 
-          <RHFDatePicker name="birthday" label="Birthday" />
+          <RHFDatePicker
+            name="birthday"
+            label="Birthday"
+            defaultValue={currentGravestone?.birthday || "05/10/2024"}
+          />
 
-          <RHFDatePicker name="deceasedDate" label="Deceased Date" />
+          <RHFDatePicker
+            name="deceasedDate"
+            label="Deceased Date"
+            defaultValue={currentGravestone?.deceasedDate || "05/10/2024"}
+          />
 
-          <RHFDatePicker name="buriedDate" label="Buried Date" />
+          <RHFDatePicker
+            name="buriedDate"
+            label="Buried Date"
+            defaultValue={currentGravestone?.buriedDate || "05/10/2024"}
+          />
 
           <RHFTextField name="quarter" label="Quarter" />
 
@@ -251,7 +258,7 @@ export default function GravestoneCreateView({ currentProduct }: Props) {
         size="large"
         loading={isSubmitting}
       >
-        {!currentProduct ? "Create Product" : "Save Changes"}
+        {!currentGravestone ? "Create Product" : "Save Changes"}
       </LoadingButton>
     </Grid>
   );

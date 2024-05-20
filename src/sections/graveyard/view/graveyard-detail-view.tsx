@@ -1,10 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 
-import Tab from "@mui/material/Tab";
-import Tabs from "@mui/material/Tabs";
 import Card from "@mui/material/Card";
 import Button from "@mui/material/Button";
-import { alpha } from "@mui/material/styles";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Unstable_Grid2";
 
@@ -26,26 +23,6 @@ import GraveyardDetailsDescription from "../graveyard-details-description";
 
 // ----------------------------------------------------------------------
 
-const SUMMARY = [
-  {
-    title: "100% Original",
-    description: "Chocolate bar candy canes ice cream toffee cookie halvah.",
-    icon: "solar:verified-check-bold",
-  },
-  {
-    title: "10 Day Replacement",
-    description: "Marshmallow biscuit donut dragée fruitcake wafer.",
-    icon: "solar:clock-circle-bold",
-  },
-  {
-    title: "Year Warranty",
-    description: "Cotton candy gingerbread cake I love sugar sweet.",
-    icon: "solar:shield-check-bold",
-  },
-];
-
-// ----------------------------------------------------------------------
-
 type Props = {
   id: string;
 };
@@ -54,8 +31,6 @@ export default function GraveyardDetailsView({ id }: Props) {
   const { graveyard, graveyardLoading, graveyardError } = useGetGraveyard(id);
 
   const settings = useSettingsContext();
-
-  const [currentTab, setCurrentTab] = useState("description");
 
   const [publish, setPublish] = useState<boolean | any>(false);
 
