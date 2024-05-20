@@ -1,10 +1,11 @@
-// import useSWR from "swr";
+import useSWR from "swr";
 // import { useMemo } from "react";
 
-// import axiosInstance, { fetcher, endpoints } from "src/utils/axios";
+import { fetcher, endpoints } from "src/utils/axios";
 
 // import { IProductItem } from "src/types/product";
-import { IServiceItem } from "src/types/service";
+// import { IServiceItem } from "src/types/service";
+import { IGraveyardItem } from "src/types/graveyard";
 // import { IImageType, IGraveyardItem } from "src/types/graveyard";
 
 // ----------------------------------------------------------------------
@@ -56,35 +57,37 @@ export function useGetServiceLists() {
 }
 
 export function useGetServicesLists() {
-  // const URL = endpoints.product.list;
-  const tempProducts = [
-    {
-      id: "e99f09a7-dd88-49d5-b1c8-1daf80c2d7b1",
-      fellesraadId: "fe99f09a7-dd88-49d5-b1c8-1daf80c2d7b1",
-      name: "Service 1",
-      price: "$350",
-      graveyardName: "string",
-    },
-    {
-      id: "e99f09a7-dd88-49d5-b1c8-1daf80c2d7b2",
-      fellesraadId: "fe99f09a7-dd88-49d5-b1c8-1daf80c2d7b2",
-      name: "Service 1",
-      price: "$499",
-      graveyardName: "string",
-    },
-    {
-      id: "e99f09a7-dd88-49d5-b1c8-1daf80c2d7b3",
-      fellesraadId: "fe99f09a7-dd88-49d5-b1c8-1daf80c2d7b3",
-      name: "Service 2",
-      price: "$612",
-      graveyardName: "string",
-    },
-  ];
-  // const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
+  const URL = endpoints.product.list;
+  // const tempProducts = [
+  //   {
+  //     id: "e99f09a7-dd88-49d5-b1c8-1daf80c2d7b1",
+  //     fellesraadId: "fe99f09a7-dd88-49d5-b1c8-1daf80c2d7b1",
+  //     name: "Service 1",
+  //     price: "$350",
+  //     graveyardName: "string",
+  //   },
+  //   {
+  //     id: "e99f09a7-dd88-49d5-b1c8-1daf80c2d7b2",
+  //     fellesraadId: "fe99f09a7-dd88-49d5-b1c8-1daf80c2d7b2",
+  //     name: "Service 1",
+  //     price: "$499",
+  //     graveyardName: "string",
+  //   },
+  //   {
+  //     id: "e99f09a7-dd88-49d5-b1c8-1daf80c2d7b3",
+  //     fellesraadId: "fe99f09a7-dd88-49d5-b1c8-1daf80c2d7b3",
+  //     name: "Service 2",
+  //     price: "$612",
+  //     graveyardName: "string",
+  //   },
+  // ];
+  const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
   const tempData = {
-    products: tempProducts as IServiceItem[],
+    error,
+    isLoading,
+    products: data as IGraveyardItem[],
     productsLoading: false,
-    productsValidating: false,
+    productsValidating: isValidating,
     productsEmpty: false,
   };
   // const memoizedValue = useMemo(() => tempData, [tempData]);

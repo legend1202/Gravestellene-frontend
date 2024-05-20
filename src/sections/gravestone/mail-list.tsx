@@ -69,25 +69,19 @@ export default function MailList({
   const renderContent = (
     <>
       <Stack sx={{ p: 2 }}>
-        {mdUp ? (
-          <TextField
-            placeholder="Search..."
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Iconify
-                    icon="eva:search-fill"
-                    sx={{ color: "text.disabled" }}
-                  />
-                </InputAdornment>
-              ),
-            }}
-          />
-        ) : (
-          <Typography variant="h6" sx={{ textTransform: "capitalize" }}>
-            {selectedLabelId}
-          </Typography>
-        )}
+        <TextField
+          placeholder="Search..."
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Iconify
+                  icon="eva:search-fill"
+                  sx={{ color: "text.disabled" }}
+                />
+              </InputAdornment>
+            ),
+          }}
+        />
       </Stack>
 
       <Scrollbar sx={{ px: 2 }}>

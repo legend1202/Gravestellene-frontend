@@ -1,22 +1,27 @@
-import isEqual from "lodash/isEqual";
-import { useState, useEffect, useCallback } from "react";
+// import isEqual from "lodash/isEqual";
+import * as Yup from "yup";
+// import { sub } from "date-fns";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useMemo, useState, useCallback, useEffect } from "react";
 
 import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import MenuItem from "@mui/material/MenuItem";
 import Container from "@mui/material/Container";
 import {
   DataGrid,
   GridColDef,
-  GridToolbarExport,
+  //   GridToolbarExport,
   GridActionsCellItem,
   GridToolbarContainer,
   GridRowSelectionModel,
   GridToolbarQuickFilter,
-  GridToolbarFilterButton,
-  GridToolbarColumnsButton,
   GridColumnVisibilityModel,
 } from "@mui/x-data-grid";
+
+import FormProvider, { RHFSelect } from "src/components/hook-form";
 
 import { paths } from "src/routes/paths";
 import { useRouter } from "src/routes/hooks";
@@ -24,8 +29,7 @@ import { RouterLink } from "src/routes/components";
 
 import { useBoolean } from "src/hooks/use-boolean";
 
-import { useGetProducts } from "src/api/product";
-import { PRODUCT_STOCK_OPTIONS } from "src/_mock";
+import { deleteGraveyard, useGetGraveyards } from "src/api/graveyard";
 
 import Iconify from "src/components/iconify";
 import { useSnackbar } from "src/components/snackbar";
@@ -34,20 +38,13 @@ import { ConfirmDialog } from "src/components/custom-dialog";
 import { useSettingsContext } from "src/components/settings";
 import CustomBreadcrumbs from "src/components/custom-breadcrumbs";
 
-import {
-  IProductItem,
-  IProductTableFilters,
-  IProductTableFilterValue,
-} from "src/types/product";
+import { IGraveyardItem } from "src/types/graveyard";
 
-import ProductTableToolbar from "../product-table-toolbar";
-import ProductTableFiltersResult from "../product-table-filters-result";
 import {
-  RenderCellPrice,
-  RenderCellPublish,
-  RenderCellProduct,
-  RenderCellCreatedAt,
-} from "../product-table-row";
+  RenderCellApprove,
+  RenderCellLocation,
+  RenderCellGraveyard,
+} from "../graveyard-table-row";
 
 // ----------------------------------------------------------------------
 
@@ -55,11 +52,6 @@ const PUBLISH_OPTIONS = [
   { value: "published", label: "Published" },
   { value: "draft", label: "Draft" },
 ];
-
-const defaultFilters: IProductTableFilters = {
-  publish: [],
-  stock: [],
-};
 
 const HIDE_COLUMNS = {
   category: false,
@@ -69,7 +61,7 @@ const HIDE_COLUMNS_TOGGLABLE = ["category", "actions"];
 
 // ----------------------------------------------------------------------
 
-export default function GravestoneListView() {
+export default function GravestoneList() {
   const { enqueueSnackbar } = useSnackbar();
 
   const confirmRows = useBoolean();
@@ -78,11 +70,9 @@ export default function GravestoneListView() {
 
   const settings = useSettingsContext();
 
-  const { products, productsLoading } = useGetProducts();
+  const { graveyards, graveyardsLoading } = useGetGraveyards();
 
-  const [tableData, setTableData] = useState<IProductItem[]>([]);
-
-  const [filters, setFilters] = useState(defaultFilters);
+  const [tableData, setTableData] = useState<IGraveyardItem[]>([]);
 
   const [selectedRowIds, setSelectedRowIds] = useState<GridRowSelectionModel>(
     []
@@ -92,132 +82,85 @@ export default function GravestoneListView() {
     GridColumnVisibilityModel
   >(HIDE_COLUMNS);
 
-  useEffect(() => {
-    if (products.length) {
-      setTableData(products);
-    }
-  }, [products]);
-
-  const dataFiltered = applyFilter({
-    inputData: tableData,
-    filters,
+  const newGravestoneSchema = Yup.object().shape({
+    id: Yup.string().required("Please select Graveyard!"),
   });
 
-  const canReset = !isEqual(defaultFilters, filters);
-
-  const handleFilters = useCallback(
-    (name: string, value: IProductTableFilterValue) => {
-      setFilters((prevState) => ({
-        ...prevState,
-        [name]: value,
-      }));
-    },
+  const defaultValues = useMemo(
+    () => ({
+      id: "",
+    }),
     []
   );
+  const methods = useForm({
+    resolver: yupResolver(newGravestoneSchema),
+    defaultValues,
+  });
+  const {
+    reset,
+    watch,
+    setValue,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods;
 
-  const handleResetFilters = useCallback(() => {
-    setFilters(defaultFilters);
-  }, []);
+  const values = watch();
 
-  const handleDeleteRow = useCallback(
-    (id: string) => {
-      const deleteRow = tableData.filter((row) => row.id !== id);
+  useEffect(() => {
+    console.log(values.id);
+  }, [values?.id]);
 
-      enqueueSnackbar("Delete success!");
+  useMemo(() => {
+    if (!graveyardsLoading) {
+      setTableData(graveyards);
+    }
+  }, [graveyards, graveyardsLoading]);
 
-      setTableData(deleteRow);
-    },
-    [enqueueSnackbar, tableData]
-  );
+  const handleDeleteRow = async (id: string) => {
+    try {
+      const result = await deleteGraveyard(id);
+      if (result.success) {
+        const deleteRow = tableData.filter((row) => row.id !== id);
+
+        enqueueSnackbar("Delete success!");
+
+        setTableData(deleteRow);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleDeleteRows = useCallback(() => {
-    const deleteRows = tableData.filter(
-      (row) => !selectedRowIds.includes(row.id)
-    );
-
-    enqueueSnackbar("Delete success!");
-
-    setTableData(deleteRows);
-  }, [enqueueSnackbar, selectedRowIds, tableData]);
+    // const deleteRows = tableData.filter(
+    //   (row) => !selectedRowIds.includes(row?.id)
+    // );
+    // enqueueSnackbar("Delete success!");
+    // setTableData(deleteRows);
+    console.log("delete id");
+  }, []);
 
   const handleEditRow = useCallback(
     (id: string) => {
-      router.push(paths.dashboard.product.edit(id));
-    },
-    [router]
-  );
-
-  const handleViewRow = useCallback(
-    (id: string) => {
-      router.push(paths.dashboard.product.details(id));
+      router.push(paths.fellesraad.graveyard.edit(id));
     },
     [router]
   );
 
   const columns: GridColDef[] = [
     {
-      field: "category",
-      headerName: "Category",
-      filterable: false,
-    },
-    {
       field: "name",
-      headerName: "Gravestone",
+      headerName: "Graveyard",
       flex: 1,
-      minWidth: 160,
+      minWidth: 280,
       hideable: false,
-      renderCell: (params) => <RenderCellProduct params={params} />,
-    },
-
-    // {
-    //   field: 'inventoryType',
-    //   headerName: 'Stock',
-    //   width: 160,
-    //   type: 'singleSelect',
-    //   valueOptions: PRODUCT_STOCK_OPTIONS,
-    //   renderCell: (params) => <RenderCellStock params={params} />,
-    // },
-    {
-      field: "gender",
-      headerName: "gender",
-      width: 140,
-      editable: true,
-      renderCell: (params) => <RenderCellPrice params={params} />,
+      renderCell: (params) => <RenderCellGraveyard params={params} />,
     },
     {
-      field: "birthday",
-      headerName: "Birthday",
-      width: 140,
-      editable: true,
-      renderCell: (params) => <RenderCellPrice params={params} />,
-    },
-    {
-      field: "deceasedDate",
-      headerName: "Deceased Date",
-      width: 140,
-      editable: true,
-      renderCell: (params) => <RenderCellPrice params={params} />,
-    },
-    {
-      field: "buriedDate",
-      headerName: "Buried Date",
-      width: 140,
-      editable: true,
-      renderCell: (params) => <RenderCellPrice params={params} />,
-    },
-    {
-      field: "quarter",
-      headerName: "Quarter",
-      width: 140,
-      editable: true,
-      renderCell: (params) => <RenderCellPrice params={params} />,
-    },
-    {
-      field: "graveSite",
-      headerName: "Grave Site",
-      width: 140,
-      editable: true,
-      renderCell: (params) => <RenderCellPrice params={params} />,
+      field: "location",
+      headerName: "location",
+      minWidth: 280,
+      renderCell: (params) => <RenderCellLocation params={params} />,
     },
     {
       field: "publish",
@@ -226,13 +169,7 @@ export default function GravestoneListView() {
       type: "singleSelect",
       editable: true,
       valueOptions: PUBLISH_OPTIONS,
-      renderCell: (params) => <RenderCellPublish params={params} />,
-    },
-    {
-      field: "createdAt",
-      headerName: "Create at",
-      width: 160,
-      renderCell: (params) => <RenderCellCreatedAt params={params} />,
+      renderCell: (params) => <RenderCellApprove params={params} />,
     },
     {
       type: "actions",
@@ -247,9 +184,9 @@ export default function GravestoneListView() {
       getActions: (params) => [
         <GridActionsCellItem
           showInMenu
-          icon={<Iconify icon="solar:eye-bold" />}
-          label="View"
-          onClick={() => handleViewRow(params.row.id)}
+          icon={<Iconify icon="solar:trash-bin-trash-bold" />}
+          label="Delete"
+          onClick={() => handleDeleteRow(params.row.id)}
         />,
         <GridActionsCellItem
           showInMenu
@@ -257,19 +194,9 @@ export default function GravestoneListView() {
           label="Edit"
           onClick={() => handleEditRow(params.row.id)}
         />,
-        <GridActionsCellItem
-          showInMenu
-          icon={<Iconify icon="solar:trash-bin-trash-bold" />}
-          label="Delete"
-          onClick={() => {
-            handleDeleteRow(params.row.id);
-          }}
-          sx={{ color: "error.main" }}
-        />,
       ],
     },
   ];
-
   const getTogglableColumns = () =>
     columns
       .filter((column) => !HIDE_COLUMNS_TOGGLABLE.includes(column.field))
@@ -288,17 +215,13 @@ export default function GravestoneListView() {
         <CustomBreadcrumbs
           heading="List"
           links={[
-            { name: "Dashboard", href: paths.dashboard.root },
-            {
-              name: "Gravestone",
-              href: paths.fellesraad.gravestone.root,
-            },
+            { name: "Gravestone", href: paths.fellesraad.gravestone.create },
             { name: "List" },
           ]}
           action={
             <Button
               component={RouterLink}
-              href={paths.fellesraad.gravestone.create}
+              href={paths.fellesraad.graveyard.create}
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >
@@ -312,6 +235,23 @@ export default function GravestoneListView() {
             },
           }}
         />
+        {graveyards && (
+          <FormProvider methods={methods}>
+            <RHFSelect
+              fullWidth
+              name="graveyardId"
+              label="Graveyard"
+              InputLabelProps={{ shrink: true }}
+              PaperPropsSx={{ textTransform: "capitalize" }}
+            >
+              {graveyards.map((option) => (
+                <MenuItem key={option.id} value={option?.id}>
+                  {option?.name}
+                </MenuItem>
+              ))}
+            </RHFSelect>
+          </FormProvider>
+        )}
 
         <Card
           sx={{
@@ -321,37 +261,30 @@ export default function GravestoneListView() {
             flexDirection: { md: "column" },
           }}
         >
-          <DataGrid
-            checkboxSelection
-            disableRowSelectionOnClick
-            rows={dataFiltered}
-            columns={columns}
-            loading={productsLoading}
-            getRowHeight={() => "auto"}
-            pageSizeOptions={[5, 10, 25]}
-            initialState={{
-              pagination: {
-                paginationModel: { pageSize: 10 },
-              },
-            }}
-            onRowSelectionModelChange={(newSelectionModel) => {
-              setSelectedRowIds(newSelectionModel);
-            }}
-            columnVisibilityModel={columnVisibilityModel}
-            onColumnVisibilityModelChange={(newModel) =>
-              setColumnVisibilityModel(newModel)
-            }
-            slots={{
-              toolbar: () => (
-                <>
+          {graveyards && (
+            <DataGrid
+              checkboxSelection
+              disableRowSelectionOnClick
+              rows={tableData}
+              columns={columns}
+              loading={graveyardsLoading}
+              getRowHeight={() => "auto"}
+              pageSizeOptions={[5, 10, 25]}
+              initialState={{
+                pagination: {
+                  paginationModel: { pageSize: 10 },
+                },
+              }}
+              onRowSelectionModelChange={(newSelectionModel) => {
+                setSelectedRowIds(newSelectionModel);
+              }}
+              columnVisibilityModel={columnVisibilityModel}
+              onColumnVisibilityModelChange={(newModel) =>
+                setColumnVisibilityModel(newModel)
+              }
+              slots={{
+                toolbar: () => (
                   <GridToolbarContainer>
-                    <ProductTableToolbar
-                      filters={filters}
-                      onFilters={handleFilters}
-                      stockOptions={PRODUCT_STOCK_OPTIONS}
-                      publishOptions={PUBLISH_OPTIONS}
-                    />
-
                     <GridToolbarQuickFilter />
 
                     <Stack
@@ -373,33 +306,21 @@ export default function GravestoneListView() {
                           Delete ({selectedRowIds.length})
                         </Button>
                       )}
-
-                      <GridToolbarColumnsButton />
-                      <GridToolbarFilterButton />
-                      <GridToolbarExport />
                     </Stack>
                   </GridToolbarContainer>
-
-                  {canReset && (
-                    <ProductTableFiltersResult
-                      filters={filters}
-                      onFilters={handleFilters}
-                      onResetFilters={handleResetFilters}
-                      results={dataFiltered.length}
-                      sx={{ p: 2.5, pt: 0 }}
-                    />
-                  )}
-                </>
-              ),
-              noRowsOverlay: () => <EmptyContent title="No Data" />,
-              noResultsOverlay: () => <EmptyContent title="No results found" />,
-            }}
-            slotProps={{
-              columnsPanel: {
-                getTogglableColumns,
-              },
-            }}
-          />
+                ),
+                noRowsOverlay: () => <EmptyContent title="No Data" />,
+                noResultsOverlay: () => (
+                  <EmptyContent title="No results found" />
+                ),
+              }}
+              slotProps={{
+                columnsPanel: {
+                  getTogglableColumns,
+                },
+              }}
+            />
+          )}
         </Card>
       </Container>
 
@@ -428,30 +349,4 @@ export default function GravestoneListView() {
       />
     </>
   );
-}
-
-// ----------------------------------------------------------------------
-
-function applyFilter({
-  inputData,
-  filters,
-}: {
-  inputData: IProductItem[];
-  filters: IProductTableFilters;
-}) {
-  const { stock, publish } = filters;
-
-  if (stock.length) {
-    inputData = inputData.filter((product) =>
-      stock.includes(product.inventoryType)
-    );
-  }
-
-  if (publish.length) {
-    inputData = inputData.filter((product) =>
-      publish.includes(product.publish)
-    );
-  }
-
-  return inputData;
 }
