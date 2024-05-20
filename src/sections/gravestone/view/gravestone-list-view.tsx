@@ -1,15 +1,15 @@
 // import isEqual from "lodash/isEqual";
-import * as Yup from "yup";
+import * as Yup from 'yup';
 // import { sub } from "date-fns";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useMemo, useState, useCallback, useEffect } from "react";
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useMemo, useState, useCallback, useEffect } from 'react';
 
-import Card from "@mui/material/Card";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
-import MenuItem from "@mui/material/MenuItem";
-import Container from "@mui/material/Container";
+import Card from '@mui/material/Card';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import MenuItem from '@mui/material/MenuItem';
+import Container from '@mui/material/Container';
 import {
   DataGrid,
   GridColDef,
@@ -19,45 +19,40 @@ import {
   GridRowSelectionModel,
   GridToolbarQuickFilter,
   GridColumnVisibilityModel,
-} from "@mui/x-data-grid";
+} from '@mui/x-data-grid';
 
-import FormProvider, { RHFSelect } from "src/components/hook-form";
+import { paths } from 'src/routes/paths';
+import { useRouter } from 'src/routes/hooks';
+import { RouterLink } from 'src/routes/components';
 
-import { paths } from "src/routes/paths";
-import { useRouter } from "src/routes/hooks";
-import { RouterLink } from "src/routes/components";
+import { useBoolean } from 'src/hooks/use-boolean';
 
-import { useBoolean } from "src/hooks/use-boolean";
+import { deleteGraveyard, useGetGraveyards } from 'src/api/graveyard';
 
-import { deleteGraveyard, useGetGraveyards } from "src/api/graveyard";
+import Iconify from 'src/components/iconify';
+import { useSnackbar } from 'src/components/snackbar';
+import EmptyContent from 'src/components/empty-content';
+import { ConfirmDialog } from 'src/components/custom-dialog';
+import { useSettingsContext } from 'src/components/settings';
+import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import FormProvider, { RHFSelect } from 'src/components/hook-form';
 
-import Iconify from "src/components/iconify";
-import { useSnackbar } from "src/components/snackbar";
-import EmptyContent from "src/components/empty-content";
-import { ConfirmDialog } from "src/components/custom-dialog";
-import { useSettingsContext } from "src/components/settings";
-import CustomBreadcrumbs from "src/components/custom-breadcrumbs";
+import { IGraveyardItem } from 'src/types/graveyard';
 
-import { IGraveyardItem } from "src/types/graveyard";
-
-import {
-  RenderCellApprove,
-  RenderCellLocation,
-  RenderCellGraveyard,
-} from "../graveyard-table-row";
+import { RenderCellApprove, RenderCellLocation, RenderCellGraveyard } from '../graveyard-table-row';
 
 // ----------------------------------------------------------------------
 
 const PUBLISH_OPTIONS = [
-  { value: "published", label: "Published" },
-  { value: "draft", label: "Draft" },
+  { value: 'published', label: 'Published' },
+  { value: 'draft', label: 'Draft' },
 ];
 
 const HIDE_COLUMNS = {
   category: false,
 };
 
-const HIDE_COLUMNS_TOGGLABLE = ["category", "actions"];
+const HIDE_COLUMNS_TOGGLABLE = ['category', 'actions'];
 
 // ----------------------------------------------------------------------
 
@@ -74,21 +69,18 @@ export default function GravestoneList() {
 
   const [tableData, setTableData] = useState<IGraveyardItem[]>([]);
 
-  const [selectedRowIds, setSelectedRowIds] = useState<GridRowSelectionModel>(
-    []
-  );
+  const [selectedRowIds, setSelectedRowIds] = useState<GridRowSelectionModel>([]);
 
-  const [columnVisibilityModel, setColumnVisibilityModel] = useState<
-    GridColumnVisibilityModel
-  >(HIDE_COLUMNS);
+  const [columnVisibilityModel, setColumnVisibilityModel] =
+    useState<GridColumnVisibilityModel>(HIDE_COLUMNS);
 
   const newGravestoneSchema = Yup.object().shape({
-    id: Yup.string().required("Please select Graveyard!"),
+    id: Yup.string().required('Please select Graveyard!'),
   });
 
   const defaultValues = useMemo(
     () => ({
-      id: "",
+      id: '',
     }),
     []
   );
@@ -97,10 +89,8 @@ export default function GravestoneList() {
     defaultValues,
   });
   const {
-    reset,
     watch,
-    setValue,
-    handleSubmit,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     formState: { isSubmitting },
   } = methods;
 
@@ -122,7 +112,7 @@ export default function GravestoneList() {
       if (result.success) {
         const deleteRow = tableData.filter((row) => row.id !== id);
 
-        enqueueSnackbar("Delete success!");
+        enqueueSnackbar('Delete success!');
 
         setTableData(deleteRow);
       }
@@ -137,7 +127,7 @@ export default function GravestoneList() {
     // );
     // enqueueSnackbar("Delete success!");
     // setTableData(deleteRows);
-    console.log("delete id");
+    console.log('delete id');
   }, []);
 
   const handleEditRow = useCallback(
@@ -149,34 +139,34 @@ export default function GravestoneList() {
 
   const columns: GridColDef[] = [
     {
-      field: "name",
-      headerName: "Graveyard",
+      field: 'name',
+      headerName: 'Graveyard',
       flex: 1,
       minWidth: 280,
       hideable: false,
       renderCell: (params) => <RenderCellGraveyard params={params} />,
     },
     {
-      field: "location",
-      headerName: "location",
+      field: 'location',
+      headerName: 'location',
       minWidth: 280,
       renderCell: (params) => <RenderCellLocation params={params} />,
     },
     {
-      field: "publish",
-      headerName: "Publish",
+      field: 'publish',
+      headerName: 'Publish',
       width: 110,
-      type: "singleSelect",
+      type: 'singleSelect',
       editable: true,
       valueOptions: PUBLISH_OPTIONS,
       renderCell: (params) => <RenderCellApprove params={params} />,
     },
     {
-      type: "actions",
-      field: "actions",
-      headerName: " ",
-      align: "right",
-      headerAlign: "right",
+      type: 'actions',
+      field: 'actions',
+      headerName: ' ',
+      align: 'right',
+      headerAlign: 'right',
       width: 80,
       sortable: false,
       filterable: false,
@@ -205,18 +195,18 @@ export default function GravestoneList() {
   return (
     <>
       <Container
-        maxWidth={settings.themeStretch ? false : "lg"}
+        maxWidth={settings.themeStretch ? false : 'lg'}
         sx={{
           flexGrow: 1,
-          display: "flex",
-          flexDirection: "column",
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
         <CustomBreadcrumbs
           heading="List"
           links={[
-            { name: "Gravestone", href: paths.fellesraad.gravestone.create },
-            { name: "List" },
+            { name: 'Gravestone', href: paths.fellesraad.gravestone.create },
+            { name: 'List' },
           ]}
           action={
             <Button
@@ -242,7 +232,7 @@ export default function GravestoneList() {
               name="graveyardId"
               label="Graveyard"
               InputLabelProps={{ shrink: true }}
-              PaperPropsSx={{ textTransform: "capitalize" }}
+              PaperPropsSx={{ textTransform: 'capitalize' }}
             >
               {graveyards.map((option) => (
                 <MenuItem key={option.id} value={option?.id}>
@@ -257,8 +247,8 @@ export default function GravestoneList() {
           sx={{
             height: { xs: 800, md: 2 },
             flexGrow: { md: 1 },
-            display: { md: "flex" },
-            flexDirection: { md: "column" },
+            display: { md: 'flex' },
+            flexDirection: { md: 'column' },
           }}
         >
           {graveyards && (
@@ -268,7 +258,7 @@ export default function GravestoneList() {
               rows={tableData}
               columns={columns}
               loading={graveyardsLoading}
-              getRowHeight={() => "auto"}
+              getRowHeight={() => 'auto'}
               pageSizeOptions={[5, 10, 25]}
               initialState={{
                 pagination: {
@@ -279,9 +269,7 @@ export default function GravestoneList() {
                 setSelectedRowIds(newSelectionModel);
               }}
               columnVisibilityModel={columnVisibilityModel}
-              onColumnVisibilityModelChange={(newModel) =>
-                setColumnVisibilityModel(newModel)
-              }
+              onColumnVisibilityModelChange={(newModel) => setColumnVisibilityModel(newModel)}
               slots={{
                 toolbar: () => (
                   <GridToolbarContainer>
@@ -298,9 +286,7 @@ export default function GravestoneList() {
                         <Button
                           size="small"
                           color="error"
-                          startIcon={
-                            <Iconify icon="solar:trash-bin-trash-bold" />
-                          }
+                          startIcon={<Iconify icon="solar:trash-bin-trash-bold" />}
                           onClick={confirmRows.onTrue}
                         >
                           Delete ({selectedRowIds.length})
@@ -310,9 +296,7 @@ export default function GravestoneList() {
                   </GridToolbarContainer>
                 ),
                 noRowsOverlay: () => <EmptyContent title="No Data" />,
-                noResultsOverlay: () => (
-                  <EmptyContent title="No results found" />
-                ),
+                noResultsOverlay: () => <EmptyContent title="No results found" />,
               }}
               slotProps={{
                 columnsPanel: {
@@ -330,8 +314,7 @@ export default function GravestoneList() {
         title="Delete"
         content={
           <>
-            Are you sure want to delete{" "}
-            <strong> {selectedRowIds.length} </strong> items?
+            Are you sure want to delete <strong> {selectedRowIds.length} </strong> items?
           </>
         }
         action={

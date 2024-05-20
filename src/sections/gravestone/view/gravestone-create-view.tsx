@@ -1,48 +1,44 @@
-import * as Yup from "yup";
+import * as Yup from 'yup';
 // import { sub } from "date-fns";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useMemo, useState, useEffect, useCallback } from "react";
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useMemo, useState, useEffect, useCallback } from 'react';
 
-import Stack from "@mui/material/Stack";
-import MenuItem from "@mui/material/MenuItem";
-import Grid from "@mui/material/Unstable_Grid2";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
+import Stack from '@mui/material/Stack';
+import MenuItem from '@mui/material/MenuItem';
+import Grid from '@mui/material/Unstable_Grid2';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
 // import Switch from "@mui/material/Switch";
 // import FormControlLabel from "@mui/material/FormControlLabel";
-import LoadingButton from "@mui/lab/LoadingButton";
+import LoadingButton from '@mui/lab/LoadingButton';
 
-import { useSearchParams } from "src/routes/hooks";
+import { useSearchParams } from 'src/routes/hooks';
 
-import { useBoolean } from "src/hooks/use-boolean";
-import { useResponsive } from "src/hooks/use-responsive";
+import { useBoolean } from 'src/hooks/use-boolean';
+import { useResponsive } from 'src/hooks/use-responsive';
 
-import EmptyContent from "src/components/empty-content";
-import { useSettingsContext } from "src/components/settings";
+import EmptyContent from 'src/components/empty-content';
+import { useSettingsContext } from 'src/components/settings';
 // import { LoadingScreen } from "src/components/loading-screen";
 
-import { useGetGraveyards } from "src/api/graveyard";
-import { createGravestone } from "src/api/gravestone";
+import { useGetGraveyards } from 'src/api/graveyard';
+import { createGravestone } from 'src/api/gravestone';
 
-import { useSnackbar } from "src/components/snackbar";
+import { useSnackbar } from 'src/components/snackbar';
 
 // import { useTranslate } from "src/locales";
 
-import FormProvider, {
-  RHFTextField,
-  RHFDatePicker,
-  RHFSelect,
-} from "src/components/hook-form";
+import { fmDate } from 'src/utils/format-time';
 
-import { IGravestoneItem } from "src/types/gravestone";
+import FormProvider, { RHFSelect, RHFTextField, RHFDatePicker } from 'src/components/hook-form';
 
-import MailList from "../mail-list";
+import { IGravestoneItem } from 'src/types/gravestone';
 
-import { fmDate } from "src/utils/format-time";
+import MailList from '../mail-list';
 // ----------------------------------------------------------------------
 
-const LABEL_INDEX = "inbox";
+const LABEL_INDEX = 'inbox';
 
 type Props = {
   currentProduct?: IGravestoneItem;
@@ -57,40 +53,40 @@ export default function GravestoneCreateView({ currentProduct }: Props) {
 
   const searchParams = useSearchParams();
 
-  const selectedLabelId = searchParams.get("label") || LABEL_INDEX;
+  const selectedLabelId = searchParams.get('label') || LABEL_INDEX;
 
-  const [selectedGraveyardId, setSelectedGraveyardId] = useState("");
+  const [selectedGraveyardId, setSelectedGraveyardId] = useState('');
 
-  const mdUp = useResponsive("up", "md");
+  const mdUp = useResponsive('up', 'md');
   const settings = useSettingsContext();
 
   const openMail = useBoolean();
 
   const newGravestoneSchema = Yup.object().shape({
     // graveyardId: Yup.string().required("graveyardId is required"),
-    name: Yup.string().required("name is required"),
-    gender: Yup.string().required("gender is required"),
-    birthday: Yup.string().required("birthday is required"),
-    deceasedDate: Yup.string().required("deceasedDate is required"),
-    buriedDate: Yup.string().required("buriedDate is required"),
-    quarter: Yup.string().required("quarter is required"),
-    graveSite: Yup.string().required("graveSite is required"),
-    homeTown: Yup.string().required("homeTown is required"),
-    graveSiteNumber: Yup.string().required("graveSiteNumber is required"),
+    name: Yup.string().required('name is required'),
+    gender: Yup.string().required('gender is required'),
+    birthday: Yup.string().required('birthday is required'),
+    deceasedDate: Yup.string().required('deceasedDate is required'),
+    buriedDate: Yup.string().required('buriedDate is required'),
+    quarter: Yup.string().required('quarter is required'),
+    graveSite: Yup.string().required('graveSite is required'),
+    homeTown: Yup.string().required('homeTown is required'),
+    graveSiteNumber: Yup.string().required('graveSiteNumber is required'),
   });
 
   const defaultValues = useMemo(
     () => ({
       // graveyardId: currentProduct ? currentProduct.graveyardId : selectedMailId,
-      name: currentProduct ? currentProduct.name : "",
-      gender: currentProduct ? currentProduct.gender : "",
-      birthday: currentProduct ? currentProduct.birthday : "",
-      deceasedDate: currentProduct ? currentProduct.deceasedDate : "",
-      buriedDate: currentProduct ? currentProduct.buriedDate : "",
-      quarter: currentProduct ? currentProduct.quarter : "",
-      graveSite: currentProduct ? currentProduct.graveSite : "",
-      homeTown: currentProduct ? currentProduct.homeTown : "",
-      graveSiteNumber: currentProduct ? currentProduct.graveSiteNumber : "",
+      name: currentProduct ? currentProduct.name : '',
+      gender: currentProduct ? currentProduct.gender : '',
+      birthday: currentProduct ? currentProduct.birthday : '',
+      deceasedDate: currentProduct ? currentProduct.deceasedDate : '',
+      buriedDate: currentProduct ? currentProduct.buriedDate : '',
+      quarter: currentProduct ? currentProduct.quarter : '',
+      graveSite: currentProduct ? currentProduct.graveSite : '',
+      homeTown: currentProduct ? currentProduct.homeTown : '',
+      graveSiteNumber: currentProduct ? currentProduct.graveSiteNumber : '',
     }),
     [currentProduct]
   );
@@ -103,7 +99,6 @@ export default function GravestoneCreateView({ currentProduct }: Props) {
   const {
     reset,
     watch,
-    setValue,
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
@@ -137,9 +132,9 @@ export default function GravestoneCreateView({ currentProduct }: Props) {
         };
         const result = createGravestone(saveData);
         reset();
-        enqueueSnackbar(currentProduct ? "Update success!" : "Create success!");
+        enqueueSnackbar(currentProduct ? 'Update success!' : 'Create success!');
       } else {
-        enqueueSnackbar("Select the Graveyard!");
+        enqueueSnackbar('Select the Graveyard!');
       }
       // router.push(paths.dashboard.product.root);
     } catch (error) {
@@ -190,26 +185,23 @@ export default function GravestoneCreateView({ currentProduct }: Props) {
           imgUrl="/assets/icons/empty/ic_email_disabled.svg"
           sx={{
             borderRadius: 1.5,
-            bgcolor: "background.default",
+            bgcolor: 'background.default',
             ...(!mdUp && {
-              display: "none",
+              display: 'none',
             }),
           }}
         />
       ) : (
-        <Stack
-          spacing={3}
-          sx={{ p: 1, flex: 1, justifyContent: "space-between" }}
-        >
+        <Stack spacing={3} sx={{ p: 1, flex: 1, justifyContent: 'space-between' }}>
           <RHFTextField name="name" label="Last Name and First Name" />
           <RHFSelect
             fullWidth
             name="gender"
             label="Gender"
             InputLabelProps={{ shrink: true }}
-            PaperPropsSx={{ textTransform: "capitalize" }}
+            PaperPropsSx={{ textTransform: 'capitalize' }}
           >
-            {["MAN", "WOMAN"].map((option) => (
+            {['MAN', 'WOMAN'].map((option) => (
               <MenuItem key={option} value={option}>
                 {option}
               </MenuItem>
@@ -239,26 +231,21 @@ export default function GravestoneCreateView({ currentProduct }: Props) {
       xs={12}
       md={12}
       sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "flex-end",
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
         p: 1,
       }}
     >
-      <LoadingButton
-        type="submit"
-        variant="contained"
-        size="large"
-        loading={isSubmitting}
-      >
-        {!currentProduct ? "Create Product" : "Save Changes"}
+      <LoadingButton type="submit" variant="contained" size="large" loading={isSubmitting}>
+        {!currentProduct ? 'Create Product' : 'Save Changes'}
       </LoadingButton>
     </Grid>
   );
 
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
-      <Container maxWidth={settings.themeStretch ? false : "xl"}>
+      <Container maxWidth={settings.themeStretch ? false : 'xl'}>
         <Typography
           variant="h4"
           sx={{
@@ -273,9 +260,9 @@ export default function GravestoneCreateView({ currentProduct }: Props) {
           sx={{
             p: 1,
             borderRadius: 2,
-            overflow: "hidden",
-            position: "relative",
-            bgcolor: "background.neutral",
+            overflow: 'hidden',
+            position: 'relative',
+            bgcolor: 'background.neutral',
           }}
         >
           <Stack
