@@ -55,7 +55,6 @@
   "gravesite_number": "",
   "gender": "",
   "new_gravestone": "",
-  "create_my_service": "Opprett min tjeneste",
   "service": "",
   "new_service": "",
   "service_name": "",
@@ -65,5 +64,7 @@
   "save_changes": "",
   "create_success": "",
   "update_success": "",
-  "list_of_services": ""
+  "list_of_services": "",
+  "price": "",
+  "delete": ""
 }

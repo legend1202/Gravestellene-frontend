@@ -2,38 +2,42 @@ import Container from "@mui/material/Container";
 
 import { paths } from "src/routes/paths";
 
-import { useTranslate } from "src/locales";
+import { useGetService } from "src/api/service";
 
 import { useSettingsContext } from "src/components/settings";
 import CustomBreadcrumbs from "src/components/custom-breadcrumbs";
 
-import ServiceNewEditForm from "../service-new-edit-form";
+import GraveyardNewEditForm from "../service-new-edit-form";
 
 // ----------------------------------------------------------------------
 
-export default function ServiceCreateView() {
-  const { t } = useTranslate();
+type Props = {
+  id: string;
+};
+
+export default function ServiceEditView({ id }: Props) {
   const settings = useSettingsContext();
+
+  const { service: currentService } = useGetService(id);
 
   return (
     <Container maxWidth={settings.themeStretch ? false : "lg"}>
       <CustomBreadcrumbs
-        heading={t("create_service")}
+        heading="Edit"
         links={[
+          { name: "Dashboard", href: paths.dashboard.root },
           {
-            name: t("service"),
+            name: "Service",
             href: paths.fellesraad.service.root,
           },
-          {
-            name: t("new_service"),
-          },
+          { name: currentService?.name },
         ]}
         sx={{
           mb: { xs: 3, md: 5 },
         }}
       />
 
-      <ServiceNewEditForm />
+      <GraveyardNewEditForm currentService={currentService} />
     </Container>
   );
 }

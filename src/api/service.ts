@@ -1,9 +1,9 @@
-import useSWR from 'swr';
-import { useMemo } from 'react';
+import useSWR from "swr";
+import { useMemo } from "react";
 
-import axiosInstance, { fetcher, endpoints } from 'src/utils/axios';
+import axiosInstance, { fetcher, endpoints } from "src/utils/axios";
 
-import { IServiceItem } from 'src/types/service';
+import { IServiceItem } from "src/types/service";
 
 // ----------------------------------------------------------------------
 
@@ -32,7 +32,9 @@ export const updateService = async (query: IServiceItem) => {
 };
 
 export function useGetServicesListsByCompanyId(companyId: string) {
-  const URL = companyId ? [`${endpoints.services.getByCompanyId}/${companyId}`] : '';
+  const URL = companyId
+    ? [`${endpoints.services.getByCompanyId}/${companyId}`]
+    : "";
 
   const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
 
@@ -47,4 +49,28 @@ export function useGetServicesListsByCompanyId(companyId: string) {
   );
   // console.log(memoizedValue);
   return memoizedValue;
+}
+
+export function useGetService(serviceId: string) {
+  const URL = serviceId ? [`${endpoints.services.getById}/${serviceId}`] : "";
+
+  const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
+
+  const memoizedValue = useMemo(
+    () => ({
+      service: data?.result as IServiceItem,
+      serviceLoading: isLoading,
+      serviceError: error,
+      serviceValidating: isValidating,
+    }),
+    [data?.result, error, isLoading, isValidating]
+  );
+  return memoizedValue;
+}
+
+export async function deleteService(serviceId: string) {
+  const data = { serviceId };
+  const res = await axiosInstance.delete(endpoints.services.delete, { data });
+
+  return res.data;
 }

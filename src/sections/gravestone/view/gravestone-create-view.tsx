@@ -31,6 +31,8 @@ import { useSnackbar } from "src/components/snackbar";
 
 import { fmDate } from "src/utils/format-time";
 
+import { useTranslate } from "src/locales";
+
 import FormProvider, {
   RHFSelect,
   RHFTextField,
@@ -40,7 +42,6 @@ import FormProvider, {
 import { IGravestoneItem } from "src/types/gravestone";
 
 import MailList from "../mail-list";
-import { useTranslate } from "src/locales";
 // ----------------------------------------------------------------------
 
 const LABEL_INDEX = "inbox";

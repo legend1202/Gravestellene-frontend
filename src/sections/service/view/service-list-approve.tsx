@@ -1,5 +1,5 @@
 // import isEqual from "lodash/isEqual";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 
 import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
@@ -84,11 +84,9 @@ export default function ServiceListApprove() {
 
   const { user } = useAuthContext();
 
-  const { services, servicesLoading } = useGetServicesListsByCompanyId(
-    user?.id
-  );
+  const { servicesLoading } = useGetServicesListsByCompanyId(user?.id);
 
-  const [tableData, setTableData] = useState<IGraveyardItem[]>([]);
+  const [tableData] = useState<IGraveyardItem[]>([]);
 
   // const [filters, setFilters] = useState(defaultFilters);
 
@@ -99,38 +97,6 @@ export default function ServiceListApprove() {
   const [columnVisibilityModel, setColumnVisibilityModel] = useState<
     GridColumnVisibilityModel
   >(HIDE_COLUMNS);
-
-  //   const dataFiltered = applyFilter({
-  //     inputData: tableData,
-  //     filters,
-  //   });
-
-  //   const canReset = !isEqual(defaultFilters, filters);
-
-  // const handleFilters = useCallback(
-  //   (name: string, value: IGraveyardTableFilterValue) => {
-  //     setFilters((prevState) => ({
-  //       ...prevState,
-  //       [name]: value,
-  //     }));
-  //   },
-  //   []
-  // );
-
-  //   const handleResetFilters = useCallback(() => {
-  //     setFilters(defaultFilters);
-  //   }, []);
-
-  //   const handleDeleteRow = useCallback(
-  //     (id: string) => {
-  //       const deleteRow = tableData.filter((row) => row.id !== id);
-
-  //       enqueueSnackbar("Delete success!");
-
-  //       setTableData(deleteRow);
-  //     },
-  //     [enqueueSnackbar, tableData]
-  //   );
 
   const handleDeleteRows = useCallback(() => {
     // const deleteRows = tableData.filter(

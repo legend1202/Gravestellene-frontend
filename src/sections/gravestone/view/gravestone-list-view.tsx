@@ -22,6 +22,8 @@ import { paths } from "src/routes/paths";
 import { useRouter } from "src/routes/hooks";
 import { RouterLink } from "src/routes/components";
 
+import { useBoolean } from "src/hooks/use-boolean";
+
 import { GetGravestones } from "src/api/gravestone";
 import { deleteGraveyard, useGetGraveyards } from "src/api/graveyard";
 
@@ -44,7 +46,6 @@ import {
   RenderCellBuriedDate,
   RenderCellDeceaseDate,
 } from "../graveyard-table-row";
-import { useBoolean } from "src/hooks/use-boolean";
 
 // ----------------------------------------------------------------------
 
