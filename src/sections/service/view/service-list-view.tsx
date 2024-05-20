@@ -86,7 +86,7 @@ export default function ServiceListViewPage() {
   const { user } = useAuthContext();
 
   const { services, servicesLoading } = useGetServicesListsByCompanyId(
-    user?.userId || user?.id
+    user?.id
   );
 
   const [servicesData, setServicesData] = useState<IServiceItem[] | []>([]);
