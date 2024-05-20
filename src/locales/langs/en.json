@@ -65,5 +65,6 @@
   "create_service": "Create Service",
   "save_changes": "Save Changes",
   "create_success": "Create Success!",
-  "update_success": "Update Success!"
+  "update_success": "Update Success!",
+  "list_of_services": "List of the services"
 }
