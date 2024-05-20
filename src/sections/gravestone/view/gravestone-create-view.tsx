@@ -5,6 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useMemo, useState, useEffect, useCallback } from "react";
 
 import Stack from "@mui/material/Stack";
+import MenuItem from "@mui/material/MenuItem";
 import Grid from "@mui/material/Unstable_Grid2";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -29,6 +30,7 @@ import { useGetGraveyards } from "src/api/graveyard";
 import FormProvider, {
   RHFTextField,
   RHFDatePicker,
+  RHFSelect,
 } from "src/components/hook-form";
 
 import { IGravestoneItem } from "src/types/gravestone";
@@ -92,9 +94,14 @@ export default function GravestoneCreateView({ currentProduct }: Props) {
   });
 
   const {
+    reset,
+    watch,
+    setValue,
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
+
+  const values = watch();
 
   const handleClickMail = useCallback((mailId: string) => {
     console.log(mailId);
@@ -102,7 +109,7 @@ export default function GravestoneCreateView({ currentProduct }: Props) {
 
     // router.push(href);
   }, []);
-
+  console.log(values);
   useEffect(() => {
     if (graveyards && graveyards.length > 0 && graveyards[0].id) {
       setSelectedMailId(graveyards[0].id);
@@ -176,6 +183,19 @@ export default function GravestoneCreateView({ currentProduct }: Props) {
           sx={{ p: 1, flex: 1, justifyContent: "space-between" }}
         >
           <RHFTextField name="name" label="Last Name and First Name" />
+          <RHFSelect
+            fullWidth
+            name="gender"
+            label="Gender"
+            InputLabelProps={{ shrink: true }}
+            PaperPropsSx={{ textTransform: "capitalize" }}
+          >
+            {["MAN", "WOMAN"].map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </RHFSelect>
 
           <RHFDatePicker name="birthday" label="Birthday" />
 
@@ -244,7 +264,6 @@ export default function GravestoneCreateView({ currentProduct }: Props) {
             direction="row"
             sx={{
               minHeight: { md: 720 },
-              height: { xs: 800, md: "72vh" },
             }}
           >
             {renderMailList}
