@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 
-import ServiceCreateView from "src/sections/service/view/service-create-view";
+// import ServiceCreateView from "src/sections/service/view/service-create-view";
 
 // ----------------------------------------------------------------------
 
@@ -11,7 +11,7 @@ export default function ServiceCreatePage() {
         <title> Graveyard: Create a new Graveyard</title>
       </Helmet>
 
-      <ServiceCreateView />
+      {/* <ServiceCreateView /> */}
     </>
   );
 }

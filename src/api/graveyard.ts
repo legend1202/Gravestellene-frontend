@@ -53,14 +53,14 @@ export function useGetGraveyard(graveyardId: string) {
 
   const memoizedValue = useMemo(
     () => ({
-      product: data?.result,
-      productLoading: isLoading,
-      productError: error,
-      productValidating: isValidating,
+      graveyard: data?.result as IGraveyardItem,
+      graveyardLoading: isLoading,
+      graveyardError: error,
+      graveyardValidating: isValidating,
     }),
     [data?.result, error, isLoading, isValidating]
   );
-
+  // console.log(memoizedValue);
   return memoizedValue;
 
   // const tempProduct = {
@@ -269,6 +269,7 @@ export function useGetGraveyard(graveyardId: string) {
   //   productValidating: false,
   //   productError: { message: "error" },
   //   product: tempProduct as IProductItem,
+  //   graveyard: data?.result as IGraveyardItem,
   // };
 
   // return tempdata;

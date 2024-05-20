@@ -81,7 +81,7 @@ export function RenderCellGraveyard({ params }: ParamsProps) {
             color="inherit"
             variant="subtitle2"
             onClick={params.row.onViewRow}
-            href="/graveyard/i"
+            href={`${params?.id}`}
             sx={{ cursor: "pointer" }}
           >
             {params.row.name}

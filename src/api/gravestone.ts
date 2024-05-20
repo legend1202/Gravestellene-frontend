@@ -5,12 +5,12 @@ import keyBy from "lodash/keyBy";
 import axiosInstance, { fetcher, endpoints } from "src/utils/axios";
 
 import { IMail, IMailLabel } from "src/types/mail";
+// import { IGraveyardItem } from "src/types/graveyard";
 import { IGravestoneItem } from "src/types/gravestone";
-import { IGraveyardItem } from "src/types/graveyard";
 
 // ----------------------------------------------------------------------
 
-export const createGravestone = async (query: IGraveyardItem) => {
+export const createGravestone = async (query: any) => {
   const res = await axiosInstance.post(endpoints.gravestone.create, {
     gravestone: query,
   });

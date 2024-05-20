@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useMemo, useEffect } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import Box from "@mui/material/Box";
+// import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
 import Switch from "@mui/material/Switch";
@@ -13,12 +13,14 @@ import CardHeader from "@mui/material/CardHeader";
 import LoadingButton from "@mui/lab/LoadingButton";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
-import { createGraveyard } from "src/api/graveyard";
+// import { createGraveyard } from "src/api/graveyard";
 
 // import { paths } from "src/routes/paths";
 // import { useRouter } from "src/routes/hooks";
 
 // import { useSnackbar } from "src/components/snackbar";
+import { useTranslate } from "src/locales";
+
 import FormProvider, {
   // RHFEditor,
   // RHFUpload,
@@ -26,7 +28,6 @@ import FormProvider, {
 } from "src/components/hook-form";
 
 import { IGraveyardItem } from "src/types/graveyard";
-import { useTranslate } from "src/locales";
 // import { useAuthContext } from "src/auth/hooks";
 
 // ----------------------------------------------------------------------
@@ -130,9 +131,9 @@ export default function MailDetails({ currentProduct }: Props) {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      const searchResults = createGraveyard(data);
-      console.log(searchResults);
-      // reset();
+      // const searchResults = createGraveyard(data);
+      // console.log(searchResults);
+      reset();
       // enqueueSnackbar(currentProduct ? "Update success!" : "Create success!");
       // router.push(paths.dashboard.product.root);
     } catch (error) {
@@ -164,29 +165,29 @@ export default function MailDetails({ currentProduct }: Props) {
     </Grid>
   );
 
-  const renderProperties = (
-    <Grid xs={12} md={12}>
-      <Card>
-        <CardHeader title="Properties" />
+  // const renderProperties = (
+  //   <Grid xs={12} md={12}>
+  //     <Card>
+  //       <CardHeader title="Properties" />
 
-        <Stack spacing={3} sx={{ p: 3 }}>
-          <Box
-            columnGap={2}
-            rowGap={3}
-            display="grid"
-            gridTemplateColumns={{
-              xs: "repeat(1, 1fr)",
-              md: "repeat(1, 1fr)",
-            }}
-          >
-            <RHFTextField name="newsLink" label="News" />
+  //       <Stack spacing={3} sx={{ p: 3 }}>
+  //         <Box
+  //           columnGap={2}
+  //           rowGap={3}
+  //           display="grid"
+  //           gridTemplateColumns={{
+  //             xs: "repeat(1, 1fr)",
+  //             md: "repeat(1, 1fr)",
+  //           }}
+  //         >
+  //           <RHFTextField name="newsLink" label="News" />
 
-            <RHFTextField name="forecastLink" label="Forecast" />
-          </Box>
-        </Stack>
-      </Card>
-    </Grid>
-  );
+  //           <RHFTextField name="forecastLink" label="Forecast" />
+  //         </Box>
+  //       </Stack>
+  //     </Card>
+  //   </Grid>
+  // );
 
   const renderActions = (
     <Grid xs={12} md={12} sx={{ display: "flex", alignItems: "center" }}>

@@ -36,7 +36,7 @@ export function ProductItemSkeleton({ sx, ...other }: PaperProps) {
 
 // ----------------------------------------------------------------------
 
-export function ProductDetailsSkeleton({ ...other }: Grid2Props) {
+export function GraveyardDetailsSkeleton({ ...other }: Grid2Props) {
   return (
     <Grid container spacing={8} {...other}>
       <Grid xs={12} md={6} lg={7}>

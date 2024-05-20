@@ -97,7 +97,8 @@ export default function AdminUserList() {
 
   useEffect(() => {
     if (products.length) {
-      setTableData(products);
+      console.log(products);
+      setTableData([]);
     }
   }, [products]);
 

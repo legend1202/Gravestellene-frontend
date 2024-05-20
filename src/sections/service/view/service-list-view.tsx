@@ -95,11 +95,11 @@ export default function ServiceListViewPage() {
     GridColumnVisibilityModel
   >(HIDE_COLUMNS);
 
-  useEffect(() => {
-    if (products.length) {
-      setTableData(products);
-    }
-  }, [products]);
+  // useEffect(() => {
+  //   if (products.length) {
+  //     // setTableData(products);
+  //   }
+  // }, [products]);
 
   //   const dataFiltered = applyFilter({
   //     inputData: tableData,

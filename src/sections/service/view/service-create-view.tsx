@@ -5,7 +5,7 @@ import { paths } from "src/routes/paths";
 import { useSettingsContext } from "src/components/settings";
 import CustomBreadcrumbs from "src/components/custom-breadcrumbs";
 
-import ServiceNewEditForm from "../service-new-edit-form";
+// import ServiceNewEditForm from "../service-new-edit-form";
 
 // ----------------------------------------------------------------------
 
@@ -30,7 +30,7 @@ export default function ServiceCreateView() {
         }}
       />
 
-      <ServiceNewEditForm />
+      {/* <ServiceNewEditForm /> */}
     </Container>
   );
 }

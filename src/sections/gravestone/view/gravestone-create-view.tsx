@@ -1,14 +1,15 @@
 import * as Yup from "yup";
+// import { sub } from "date-fns";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useEffect, useCallback, useState, useMemo } from "react";
+import { useMemo, useState, useEffect, useCallback } from "react";
 
 import Stack from "@mui/material/Stack";
+import Grid from "@mui/material/Unstable_Grid2";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Unstable_Grid2";
-import Switch from "@mui/material/Switch";
-import FormControlLabel from "@mui/material/FormControlLabel";
+// import Switch from "@mui/material/Switch";
+// import FormControlLabel from "@mui/material/FormControlLabel";
 import LoadingButton from "@mui/lab/LoadingButton";
 
 import { useSearchParams } from "src/routes/hooks";
@@ -18,19 +19,21 @@ import { useResponsive } from "src/hooks/use-responsive";
 
 import EmptyContent from "src/components/empty-content";
 import { useSettingsContext } from "src/components/settings";
-import { LoadingScreen } from "src/components/loading-screen";
+// import { LoadingScreen } from "src/components/loading-screen";
+
+import { useGetGraveyards } from "src/api/graveyard";
+// import { createGravestone } from "src/api/gravestone";
+
+// import { useTranslate } from "src/locales";
+
+import FormProvider, {
+  RHFTextField,
+  RHFDatePicker,
+} from "src/components/hook-form";
+
+import { IGravestoneItem } from "src/types/gravestone";
 
 import MailList from "../mail-list";
-import MailDetails from "../mail-details";
-import { useGetGraveyards } from "src/api/graveyard";
-import { useTranslate } from "src/locales";
-import { IGravestoneItem } from "src/types/gravestone";
-import { createGravestone } from "src/api/gravestone";
-import FormProvider, {
-  // RHFEditor,
-  // RHFUpload,
-  RHFTextField,
-} from "src/components/hook-form";
 // ----------------------------------------------------------------------
 
 const LABEL_INDEX = "inbox";
@@ -40,7 +43,7 @@ type Props = {
 };
 
 export default function GravestoneCreateView({ currentProduct }: Props) {
-  const { t } = useTranslate();
+  // const { t } = useTranslate();
   const { graveyards, graveyardsLoading } = useGetGraveyards();
 
   const searchParams = useSearchParams();
@@ -89,20 +92,16 @@ export default function GravestoneCreateView({ currentProduct }: Props) {
   });
 
   const {
-    reset,
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
 
-  const handleClickMail = useCallback(
-    (mailId: string) => {
-      console.log(mailId);
-      setSelectedMailId(mailId);
+  const handleClickMail = useCallback((mailId: string) => {
+    console.log(mailId);
+    setSelectedMailId(mailId);
 
-      // router.push(href);
-    },
-    [openMail, selectedLabelId, mdUp]
-  );
+    // router.push(href);
+  }, []);
 
   useEffect(() => {
     if (graveyards && graveyards.length > 0 && graveyards[0].id) {
@@ -112,8 +111,8 @@ export default function GravestoneCreateView({ currentProduct }: Props) {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      const result = createGravestone(data);
-      console.log(result);
+      console.log("==================");
+      // const result = createGravestone(data);
       // reset();
       // enqueueSnackbar(currentProduct ? "Update success!" : "Create success!");
       // router.push(paths.dashboard.product.root);
@@ -122,27 +121,27 @@ export default function GravestoneCreateView({ currentProduct }: Props) {
     }
   });
 
-  const renderLoading = (
-    <LoadingScreen
-      sx={{
-        borderRadius: 1.5,
-        bgcolor: "background.default",
-      }}
-    />
-  );
+  // const renderLoading = (
+  //   <LoadingScreen
+  //     sx={{
+  //       borderRadius: 1.5,
+  //       bgcolor: "background.default",
+  //     }}
+  //   />
+  // );
 
-  const renderEmpty = (
-    <EmptyContent
-      title={`Nothing in ${selectedLabelId}`}
-      description="This folder is empty"
-      imgUrl="/assets/icons/empty/ic_folder_empty.svg"
-      sx={{
-        borderRadius: 1.5,
-        maxWidth: { md: 320 },
-        bgcolor: "background.default",
-      }}
-    />
-  );
+  // const renderEmpty = (
+  //   <EmptyContent
+  //     title={`Nothing in ${selectedLabelId}`}
+  //     description="This folder is empty"
+  //     imgUrl="/assets/icons/empty/ic_folder_empty.svg"
+  //     sx={{
+  //       borderRadius: 1.5,
+  //       maxWidth: { md: 320 },
+  //       bgcolor: "background.default",
+  //     }}
+  //   />
+  // );
 
   const renderMailList = (
     <MailList
@@ -178,16 +177,18 @@ export default function GravestoneCreateView({ currentProduct }: Props) {
         >
           <RHFTextField name="name" label="Last Name and First Name" />
 
-          <RHFTextField name="birthday" label="Birthday" />
+          <RHFDatePicker name="birthday" label="Birthday" />
 
-          <RHFTextField name="deceasedDate" label="Deceased Date" />
+          <RHFDatePicker name="deceasedDate" label="Deceased Date" />
 
-          <RHFTextField name="buriedDate" label="Buried Date" />
+          <RHFDatePicker name="buriedDate" label="Buried Date" />
 
           <RHFTextField name="quarter" label="Quarter" />
 
           <RHFTextField name="graveSite" label="Grave Site" />
-          <RHFTextField name="hometown" label="Hometown" />
+
+          <RHFTextField name="homeTown" label="Hometown" />
+
           <RHFTextField name="graveSiteNumber" label="Gravesite Number" />
         </Stack>
       )}

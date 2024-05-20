@@ -14,6 +14,7 @@ import Carousel, {
 } from "src/components/carousel";
 
 import { IProductItem } from "src/types/product";
+import { IGraveyardItem } from "src/types/graveyard";
 
 // ----------------------------------------------------------------------
 
@@ -68,13 +69,13 @@ const StyledThumbnailsContainer = styled("div")<{ length: number }>(
 // ----------------------------------------------------------------------
 
 type Props = {
-  product: IProductItem;
+  graveyard: IGraveyardItem;
 };
 
-export default function GraveyardDetailsCarousel({ product }: Props) {
+export default function GraveyardDetailsCarousel({ graveyard }: Props) {
   const theme = useTheme();
 
-  const slides = product.images.map((img) => ({
+  const slides = graveyard.picture.map((img) => ({
     src: img,
   }));
 
@@ -121,11 +122,11 @@ export default function GraveyardDetailsCarousel({ product }: Props) {
         asNavFor={carouselThumb.nav}
         ref={carouselLarge.carouselRef}
       >
-        {slides.map((slide) => (
+        {slides?.map((slide: any) => (
           <Image
             key={slide.src}
             alt={slide.src}
-            src="/assets/background/4.jpg"
+            src={slide.src}
             ratio="1/1"
             onClick={() => lightbox.onOpen(slide.src)}
             sx={{ cursor: "zoom-in" }}
@@ -149,7 +150,7 @@ export default function GraveyardDetailsCarousel({ product }: Props) {
         asNavFor={carouselLarge.nav}
         ref={carouselThumb.carouselRef}
       >
-        {slides.map((item, index) => (
+        {slides.map((item: any, index: any) => (
           <Box key={item.src} sx={{ px: 0.5 }}>
             <Avatar
               key={item.src}

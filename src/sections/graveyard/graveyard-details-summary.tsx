@@ -23,13 +23,14 @@ import FormProvider from "src/components/hook-form";
 
 import { IProductItem } from "src/types/product";
 import { ICheckoutItem } from "src/types/checkout";
+import { IGraveyardItem } from "src/types/graveyard";
 
 // import IncrementerButton from "./common/incrementer-button";
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  product: IProductItem;
+  graveyard: IGraveyardItem;
   items?: ICheckoutItem[];
   disabledActions?: boolean;
   onGotoStep?: (step: number) => void;
@@ -38,7 +39,7 @@ type Props = {
 
 export default function GraveyardDetailsSummary({
   items,
-  product,
+  graveyard,
   onAddCart,
   onGotoStep,
   disabledActions,
@@ -48,97 +49,41 @@ export default function GraveyardDetailsSummary({
 
   const {
     id,
+    fellesraadId,
     name,
-    sizes,
-    price,
-    coverUrl,
-    colors,
-    newLabel,
-    available,
-    // priceSale,
-    saleLabel,
-    // totalRatings,
-    // totalReviews,
-    // inventoryType,
-    // subDescription,
-  } = product;
-
-  const existProduct =
-    !!items?.length && items.map((item) => item.id).includes(id);
-
-  // const isMaxQuantity =
-  //   !!items?.length &&
-  //   items.filter((item) => item.id === id).map((item) => item.quantity)[0] >=
-  //     available;
+    location,
+    picture,
+    content,
+    newsLink,
+    forecastLink,
+  } = graveyard;
 
   const defaultValues = {
     id,
+    fellesraadId,
     name,
-    coverUrl,
-    available,
-    price,
-    colors: colors[0],
-    size: sizes[4],
-    quantity: available < 1 ? 0 : 1,
+    location,
+    picture,
+    content,
+    newsLink,
+    forecastLink,
   };
 
   const methods = useForm({
     defaultValues,
   });
 
-  const { reset, watch, handleSubmit } = methods;
-
-  const values = watch();
+  const { reset } = methods;
 
   useEffect(() => {
-    if (product) {
+    if (graveyard) {
       reset(defaultValues);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [product]);
-
-  const onSubmit = handleSubmit(async (data) => {
-    try {
-      if (!existProduct) {
-        onAddCart?.({
-          ...data,
-          colors: [values.colors],
-          subTotal: data.price * data.quantity,
-        });
-      }
-      onGotoStep?.(0);
-      router.push(paths.product.checkout);
-    } catch (error) {
-      console.error(error);
-    }
-  });
-
-  // const handleAddCart = useCallback(() => {
-  //   try {
-  //     onAddCart?.({
-  //       ...values,
-  //       colors: [values.colors],
-  //       subTotal: values.price * values.quantity,
-  //     });
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }, [onAddCart, values]);
+  }, [graveyard]);
 
   const renderContactinfoTitle = (
     <Box sx={{ typography: "h5" }}>
-      {/* {priceSale && (
-        <Box
-          component="span"
-          sx={{
-            color: "text.disabled",
-            textDecoration: "line-through",
-            mr: 0.5,
-          }}
-        >
-          {fCurrency(priceSale)}
-        </Box>
-      )} */}
       Contact me!
     </Box>
   );
@@ -209,7 +154,7 @@ export default function GraveyardDetailsSummary({
           }}
         >
           <Iconify icon="mingcute:add-line" width={16} sx={{ mr: 1 }} />
-          News - You can see the News!
+          News - {newsLink}
         </Link>
       </Typography>
       <Typography variant="body2" sx={{ color: "text.secondary" }}>
@@ -222,97 +167,11 @@ export default function GraveyardDetailsSummary({
           }}
         >
           <Iconify icon="mingcute:add-line" width={16} sx={{ mr: 1 }} />
-          Forecast - You can see the weekly forecast!
+          Forecast - {forecastLink}
         </Link>
       </Typography>
     </>
   );
-
-  // const renderSizeOptions = (
-  //   <Stack direction="row">
-  //     <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
-  //       Size
-  //     </Typography>
-
-  //     <RHFSelect
-  //       name="size"
-  //       size="small"
-  //       helperText={
-  //         <Link underline="always" color="textPrimary">
-  //           Size Chart
-  //         </Link>
-  //       }
-  //       sx={{
-  //         maxWidth: 88,
-  //         [`& .${formHelperTextClasses.root}`]: {
-  //           mx: 0,
-  //           mt: 1,
-  //           textAlign: "right",
-  //         },
-  //       }}
-  //     >
-  //       {sizes.map((size) => (
-  //         <MenuItem key={size} value={size}>
-  //           {size}
-  //         </MenuItem>
-  //       ))}
-  //     </RHFSelect>
-  //   </Stack>
-  // );
-
-  // const renderQuantity = (
-  //   <Stack direction="row">
-  //     <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
-  //       Quantity
-  //     </Typography>
-
-  //     <Stack spacing={1}>
-  //       <IncrementerButton
-  //         name="quantity"
-  //         quantity={values.quantity}
-  //         disabledDecrease={values.quantity <= 1}
-  //         disabledIncrease={values.quantity >= available}
-  //         onIncrease={() => setValue("quantity", values.quantity + 1)}
-  //         onDecrease={() => setValue("quantity", values.quantity - 1)}
-  //       />
-
-  //       <Typography
-  //         variant="caption"
-  //         component="div"
-  //         sx={{ textAlign: "right" }}
-  //       >
-  //         Available: {available}
-  //       </Typography>
-  //     </Stack>
-  //   </Stack>
-  // );
-
-  // const renderActions = (
-  //   <Stack direction="row" spacing={2}>
-  //     <Button
-  //       fullWidth
-  //       disabled={isMaxQuantity || disabledActions}
-  //       size="large"
-  //       color="warning"
-  //       variant="contained"
-  //       startIcon={<Iconify icon="solar:cart-plus-bold" width={24} />}
-  //       onClick={handleAddCart}
-  //       sx={{ whiteSpace: "nowrap" }}
-  //     >
-  //       Add to Cart
-  //     </Button>
-
-  //     <Button
-  //       fullWidth
-  //       size="large"
-  //       type="submit"
-  //       variant="contained"
-  //       disabled={disabledActions}
-  //     >
-  //       Buy Now
-  //     </Button>
-  //   </Stack>
-  // );
 
   const renderContactinfo = (
     <>
@@ -338,41 +197,16 @@ export default function GraveyardDetailsSummary({
       }}
     >
       <Rating size="small" value={5} precision={0.1} readOnly sx={{ mr: 1 }} />
-      Oslo, Norway
+      {location}
     </Stack>
   );
-
-  const renderLabels = (newLabel.enabled || saleLabel.enabled) && (
-    <Stack direction="row" alignItems="center" spacing={1}>
-      {newLabel.enabled && <Label color="info">{newLabel.content}</Label>}
-      {/* {saleLabel.enabled && <Label color="error">{saleLabel.content}</Label>} */}
-    </Stack>
-  );
-
-  // const renderInventoryType = (
-  //   <Box
-  //     component="span"
-  //     sx={{
-  //       typography: "overline",
-  //       color:
-  //         (inventoryType === "out of stock" && "error.main") ||
-  //         (inventoryType === "low stock" && "warning.main") ||
-  //         "success.main",
-  //     }}
-  //   >
-  //     {inventoryType}
-  //   </Box>
-  // );
 
   return (
-    <FormProvider methods={methods} onSubmit={onSubmit}>
+    <FormProvider methods={methods}>
       <Stack spacing={3} sx={{ pt: 3 }} {...other}>
         <Stack spacing={2} alignItems="flex-start">
-          {renderLabels}
 
-          {/* {renderInventoryType} */}
-
-          <Typography variant="h5">Graveyard Name</Typography>
+          <Typography variant="h5">{name}</Typography>
 
           {renderLocation}
 

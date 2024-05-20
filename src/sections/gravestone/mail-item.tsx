@@ -1,6 +1,6 @@
 import { formatDistanceToNowStrict } from "date-fns";
 
-import Box from "@mui/material/Box";
+// import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 // import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
@@ -9,7 +9,7 @@ import ListItemButton, {
   ListItemButtonProps,
 } from "@mui/material/ListItemButton";
 
-import { IMail } from "src/types/mail";
+// import { IMail } from "src/types/mail";
 import { IGraveyardItem } from "src/types/graveyard";
 
 // ----------------------------------------------------------------------

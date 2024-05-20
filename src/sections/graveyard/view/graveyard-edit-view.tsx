@@ -19,7 +19,7 @@ type Props = {
 export default function GraveyardEditView({ id }: Props) {
   const settings = useSettingsContext();
 
-  const { product: currentProduct } = useGetGraveyard(id);
+  const { graveyard: currentProduct } = useGetGraveyard(id);
 
   return (
     <Container maxWidth={settings.themeStretch ? false : "lg"}>

@@ -85,93 +85,93 @@ export default function ServiceNewEditForm({ currentProduct }: Props) {
 
   const [images, setImages] = useState([] as IImageType);
 
-  const NewProductSchema = Yup.object().shape({
-    name: Yup.string().required("Name is required"),
-    location: Yup.string().required("Location is required"),
-    picture: Yup.array().min(1, "Images is required"),
-    content: Yup.string().required("Content is required"),
-    newsLink: Yup.string().required("News is required"),
-    forecastLink: Yup.string().required("Forecast is required"),
-  });
+  // const NewProductSchema = Yup.object().shape({
+  //   name: Yup.string().required("Name is required"),
+  //   location: Yup.string().required("Location is required"),
+  //   picture: Yup.array().min(1, "Images is required"),
+  //   content: Yup.string().required("Content is required"),
+  //   newsLink: Yup.string().required("News is required"),
+  //   forecastLink: Yup.string().required("Forecast is required"),
+  // });
 
-  const defaultValues = useMemo(
-    () => ({
-      name: currentProduct ? "The Cemetery of Our Saviour" : "",
-      location: currentProduct ? "Hammersborg in Gamle Aker district" : "",
-      picture: currentProduct?.picture || [],
-      content: currentProduct ? tempDesc : "",
-      newsLink: currentProduct?.newsLink || "",
-      forecastLink: currentProduct?.forecastLink || "",
-    }),
-    [currentProduct]
-  );
+  // const defaultValues = useMemo(
+  //   () => ({
+  //     name: currentProduct ? "The Cemetery of Our Saviour" : "",
+  //     location: currentProduct ? "Hammersborg in Gamle Aker district" : "",
+  //     picture: currentProduct?.picture || [],
+  //     content: currentProduct ? tempDesc : "",
+  //     newsLink: currentProduct?.newsLink || "",
+  //     forecastLink: currentProduct?.forecastLink || "",
+  //   }),
+  //   [currentProduct]
+  // );
 
-  const methods = useForm({
-    resolver: yupResolver(NewProductSchema),
-    defaultValues,
-  });
+  // const methods = useForm({
+  //   resolver: yupResolver(NewProductSchema),
+  //   defaultValues,
+  // });
 
-  const {
-    reset,
-    watch,
-    setValue,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = methods;
+  // const {
+  //   reset,
+  //   watch,
+  //   setValue,
+  //   handleSubmit,
+  //   formState: { isSubmitting },
+  // } = methods;
 
-  const values = watch();
+  // const values = watch();
 
-  useEffect(() => {
-    if (currentProduct) {
-      reset(defaultValues);
-    }
-  }, [currentProduct, defaultValues, reset]);
+  // useEffect(() => {
+  //   if (currentProduct) {
+  //     reset(defaultValues);
+  //   }
+  // }, [currentProduct, defaultValues, reset]);
 
-  const onSubmit = handleSubmit(async (data) => {
-    try {
-      const searchResults = createGraveyard(data);
-      console.log(searchResults);
-      // reset();
-      // enqueueSnackbar(currentProduct ? "Update success!" : "Create success!");
-      // router.push(paths.dashboard.product.root);
-    } catch (error) {
-      console.error(error);
-    }
-  });
+  // const onSubmit = handleSubmit(async (data) => {
+  //   try {
+  //     const searchResults = createGraveyard(data);
+  //     console.log(searchResults);
+  //     // reset();
+  //     // enqueueSnackbar(currentProduct ? "Update success!" : "Create success!");
+  //     // router.push(paths.dashboard.product.root);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // });
 
-  const handleDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      const files = values.picture || [];
-      const newFiles = acceptedFiles.map((file) =>
-        Object.assign(file, {
-          preview: URL.createObjectURL(file),
-        })
-      );
+  // const handleDrop = useCallback(
+  //   (acceptedFiles: File[]) => {
+  //     const files = values.picture || [];
+  //     const newFiles = acceptedFiles.map((file) =>
+  //       Object.assign(file, {
+  //         preview: URL.createObjectURL(file),
+  //       })
+  //     );
 
-      setImages([...images, ...acceptedFiles]);
-      setValue("picture", [...files, ...newFiles], { shouldValidate: true });
-    },
-    [setValue, values.picture, images]
-  );
+  //     setImages([...images, ...acceptedFiles]);
+  //     setValue("picture", [...files, ...newFiles], { shouldValidate: true });
+  //   },
+  //   [setValue, values.picture, images]
+  // );
 
-  const handleRemoveFile = useCallback(
-    (inputFile: File | string) => {
-      const filtered =
-        values.picture && values.picture?.filter((file) => file !== inputFile);
-      setValue("picture", filtered);
-    },
-    [setValue, values.picture]
-  );
+  // const handleRemoveFile = useCallback(
+  //   (inputFile: File | string) => {
+  //     const filtered =
+  //       values.picture && values.picture?.filter((file:any) => file !== inputFile);
+  //     setValue("picture", filtered);
+  //   },
+  //   [setValue, values.picture]
+  // );
 
-  const handleRemoveAllFiles = useCallback(() => {
-    setValue("picture", []);
-  }, [setValue]);
+  // const handleRemoveAllFiles = useCallback(() => {
+  //   setValue("picture", []);
+  // }, [setValue]);
 
-  const handleUploadImage = async () => {
-    const uploadResult = await upload(images);
-    console.log(uploadResult);
-    setValue("picture", [uploadResult]);
-  };
+  // const handleUploadImage = async () => {
+  //   const uploadResult = await upload(images);
+  //   console.log(uploadResult);
+  //   setValue("picture", [uploadResult]);
+  // };
   const renderDetails = (
     <Grid xs={12} md={12}>
       <Card>
@@ -189,7 +189,7 @@ export default function ServiceNewEditForm({ currentProduct }: Props) {
 
           <Stack spacing={1.5}>
             <Typography variant="subtitle2">Pictures</Typography>
-            <RHFUpload
+            {/* <RHFUpload
               multiple
               thumbnail
               name="picture"
@@ -198,7 +198,7 @@ export default function ServiceNewEditForm({ currentProduct }: Props) {
               onRemove={handleRemoveFile}
               onRemoveAll={handleRemoveAllFiles}
               onUpload={handleUploadImage}
-            />
+            /> */}
           </Stack>
         </Stack>
       </Card>
@@ -237,26 +237,26 @@ export default function ServiceNewEditForm({ currentProduct }: Props) {
         sx={{ flexGrow: 1, pl: 3 }}
       />
 
-      <LoadingButton
+      {/* <LoadingButton
         type="submit"
         variant="contained"
         size="large"
         loading={isSubmitting}
       >
         {!currentProduct ? "Create Product" : "Save Changes"}
-      </LoadingButton>
+      </LoadingButton> */}
     </Grid>
   );
 
   return (
-    <FormProvider methods={methods} onSubmit={onSubmit}>
-      <Grid container spacing={3}>
-        {renderDetails}
+    // <FormProvider methods={methods} onSubmit={onSubmit}>
+    <Grid container spacing={3}>
+      {renderDetails}
 
-        {/* {renderProperties} */}
+      {/* {renderProperties} */}
 
-        {renderActions}
-      </Grid>
-    </FormProvider>
+      {renderActions}
+    </Grid>
+    // </FormProvider>
   );
 }
