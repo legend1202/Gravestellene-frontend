@@ -85,7 +85,6 @@ export default function GraveyardNewEditForm({ currentService }: Props) {
           setErrorMsg(updateResults?.message);
         }
       } else {
-        console.log(values);
         const saveData = { ...values, unit: '$' };
         const saveResults: any = await createService(saveData);
         if (saveResults.searchResults?.success) {
@@ -139,12 +138,6 @@ export default function GraveyardNewEditForm({ currentService }: Props) {
       md={12}
       sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}
     >
-      {/* <FormControlLabel
-        control={<Switch defaultChecked />}
-        label=""
-        sx={{ flexGrow: 1, pl: 3 }}
-      /> */}
-
       <LoadingButton type="submit" variant="contained" size="large" loading={isSubmitting}>
         {!currentService ? t('create_service') : t('save_changes')}
       </LoadingButton>

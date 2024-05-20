@@ -83,5 +83,6 @@ export const endpoints = {
   services: {
     create: "/api/services/create",
     update: "/api/services/update",
+    getByCompanyId: "/api/services/getByCompanyId",
   },
 };

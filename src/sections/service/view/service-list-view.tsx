@@ -1,10 +1,10 @@
 // import isEqual from "lodash/isEqual";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from 'react';
 
-import Card from "@mui/material/Card";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
+import Card from '@mui/material/Card';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
 import {
   DataGrid,
   GridColDef,
@@ -16,47 +16,50 @@ import {
   //   GridToolbarFilterButton,
   //   GridToolbarColumnsButton,
   GridColumnVisibilityModel,
-} from "@mui/x-data-grid";
+} from '@mui/x-data-grid';
 
-import { paths } from "src/routes/paths";
-import { useRouter } from "src/routes/hooks";
-import { RouterLink } from "src/routes/components";
+import { paths } from 'src/routes/paths';
+import { useRouter } from 'src/routes/hooks';
+import { RouterLink } from 'src/routes/components';
 
-import { useBoolean } from "src/hooks/use-boolean";
+import { useBoolean } from 'src/hooks/use-boolean';
 
 // import { useGetProducts } from "src/api/product";
 // import { PRODUCT_STOCK_OPTIONS } from "src/_mock";
 // import { useGetGraveyards } from "src/api/graveyard";
-import { useGetServicesLists } from "src/api/service";
 
-import Iconify from "src/components/iconify";
+// import ProductTableToolbar from "../graveyard-table-toolbar";
+import { useAuthContext } from 'src/auth/hooks';
+// import ProductTableFiltersResult from "../graveyard-table-filters-result";
+import { useGetServicesListsByCompanyId } from 'src/api/service';
+
+import Iconify from 'src/components/iconify';
 // import { useSnackbar } from "src/components/snackbar";
-import EmptyContent from "src/components/empty-content";
-import { ConfirmDialog } from "src/components/custom-dialog";
-import { useSettingsContext } from "src/components/settings";
-import CustomBreadcrumbs from "src/components/custom-breadcrumbs";
+import EmptyContent from 'src/components/empty-content';
+import { ConfirmDialog } from 'src/components/custom-dialog';
+import { useSettingsContext } from 'src/components/settings';
+import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 
 import {
   IGraveyardItem,
   // IGraveyardTableFilters,
   // IGraveyardTableFilterValue,
-} from "src/types/graveyard";
+} from 'src/types/graveyard';
 
-// import ProductTableToolbar from "../graveyard-table-toolbar";
-// import ProductTableFiltersResult from "../graveyard-table-filters-result";
 import {
   //   RenderCellStock,
   //   RenderCellPrice,
   RenderCellApprove,
-  RenderCellLocation,
+  RenderCellDescription,
   RenderCellGraveyard,
-} from "../graveyard-table-row";
+  RenderCellPrice,
+} from '../graveyard-table-row';
 
 // ----------------------------------------------------------------------
 
 const PUBLISH_OPTIONS = [
-  { value: "published", label: "Published" },
-  { value: "draft", label: "Draft" },
+  { value: 'published', label: 'Published' },
+  { value: 'draft', label: 'Draft' },
 ];
 
 // const defaultFilters: IGraveyardTableFilters = {
@@ -68,7 +71,7 @@ const HIDE_COLUMNS = {
   category: false,
 };
 
-const HIDE_COLUMNS_TOGGLABLE = ["category", "actions"];
+const HIDE_COLUMNS_TOGGLABLE = ['category', 'actions'];
 
 // ----------------------------------------------------------------------
 
@@ -81,19 +84,18 @@ export default function ServiceListViewPage() {
 
   const settings = useSettingsContext();
 
-  const { products, productsLoading } = useGetServicesLists();
+  const { user } = useAuthContext();
 
-  const [tableData, setTableData] = useState<IGraveyardItem[]>([]);
+  const { services, servicesLoading } = useGetServicesListsByCompanyId(user?.userId);
+
+  console.log(services);
 
   // const [filters, setFilters] = useState(defaultFilters);
 
-  const [selectedRowIds, setSelectedRowIds] = useState<GridRowSelectionModel>(
-    []
-  );
+  const [selectedRowIds, setSelectedRowIds] = useState<GridRowSelectionModel>([]);
 
-  const [columnVisibilityModel, setColumnVisibilityModel] = useState<
-    GridColumnVisibilityModel
-  >(HIDE_COLUMNS);
+  const [columnVisibilityModel, setColumnVisibilityModel] =
+    useState<GridColumnVisibilityModel>(HIDE_COLUMNS);
 
   useEffect(() => {
     if (products.length) {
@@ -157,34 +159,40 @@ export default function ServiceListViewPage() {
 
   const columns: GridColDef[] = [
     {
-      field: "name",
-      headerName: "Service",
+      field: 'name',
+      headerName: 'Service',
       flex: 1,
-      minWidth: 280,
+      minWidth: 100,
       hideable: false,
       renderCell: (params) => <RenderCellGraveyard params={params} />,
     },
     {
-      field: "location",
-      headerName: "Price",
+      field: 'description',
+      headerName: 'Description',
       minWidth: 280,
-      renderCell: (params) => <RenderCellLocation params={params} />,
+      renderCell: (params) => <RenderCellDescription params={params} />,
     },
     {
-      field: "publish",
-      headerName: "Publish",
+      field: 'price',
+      headerName: 'Price',
+      minWidth: 280,
+      renderCell: (params) => <RenderCellPrice params={params} />,
+    },
+    {
+      field: 'publish',
+      headerName: 'Publish',
       width: 110,
-      type: "singleSelect",
+      type: 'singleSelect',
       editable: true,
       valueOptions: PUBLISH_OPTIONS,
       renderCell: (params) => <RenderCellApprove params={params} />,
     },
     {
-      type: "actions",
-      field: "actions",
-      headerName: " ",
-      align: "right",
-      headerAlign: "right",
+      type: 'actions',
+      field: 'actions',
+      headerName: ' ',
+      align: 'right',
+      headerAlign: 'right',
       width: 80,
       sortable: false,
       filterable: false,
@@ -214,19 +222,16 @@ export default function ServiceListViewPage() {
   return (
     <>
       <Container
-        maxWidth={settings.themeStretch ? false : "lg"}
+        maxWidth={settings.themeStretch ? false : 'lg'}
         sx={{
           flexGrow: 1,
-          display: "flex",
-          flexDirection: "column",
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
         <CustomBreadcrumbs
           heading="List"
-          links={[
-            { name: "Graveyard", href: paths.dashboard.root },
-            { name: "List" },
-          ]}
+          links={[{ name: 'Graveyard', href: paths.dashboard.root }, { name: 'List' }]}
           action={
             <Button
               component={RouterLink}
@@ -249,70 +254,67 @@ export default function ServiceListViewPage() {
           sx={{
             height: { xs: 800, md: 2 },
             flexGrow: { md: 1 },
-            display: { md: "flex" },
-            flexDirection: { md: "column" },
+            display: { md: 'flex' },
+            flexDirection: { md: 'column' },
           }}
         >
-          <DataGrid
-            checkboxSelection
-            disableRowSelectionOnClick
-            rows={tableData}
-            columns={columns}
-            loading={productsLoading}
-            getRowHeight={() => "auto"}
-            pageSizeOptions={[5, 10, 25]}
-            initialState={{
-              pagination: {
-                paginationModel: { pageSize: 10 },
-              },
-            }}
-            onRowSelectionModelChange={(newSelectionModel) => {
-              setSelectedRowIds(newSelectionModel);
-            }}
-            columnVisibilityModel={columnVisibilityModel}
-            onColumnVisibilityModelChange={(newModel) =>
-              setColumnVisibilityModel(newModel)
-            }
-            slots={{
-              toolbar: () => (
-                <>
-                  <GridToolbarContainer>
-                    {/* <ProductTableToolbar
+          {services && services.length > 0 && (
+            <DataGrid
+              checkboxSelection
+              disableRowSelectionOnClick
+              rows={services}
+              columns={columns}
+              loading={servicesLoading}
+              getRowHeight={() => 'auto'}
+              pageSizeOptions={[5, 10, 25]}
+              initialState={{
+                pagination: {
+                  paginationModel: { pageSize: 10 },
+                },
+              }}
+              onRowSelectionModelChange={(newSelectionModel) => {
+                setSelectedRowIds(newSelectionModel);
+              }}
+              columnVisibilityModel={columnVisibilityModel}
+              onColumnVisibilityModelChange={(newModel) => setColumnVisibilityModel(newModel)}
+              slots={{
+                toolbar: () => (
+                  <>
+                    <GridToolbarContainer>
+                      {/* <ProductTableToolbar
                       filters={filters}
                       onFilters={handleFilters}
                       stockOptions={PRODUCT_STOCK_OPTIONS}
                       publishOptions={PUBLISH_OPTIONS}
                     /> */}
 
-                    <GridToolbarQuickFilter />
+                      <GridToolbarQuickFilter />
 
-                    <Stack
-                      spacing={1}
-                      flexGrow={1}
-                      direction="row"
-                      alignItems="center"
-                      justifyContent="flex-end"
-                    >
-                      {!!selectedRowIds.length && (
-                        <Button
-                          size="small"
-                          color="error"
-                          startIcon={
-                            <Iconify icon="solar:trash-bin-trash-bold" />
-                          }
-                          onClick={confirmRows.onTrue}
-                        >
-                          Delete ({selectedRowIds.length})
-                        </Button>
-                      )}
+                      <Stack
+                        spacing={1}
+                        flexGrow={1}
+                        direction="row"
+                        alignItems="center"
+                        justifyContent="flex-end"
+                      >
+                        {!!selectedRowIds.length && (
+                          <Button
+                            size="small"
+                            color="error"
+                            startIcon={<Iconify icon="solar:trash-bin-trash-bold" />}
+                            onClick={confirmRows.onTrue}
+                          >
+                            Delete ({selectedRowIds.length})
+                          </Button>
+                        )}
 
-                      {/* <GridToolbarColumnsButton />
+                        {/* <GridToolbarColumnsButton />
                       <GridToolbarFilterButton />
                       <GridToolbarExport /> */}
-                    </Stack>
-                  </GridToolbarContainer>
+                      </Stack>
+                    </GridToolbarContainer>
 
-                  {/* {canReset && (
+                    {/* {canReset && (
                     <ProductTableFiltersResult
                       filters={filters}
                       onFilters={handleFilters}
@@ -321,17 +323,18 @@ export default function ServiceListViewPage() {
                       sx={{ p: 2.5, pt: 0 }}
                     />
                   )} */}
-                </>
-              ),
-              noRowsOverlay: () => <EmptyContent title="No Data" />,
-              noResultsOverlay: () => <EmptyContent title="No results found" />,
-            }}
-            slotProps={{
-              columnsPanel: {
-                getTogglableColumns,
-              },
-            }}
-          />
+                  </>
+                ),
+                noRowsOverlay: () => <EmptyContent title="No Data" />,
+                noResultsOverlay: () => <EmptyContent title="No results found" />,
+              }}
+              slotProps={{
+                columnsPanel: {
+                  getTogglableColumns,
+                },
+              }}
+            />
+          )}
         </Card>
       </Container>
 
@@ -341,8 +344,7 @@ export default function ServiceListViewPage() {
         title="Delete"
         content={
           <>
-            Are you sure want to delete{" "}
-            <strong> {selectedRowIds.length} </strong> items?
+            Are you sure want to delete <strong> {selectedRowIds.length} </strong> items?
           </>
         }
         action={
