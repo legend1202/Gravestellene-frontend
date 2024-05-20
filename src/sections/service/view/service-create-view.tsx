@@ -1,28 +1,31 @@
-import Container from "@mui/material/Container";
+import Container from '@mui/material/Container';
 
-import { paths } from "src/routes/paths";
+import { paths } from 'src/routes/paths';
 
-import { useSettingsContext } from "src/components/settings";
-import CustomBreadcrumbs from "src/components/custom-breadcrumbs";
+import { useTranslate } from 'src/locales';
 
-// import ServiceNewEditForm from "../service-new-edit-form";
+import { useSettingsContext } from 'src/components/settings';
+import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+
+import ServiceNewEditForm from '../service-new-edit-form';
 
 // ----------------------------------------------------------------------
 
 export default function ServiceCreateView() {
+  const { t } = useTranslate();
   const settings = useSettingsContext();
 
   return (
-    <Container maxWidth={settings.themeStretch ? false : "lg"}>
+    <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
-        heading="Create My Service"
+        heading={t('create_my_service')}
         links={[
           {
-            name: "Service",
-            href: paths.fellesraad.root,
+            name: t('service'),
+            href: paths.fellesraad.service.root,
           },
           {
-            name: "New Service",
+            name: t('new_service'),
           },
         ]}
         sx={{
@@ -30,7 +33,7 @@ export default function ServiceCreateView() {
         }}
       />
 
-      {/* <ServiceNewEditForm /> */}
+      <ServiceNewEditForm />
     </Container>
   );
 }

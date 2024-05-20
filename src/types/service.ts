@@ -1,7 +1,7 @@
 export type IServiceItem = {
-  id: string;
-  fellesraadId: string;
+  id?: string;
   name: string;
   price: string;
-  graveyardName: string;
+  description: string;
+  unit?: string;
 };
