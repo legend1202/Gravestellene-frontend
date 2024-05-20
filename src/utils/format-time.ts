@@ -1,29 +1,35 @@
-import { format, getTime, formatDistanceToNow } from 'date-fns';
+import { format, getTime, formatDistanceToNow } from "date-fns";
 
 // ----------------------------------------------------------------------
 
 type InputValue = Date | string | number | null | undefined;
 
-export function fDate(date: InputValue, newFormat?: string) {
-  const fm = newFormat || 'dd MMM yyyy';
+export function fmDate(date: InputValue, newFormat?: string) {
+  const fm = newFormat || "MM/dd/yyyy";
 
-  return date ? format(new Date(date), fm) : '';
+  return date ? format(new Date(date), fm) : "";
+}
+
+export function fDate(date: InputValue, newFormat?: string) {
+  const fm = newFormat || "dd MMM yyyy";
+
+  return date ? format(new Date(date), fm) : "";
 }
 
 export function fTime(date: InputValue, newFormat?: string) {
-  const fm = newFormat || 'p';
+  const fm = newFormat || "p";
 
-  return date ? format(new Date(date), fm) : '';
+  return date ? format(new Date(date), fm) : "";
 }
 
 export function fDateTime(date: InputValue, newFormat?: string) {
-  const fm = newFormat || 'dd MMM yyyy p';
+  const fm = newFormat || "dd MMM yyyy p";
 
-  return date ? format(new Date(date), fm) : '';
+  return date ? format(new Date(date), fm) : "";
 }
 
 export function fTimestamp(date: InputValue) {
-  return date ? getTime(new Date(date)) : '';
+  return date ? getTime(new Date(date)) : "";
 }
 
 export function fToNow(date: InputValue) {
@@ -31,10 +37,14 @@ export function fToNow(date: InputValue) {
     ? formatDistanceToNow(new Date(date), {
         addSuffix: true,
       })
-    : '';
+    : "";
 }
 
-export function isBetween(inputDate: Date | string | number, startDate: Date, endDate: Date) {
+export function isBetween(
+  inputDate: Date | string | number,
+  startDate: Date,
+  endDate: Date
+) {
   const date = new Date(inputDate);
 
   const results =
@@ -46,7 +56,9 @@ export function isBetween(inputDate: Date | string | number, startDate: Date, en
 
 export function isAfter(startDate: Date | null, endDate: Date | null) {
   const results =
-    startDate && endDate ? new Date(startDate).getTime() > new Date(endDate).getTime() : false;
+    startDate && endDate
+      ? new Date(startDate).getTime() > new Date(endDate).getTime()
+      : false;
 
   return results;
 }

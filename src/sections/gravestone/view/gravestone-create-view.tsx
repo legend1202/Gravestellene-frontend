@@ -23,7 +23,9 @@ import { useSettingsContext } from "src/components/settings";
 // import { LoadingScreen } from "src/components/loading-screen";
 
 import { useGetGraveyards } from "src/api/graveyard";
-// import { createGravestone } from "src/api/gravestone";
+import { createGravestone } from "src/api/gravestone";
+
+import { useSnackbar } from "src/components/snackbar";
 
 // import { useTranslate } from "src/locales";
 
@@ -36,6 +38,8 @@ import FormProvider, {
 import { IGravestoneItem } from "src/types/gravestone";
 
 import MailList from "../mail-list";
+
+import { fmDate } from "src/utils/format-time";
 // ----------------------------------------------------------------------
 
 const LABEL_INDEX = "inbox";
@@ -46,13 +50,16 @@ type Props = {
 
 export default function GravestoneCreateView({ currentProduct }: Props) {
   // const { t } = useTranslate();
+
+  const { enqueueSnackbar } = useSnackbar();
+
   const { graveyards, graveyardsLoading } = useGetGraveyards();
 
   const searchParams = useSearchParams();
 
   const selectedLabelId = searchParams.get("label") || LABEL_INDEX;
 
-  const [selectedMailId, setSelectedMailId] = useState("");
+  const [selectedGraveyardId, setSelectedGraveyardId] = useState("");
 
   const mdUp = useResponsive("up", "md");
   const settings = useSettingsContext();
@@ -60,7 +67,7 @@ export default function GravestoneCreateView({ currentProduct }: Props) {
   const openMail = useBoolean();
 
   const newGravestoneSchema = Yup.object().shape({
-    graveyardId: Yup.string().required("graveyardId is required"),
+    // graveyardId: Yup.string().required("graveyardId is required"),
     name: Yup.string().required("name is required"),
     gender: Yup.string().required("gender is required"),
     birthday: Yup.string().required("birthday is required"),
@@ -74,7 +81,7 @@ export default function GravestoneCreateView({ currentProduct }: Props) {
 
   const defaultValues = useMemo(
     () => ({
-      graveyardId: currentProduct ? currentProduct.graveyardId : "",
+      // graveyardId: currentProduct ? currentProduct.graveyardId : selectedMailId,
       name: currentProduct ? currentProduct.name : "",
       gender: currentProduct ? currentProduct.gender : "",
       birthday: currentProduct ? currentProduct.birthday : "",
@@ -103,25 +110,37 @@ export default function GravestoneCreateView({ currentProduct }: Props) {
 
   const values = watch();
 
-  const handleClickMail = useCallback((mailId: string) => {
-    console.log(mailId);
-    setSelectedMailId(mailId);
+  const handleClickMail = useCallback((graveyardId: string) => {
+    console.log(graveyardId);
+    setSelectedGraveyardId(graveyardId);
 
     // router.push(href);
   }, []);
-  console.log(values);
   useEffect(() => {
     if (graveyards && graveyards.length > 0 && graveyards[0].id) {
-      setSelectedMailId(graveyards[0].id);
+      setSelectedGraveyardId(graveyards[0].id);
     }
   }, [graveyards]);
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      console.log("==================");
-      // const result = createGravestone(data);
-      // reset();
-      // enqueueSnackbar(currentProduct ? "Update success!" : "Create success!");
+      if (selectedGraveyardId) {
+        const birthday = fmDate(values.birthday);
+        const buriedDate = fmDate(values.buriedDate);
+        const deceasedDate = fmDate(values.deceasedDate);
+        const saveData = {
+          ...values,
+          birthday,
+          buriedDate,
+          deceasedDate,
+          graveyardId: selectedGraveyardId,
+        };
+        const result = createGravestone(saveData);
+        reset();
+        enqueueSnackbar(currentProduct ? "Update success!" : "Create success!");
+      } else {
+        enqueueSnackbar("Select the Graveyard!");
+      }
       // router.push(paths.dashboard.product.root);
     } catch (error) {
       console.error(error);
@@ -160,7 +179,7 @@ export default function GravestoneCreateView({ currentProduct }: Props) {
       onClickMail={handleClickMail}
       //
       selectedLabelId={selectedLabelId}
-      selectedMailId={selectedMailId}
+      selectedMailId={selectedGraveyardId}
     />
   );
 
