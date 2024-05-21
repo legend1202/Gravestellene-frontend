@@ -35,6 +35,7 @@ export const endpoints = {
   calendar: '/api/calendar',
   admin: {
     userList: '/api/auth/get-users',
+    userRoleUpdate: '/api/auth/assign-role',
   },
   auth: {
     me: '/api/auth/me',

@@ -6,3 +6,12 @@ export function isAdminFn(inputValue: string) {
 
   return isAdmin;
 }
+
+export function isFellesraadFn(inputValue: string) {
+  let isAdmin = false;
+  if (inputValue === "FELLESAAD") {
+    isAdmin = true;
+  }
+
+  return isAdmin;
+}
