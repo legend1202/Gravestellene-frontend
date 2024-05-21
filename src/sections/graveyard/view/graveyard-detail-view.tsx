@@ -70,7 +70,7 @@ export default function GraveyardDetailsView({ id }: Props) {
         backLink={paths.fellesraad.graveyard.root}
         editLink={paths.fellesraad.graveyard.edit(`${graveyard?.id}`)}
         liveLink={paths.fellesraad.graveyard.details(`${graveyard?.id}`)}
-        publish={publish || false}
+        publish={publish}
         onChangePublish={handleChangePublish}
         publishOptions={GRAVEYARD_PUBLISH_OPTIONS}
       />

@@ -38,6 +38,9 @@ export const endpoints = {
   chat: "/api/chat",
   kanban: "/api/kanban",
   calendar: "/api/calendar",
+  admin: {
+    userList: "/api/auth/get-users",
+  },
   auth: {
     me: "/api/auth/me",
     login: "/api/auth/login",
@@ -68,6 +71,7 @@ export const endpoints = {
     getById: "api/graveyard/getById",
     details: "/api/product/details",
     search: "/api/product/search",
+    approve: "/api/graveyard/approve",
   },
   gravestone: {
     create: "/api/gravestone/create",

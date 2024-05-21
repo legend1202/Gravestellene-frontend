@@ -27,7 +27,7 @@ export function RenderCellPrice({ params }: ParamsProps) {
 export function RenderCellApprove({ params }: ParamsProps) {
   return (
     <Label variant="soft" color={(params.row.approved && "info") || "default"}>
-      {params.row.approved ? "Approved" : ""}
+      {params.row.approved ? "Approved" : "Draft"}
     </Label>
   );
 }

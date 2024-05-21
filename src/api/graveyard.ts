@@ -32,6 +32,21 @@ export const updateGraveyard = async (query: IGraveyardItem) => {
   return memoizedValue;
 };
 
+export const ApproveGraveyard = async (query: string) => {
+  const res = await axiosInstance.put(endpoints.graveyard.approve, {
+    graveyard: {
+      id: query,
+      approved: true,
+    },
+  });
+
+  const memoizedValue = {
+    searchResults: res?.data || [],
+  };
+
+  return memoizedValue;
+};
+
 export const upload = async (query: IImageType) => {
   const formData = new FormData();
 

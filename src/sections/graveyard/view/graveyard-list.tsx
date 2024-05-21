@@ -1,5 +1,5 @@
 // import isEqual from "lodash/isEqual";
-import { useMemo, useState, useCallback } from "react";
+import { useMemo, useState, useEffect, useCallback } from "react";
 
 import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
@@ -24,9 +24,17 @@ import { RouterLink } from "src/routes/components";
 
 import { useBoolean } from "src/hooks/use-boolean";
 
+import { isAdminFn } from "src/utils/role-check";
+
+import { useAuthContext } from "src/auth/hooks";
+
 // import { useGetProducts } from "src/api/product";
 // import { PRODUCT_STOCK_OPTIONS } from "src/_mock";
-import { deleteGraveyard, useGetGraveyards } from "src/api/graveyard";
+import {
+  deleteGraveyard,
+  ApproveGraveyard,
+  useGetGraveyards,
+} from "src/api/graveyard";
 
 import Iconify from "src/components/iconify";
 import { useSnackbar } from "src/components/snackbar";
@@ -54,7 +62,7 @@ import {
 // ----------------------------------------------------------------------
 
 const PUBLISH_OPTIONS = [
-  { value: "published", label: "Published" },
+  { value: "approved", label: "Approved" },
   { value: "draft", label: "Draft" },
 ];
 
@@ -72,6 +80,10 @@ const HIDE_COLUMNS_TOGGLABLE = ["category", "actions"];
 // ----------------------------------------------------------------------
 
 export default function GraveyardList() {
+  const { user } = useAuthContext();
+
+  const [isAdmin, setAdmin] = useState(false);
+
   const { enqueueSnackbar } = useSnackbar();
 
   const confirmRows = useBoolean();
@@ -93,6 +105,12 @@ export default function GraveyardList() {
   const [columnVisibilityModel, setColumnVisibilityModel] = useState<
     GridColumnVisibilityModel
   >(HIDE_COLUMNS);
+
+  useEffect(() => {
+    if (user?.role) {
+      setAdmin(isAdminFn(user?.role));
+    }
+  }, [user?.role]);
 
   useMemo(() => {
     if (!graveyardsLoading) {
@@ -152,6 +170,17 @@ export default function GraveyardList() {
     [router]
   );
 
+  const handleApproveRow = async (id: string) => {
+    const result = await ApproveGraveyard(id);
+    if (result.searchResults.success) {
+      enqueueSnackbar("Approve success!");
+      // router.push(paths.fellesraad.graveyard.list);
+    } else {
+      console.error("Approve not success!");
+    }
+    // router.push(paths.fellesraad.graveyard.edit(id));
+  };
+
   // const handleViewRow = useCallback(
   //   (id: string) => {
   //     router.push(paths.fellesraad.graveyard.details(id));
@@ -193,20 +222,30 @@ export default function GraveyardList() {
       sortable: false,
       filterable: false,
       disableColumnMenu: true,
-      getActions: (params) => [
-        <GridActionsCellItem
-          showInMenu
-          icon={<Iconify icon="solar:trash-bin-trash-bold" />}
-          label="Delete"
-          onClick={() => handleDeleteRow(params.row.id)}
-        />,
-        <GridActionsCellItem
-          showInMenu
-          icon={<Iconify icon="solar:pen-bold" />}
-          label="Edit"
-          onClick={() => handleEditRow(params.row.id)}
-        />,
-      ],
+      getActions: (params) =>
+        isAdmin
+          ? [
+              <GridActionsCellItem
+                showInMenu
+                icon={<Iconify icon="eva:checkmark-circle-2-fill" />}
+                label="Approve"
+                onClick={() => handleApproveRow(params.row.id)}
+              />,
+            ]
+          : [
+              <GridActionsCellItem
+                showInMenu
+                icon={<Iconify icon="solar:trash-bin-trash-bold" />}
+                label="Delete"
+                onClick={() => handleDeleteRow(params.row.id)}
+              />,
+              <GridActionsCellItem
+                showInMenu
+                icon={<Iconify icon="solar:pen-bold" />}
+                label="Edit"
+                onClick={() => handleEditRow(params.row.id)}
+              />,
+            ],
     },
   ];
 
@@ -232,14 +271,16 @@ export default function GraveyardList() {
             { name: "List" },
           ]}
           action={
-            <Button
-              component={RouterLink}
-              href={paths.fellesraad.graveyard.create}
-              variant="contained"
-              startIcon={<Iconify icon="mingcute:add-line" />}
-            >
-              New Graveyard
-            </Button>
+            !isAdmin && (
+              <Button
+                component={RouterLink}
+                href={paths.fellesraad.graveyard.create}
+                variant="contained"
+                startIcon={<Iconify icon="mingcute:add-line" />}
+              >
+                New Graveyard
+              </Button>
+            )
           }
           sx={{
             mb: {

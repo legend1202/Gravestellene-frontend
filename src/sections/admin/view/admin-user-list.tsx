@@ -8,13 +8,10 @@ import Container from "@mui/material/Container";
 import {
   DataGrid,
   GridColDef,
-  //   GridToolbarExport,
   GridActionsCellItem,
   GridToolbarContainer,
   GridRowSelectionModel,
   GridToolbarQuickFilter,
-  //   GridToolbarFilterButton,
-  //   GridToolbarColumnsButton,
   GridColumnVisibilityModel,
 } from "@mui/x-data-grid";
 
@@ -24,45 +21,17 @@ import { RouterLink } from "src/routes/components";
 
 import { useBoolean } from "src/hooks/use-boolean";
 
-// import { useGetProducts } from "src/api/product";
-// import { PRODUCT_STOCK_OPTIONS } from "src/_mock";
-// import { useGetGraveyards } from "src/api/graveyard";
 import { useGetUserLists } from "src/api/userlist";
 
 import Iconify from "src/components/iconify";
-// import { useSnackbar } from "src/components/snackbar";
 import EmptyContent from "src/components/empty-content";
 import { ConfirmDialog } from "src/components/custom-dialog";
 import { useSettingsContext } from "src/components/settings";
 import CustomBreadcrumbs from "src/components/custom-breadcrumbs";
 
-import {
-  IGraveyardItem,
-  // IGraveyardTableFilters,
-  // IGraveyardTableFilterValue,
-} from "src/types/graveyard";
+import { ITUserItem } from "src/types/user";
 
-// import ProductTableToolbar from "../graveyard-table-toolbar";
-// import ProductTableFiltersResult from "../graveyard-table-filters-result";
-import {
-  //   RenderCellStock,
-  //   RenderCellPrice,
-  // RenderCellApprove,
-  RenderCellLocation,
-  RenderCellGraveyard,
-} from "../graveyard-table-row";
-
-// ----------------------------------------------------------------------
-
-// const PUBLISH_OPTIONS = [
-//   { value: "published", label: "Published" },
-//   { value: "draft", label: "Draft" },
-// ];
-
-// const defaultFilters: IGraveyardTableFilters = {
-//   name: "",
-//   approved: false,
-// };
+import { RenderCellRole, RenderCellGraveyard } from "../graveyard-table-row";
 
 const HIDE_COLUMNS = {
   category: false,
@@ -81,11 +50,9 @@ export default function AdminUserList() {
 
   const settings = useSettingsContext();
 
-  const { products, productsLoading } = useGetUserLists();
+  const { users, usersLoading } = useGetUserLists();
 
-  const [tableData, setTableData] = useState<IGraveyardItem[]>([]);
-
-  // const [filters, setFilters] = useState(defaultFilters);
+  const [tableData, setTableData] = useState<ITUserItem[]>([]);
 
   const [selectedRowIds, setSelectedRowIds] = useState<GridRowSelectionModel>(
     []
@@ -96,43 +63,10 @@ export default function AdminUserList() {
   >(HIDE_COLUMNS);
 
   useEffect(() => {
-    if (products.length) {
-      console.log(products);
-      setTableData([]);
+    if (users?.length) {
+      setTableData(users);
     }
-  }, [products]);
-
-  //   const dataFiltered = applyFilter({
-  //     inputData: tableData,
-  //     filters,
-  //   });
-
-  //   const canReset = !isEqual(defaultFilters, filters);
-
-  // const handleFilters = useCallback(
-  //   (name: string, value: IGraveyardTableFilterValue) => {
-  //     setFilters((prevState) => ({
-  //       ...prevState,
-  //       [name]: value,
-  //     }));
-  //   },
-  //   []
-  // );
-
-  //   const handleResetFilters = useCallback(() => {
-  //     setFilters(defaultFilters);
-  //   }, []);
-
-  //   const handleDeleteRow = useCallback(
-  //     (id: string) => {
-  //       const deleteRow = tableData.filter((row) => row.id !== id);
-
-  //       enqueueSnackbar("Delete success!");
-
-  //       setTableData(deleteRow);
-  //     },
-  //     [enqueueSnackbar, tableData]
-  //   );
+  }, [users]);
 
   const handleDeleteRows = useCallback(() => {
     // const deleteRows = tableData.filter(
@@ -169,7 +103,7 @@ export default function AdminUserList() {
       field: "role",
       headerName: "Role",
       minWidth: 280,
-      renderCell: (params) => <RenderCellLocation params={params} />,
+      renderCell: (params) => <RenderCellRole params={params} />,
     },
     {
       type: "actions",
@@ -203,7 +137,7 @@ export default function AdminUserList() {
         <GridActionsCellItem
           showInMenu
           icon={<Iconify icon="solar:pen-bold" />}
-          label="CUSTOMER"
+          label="CLIENT"
           onClick={() => handleEditRow(params.row.id)}
         />,
       ],
@@ -262,7 +196,7 @@ export default function AdminUserList() {
             disableRowSelectionOnClick
             rows={tableData}
             columns={columns}
-            loading={productsLoading}
+            loading={usersLoading}
             getRowHeight={() => "auto"}
             pageSizeOptions={[5, 10, 25]}
             initialState={{
