@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 
 import { AuthGuard } from "src/auth/guard";
 import DashboardLayout from "src/layouts/dashboard";
+import ServiceEditPage from "src/pages/company/service/edit";
 
 import { LoadingScreen } from "src/components/loading-screen";
 
@@ -47,7 +48,7 @@ export const serviceRoutes = [
       { path: "detail", element: <ServiceDetailsPage /> },
       //   { path: ":id", element: <GraveyardDetailsPage /> },
       //   { path: "create", element: <GraveyardCreateView /> },
-      //   { path: ":id/edit", element: <GraveyardEditPage /> },
+      { path: ":id/edit", element: <ServiceEditPage /> },
     ],
   },
 ];

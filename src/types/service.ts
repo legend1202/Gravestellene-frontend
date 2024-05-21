@@ -3,5 +3,6 @@ export type IServiceItem = {
   name: string;
   price: string;
   description: string;
+  approved: boolean;
   unit?: string;
 };

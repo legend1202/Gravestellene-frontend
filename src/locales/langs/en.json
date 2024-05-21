@@ -56,7 +56,6 @@
   "gravesite_number": "gravesite number",
   "gender": "gender",
   "new_gravestone": "new gravestone",
-  "create_my_service": "Create My Service",
   "service": "Service",
   "new_service": "New Service",
   "service_name": "Service Name",
@@ -66,5 +65,7 @@
   "save_changes": "Save Changes",
   "create_success": "Create Success!",
   "update_success": "Update Success!",
-  "list_of_services": "List of the services"
+  "list_of_services": "List of the services",
+  "price": "Price",
+  "delete": "Delete"
 }

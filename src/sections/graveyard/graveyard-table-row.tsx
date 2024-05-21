@@ -1,13 +1,16 @@
 import Box from "@mui/material/Box";
-import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import Avatar from "@mui/material/Avatar";
 import { GridCellParams } from "@mui/x-data-grid";
 import ListItemText from "@mui/material/ListItemText";
 import LinearProgress from "@mui/material/LinearProgress";
 
+import { useRouter } from "src/routes/hooks";
+
 import { fCurrency } from "src/utils/format-number";
 // import { fTime, fDate } from "src/utils/format-time";
+
+import { paths } from "src/routes/paths";
 
 import Label from "src/components/label";
 
@@ -64,6 +67,10 @@ export function RenderCellStock({ params }: ParamsProps) {
 }
 
 export function RenderCellGraveyard({ params }: ParamsProps) {
+  const router = useRouter();
+  const handleClickItem = (path: string) => {
+    router.push(paths.fellesraad.graveyard.details(path));
+  };
   return (
     <Stack direction="row" alignItems="center" sx={{ py: 2, width: 1 }}>
       <Avatar
@@ -75,27 +82,16 @@ export function RenderCellGraveyard({ params }: ParamsProps) {
 
       <ListItemText
         disableTypography
-        primary={
-          <Link
-            noWrap
-            color="inherit"
-            variant="subtitle2"
-            onClick={params.row.onViewRow}
-            href={`${params?.id}`}
-            sx={{ cursor: "pointer" }}
-          >
-            {params.row.name}
-          </Link>
-        }
+        onClick={() => handleClickItem(`${params?.id}`)}
         secondary={
           <Box
             component="div"
             sx={{ typography: "body2", color: "text.disabled" }}
           >
-            {params.row.category}
+            {params.row.name}
           </Box>
         }
-        sx={{ display: "flex", flexDirection: "column" }}
+        sx={{ display: "flex", flexDirection: "column", cursor: "pointer" }}
       />
     </Stack>
   );

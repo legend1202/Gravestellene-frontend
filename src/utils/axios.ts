@@ -84,5 +84,7 @@ export const endpoints = {
     create: "/api/services/create",
     update: "/api/services/update",
     getByCompanyId: "/api/services/getByCompanyId",
+    getById: "/api/services/getById",
+    delete: "/api/services/delete",
   },
 };
