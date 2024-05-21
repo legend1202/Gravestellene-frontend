@@ -142,3 +142,8 @@ export type IUserAccountChangePassword = {
   newPassword: string;
   confirmNewPassword: string;
 };
+
+export type IUserRoleUpdate = {
+  id: string;
+  role: string;
+};

@@ -75,26 +75,13 @@ export function RenderCellGraveyard({ params }: ParamsProps) {
       <ListItemText
         disableTypography
         primary={
-          <Link
-            noWrap
-            color="inherit"
-            variant="subtitle2"
-            onClick={params.row.onViewRow}
-            href="/graveyard/i"
-            sx={{ cursor: "pointer" }}
-          >
-            {params.row.name}
-          </Link>
-        }
-        secondary={
           <Box
             component="div"
             sx={{ typography: "body2", color: "text.disabled" }}
           >
-            {params.row.category}
+            {params.row.name}
           </Box>
         }
-        sx={{ display: "flex", flexDirection: "column" }}
       />
     </Stack>
   );

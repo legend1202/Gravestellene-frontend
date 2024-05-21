@@ -8,13 +8,10 @@ import Container from "@mui/material/Container";
 import {
   DataGrid,
   GridColDef,
-  //   GridToolbarExport,
   GridActionsCellItem,
   GridToolbarContainer,
   GridRowSelectionModel,
   GridToolbarQuickFilter,
-  //   GridToolbarFilterButton,
-  //   GridToolbarColumnsButton,
   GridColumnVisibilityModel,
 } from "@mui/x-data-grid";
 
@@ -24,12 +21,10 @@ import { RouterLink } from "src/routes/components";
 
 import { useBoolean } from "src/hooks/use-boolean";
 
-import { isAdminFn } from "src/utils/role-check";
+import { isAdminFn, isFellesraadFn } from "src/utils/role-check";
 
 import { useAuthContext } from "src/auth/hooks";
 
-// import { useGetProducts } from "src/api/product";
-// import { PRODUCT_STOCK_OPTIONS } from "src/_mock";
 import {
   deleteGraveyard,
   ApproveGraveyard,
@@ -43,17 +38,9 @@ import { ConfirmDialog } from "src/components/custom-dialog";
 import { useSettingsContext } from "src/components/settings";
 import CustomBreadcrumbs from "src/components/custom-breadcrumbs";
 
-import {
-  IGraveyardItem,
-  // IGraveyardTableFilters,
-  // IGraveyardTableFilterValue,
-} from "src/types/graveyard";
+import { IGraveyardItem } from "src/types/graveyard";
 
-// import ProductTableToolbar from "../graveyard-table-toolbar";
-// import ProductTableFiltersResult from "../graveyard-table-filters-result";
 import {
-  //   RenderCellStock,
-  //   RenderCellPrice,
   RenderCellApprove,
   RenderCellLocation,
   RenderCellGraveyard,
@@ -66,11 +53,6 @@ const PUBLISH_OPTIONS = [
   { value: "draft", label: "Draft" },
 ];
 
-// const defaultFilters: IGraveyardTableFilters = {
-//   name: "",
-//   approved: false,
-// };
-
 const HIDE_COLUMNS = {
   category: false,
 };
@@ -82,6 +64,7 @@ const HIDE_COLUMNS_TOGGLABLE = ["category", "actions"];
 export default function GraveyardList() {
   const { user } = useAuthContext();
 
+  const [isFellesraad, setFellesraad] = useState(false);
   const [isAdmin, setAdmin] = useState(false);
 
   const { enqueueSnackbar } = useSnackbar();
@@ -96,8 +79,6 @@ export default function GraveyardList() {
 
   const [tableData, setTableData] = useState<IGraveyardItem[]>([]);
 
-  // const [filters, setFilters] = useState(defaultFilters);
-
   const [selectedRowIds, setSelectedRowIds] = useState<GridRowSelectionModel>(
     []
   );
@@ -108,6 +89,7 @@ export default function GraveyardList() {
 
   useEffect(() => {
     if (user?.role) {
+      setFellesraad(isFellesraadFn(user?.role));
       setAdmin(isAdminFn(user?.role));
     }
   }, [user?.role]);
@@ -117,27 +99,6 @@ export default function GraveyardList() {
       setTableData(graveyards);
     }
   }, [graveyards, graveyardsLoading]);
-
-  //   const dataFiltered = applyFilter({
-  //     inputData: tableData,
-  //     filters,
-  //   });
-
-  //   const canReset = !isEqual(defaultFilters, filters);
-
-  // const handleFilters = useCallback(
-  //   (name: string, value: IGraveyardTableFilterValue) => {
-  //     setFilters((prevState) => ({
-  //       ...prevState,
-  //       [name]: value,
-  //     }));
-  //   },
-  //   []
-  // );
-
-  //   const handleResetFilters = useCallback(() => {
-  //     setFilters(defaultFilters);
-  //   }, []);
 
   const handleDeleteRow = async (id: string) => {
     try {
@@ -155,11 +116,6 @@ export default function GraveyardList() {
   };
 
   const handleDeleteRows = useCallback(() => {
-    // const deleteRows = tableData.filter(
-    //   (row) => !selectedRowIds.includes(row?.id)
-    // );
-    // enqueueSnackbar("Delete success!");
-    // setTableData(deleteRows);
     console.log("delete id");
   }, []);
 
@@ -174,20 +130,41 @@ export default function GraveyardList() {
     const result = await ApproveGraveyard(id);
     if (result.searchResults.success) {
       enqueueSnackbar("Approve success!");
-      // router.push(paths.fellesraad.graveyard.list);
     } else {
       console.error("Approve not success!");
     }
     // router.push(paths.fellesraad.graveyard.edit(id));
   };
 
-  // const handleViewRow = useCallback(
-  //   (id: string) => {
-  //     router.push(paths.fellesraad.graveyard.details(id));
-  //   },
-  //   [router]
-  // );
-
+  const actions = (params: any) => {
+    if (isAdmin) {
+      return [
+        <GridActionsCellItem
+          showInMenu
+          icon={<Iconify icon="eva:checkmark-circle-2-fill" />}
+          label="Approve"
+          onClick={() => handleApproveRow(params.row.id)}
+        />,
+      ];
+    }
+    if (isFellesraad) {
+      return [
+        <GridActionsCellItem
+          showInMenu
+          icon={<Iconify icon="solar:trash-bin-trash-bold" />}
+          label="Delete"
+          onClick={() => handleDeleteRow(params.row.id)}
+        />,
+        <GridActionsCellItem
+          showInMenu
+          icon={<Iconify icon="solar:pen-bold" />}
+          label="Edit"
+          onClick={() => handleEditRow(params.row.id)}
+        />,
+      ];
+    }
+    return [];
+  };
   const columns: GridColDef[] = [
     {
       field: "name",
@@ -222,30 +199,7 @@ export default function GraveyardList() {
       sortable: false,
       filterable: false,
       disableColumnMenu: true,
-      getActions: (params) =>
-        isAdmin
-          ? [
-              <GridActionsCellItem
-                showInMenu
-                icon={<Iconify icon="eva:checkmark-circle-2-fill" />}
-                label="Approve"
-                onClick={() => handleApproveRow(params.row.id)}
-              />,
-            ]
-          : [
-              <GridActionsCellItem
-                showInMenu
-                icon={<Iconify icon="solar:trash-bin-trash-bold" />}
-                label="Delete"
-                onClick={() => handleDeleteRow(params.row.id)}
-              />,
-              <GridActionsCellItem
-                showInMenu
-                icon={<Iconify icon="solar:pen-bold" />}
-                label="Edit"
-                onClick={() => handleEditRow(params.row.id)}
-              />,
-            ],
+      getActions: (params) => actions(params),
     },
   ];
 
@@ -271,7 +225,7 @@ export default function GraveyardList() {
             { name: "List" },
           ]}
           action={
-            !isAdmin && (
+            isFellesraad && (
               <Button
                 component={RouterLink}
                 href={paths.fellesraad.graveyard.create}
@@ -321,53 +275,29 @@ export default function GraveyardList() {
               }
               slots={{
                 toolbar: () => (
-                  <>
-                    <GridToolbarContainer>
-                      {/* <ProductTableToolbar
-                      filters={filters}
-                      onFilters={handleFilters}
-                      stockOptions={PRODUCT_STOCK_OPTIONS}
-                      publishOptions={PUBLISH_OPTIONS}
-                    /> */}
-
-                      <GridToolbarQuickFilter />
-
-                      <Stack
-                        spacing={1}
-                        flexGrow={1}
-                        direction="row"
-                        alignItems="center"
-                        justifyContent="flex-end"
-                      >
-                        {!!selectedRowIds.length && (
-                          <Button
-                            size="small"
-                            color="error"
-                            startIcon={
-                              <Iconify icon="solar:trash-bin-trash-bold" />
-                            }
-                            onClick={confirmRows.onTrue}
-                          >
-                            Delete ({selectedRowIds.length})
-                          </Button>
-                        )}
-
-                        {/* <GridToolbarColumnsButton />
-                      <GridToolbarFilterButton />
-                      <GridToolbarExport /> */}
-                      </Stack>
-                    </GridToolbarContainer>
-
-                    {/* {canReset && (
-                    <ProductTableFiltersResult
-                      filters={filters}
-                      onFilters={handleFilters}
-                      onResetFilters={handleResetFilters}
-                      results={tableData.length}
-                      sx={{ p: 2.5, pt: 0 }}
-                    />
-                  )} */}
-                  </>
+                  <GridToolbarContainer>
+                    <GridToolbarQuickFilter />
+                    <Stack
+                      spacing={1}
+                      flexGrow={1}
+                      direction="row"
+                      alignItems="center"
+                      justifyContent="flex-end"
+                    >
+                      {!!selectedRowIds.length && (
+                        <Button
+                          size="small"
+                          color="error"
+                          startIcon={
+                            <Iconify icon="solar:trash-bin-trash-bold" />
+                          }
+                          onClick={confirmRows.onTrue}
+                        >
+                          Delete ({selectedRowIds.length})
+                        </Button>
+                      )}
+                    </Stack>
+                  </GridToolbarContainer>
                 ),
                 noRowsOverlay: () => <EmptyContent title="No Data" />,
                 noResultsOverlay: () => (
@@ -410,29 +340,3 @@ export default function GraveyardList() {
     </>
   );
 }
-
-// ----------------------------------------------------------------------
-
-// function applyFilter({
-//   inputData,
-//   filters,
-// }: {
-//   inputData: IProductItem[];
-//   filters: IGraveyardTableFilters;
-// }) {
-//   const { stock, publish } = filters;
-
-//   if (stock.length) {
-//     inputData = inputData.filter((product) =>
-//       stock.includes(product.inventoryType)
-//     );
-//   }
-
-//   if (publish.length) {
-//     inputData = inputData.filter((product) =>
-//       publish.includes(product.publish)
-//     );
-//   }
-
-//   return inputData;
-// }
