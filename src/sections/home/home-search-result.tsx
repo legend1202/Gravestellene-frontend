@@ -1,22 +1,22 @@
-import { m } from "framer-motion";
+import { m } from 'framer-motion';
 
-import Box from "@mui/material/Box";
+import Box from '@mui/material/Box';
 // import Card from "@mui/material/Card";
 // import Link from "@mui/material/Link";
-import { Button } from "@mui/material";
-import Stack from "@mui/material/Stack";
+import { Button } from '@mui/material';
+import Stack from '@mui/material/Stack';
 // import { alpha } from "@mui/material/styles";
 // import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
+import Typography from '@mui/material/Typography';
 
-import { RouterLink } from "src/routes/components";
+import { RouterLink } from 'src/routes/components';
 
-import { PATH_SEARCH_GRAVESTONE } from "src/config-global";
-import { useSearchGravestoneLists } from "src/api/gravestone";
+import { PATH_SEARCH_GRAVESTONE } from 'src/config-global';
+import { useSearchGravestoneLists } from 'src/api/gravestone';
 
-import { varFade } from "src/components/animate";
+import { varFade } from 'src/components/animate';
 
-import { IGravestoneItem } from "src/types/gravestone";
+import { IGravestoneItem } from 'src/types/gravestone';
 
 // import { map } from "lodash";
 // import { elementMatches } from "@fullcalendar/core/internal";
@@ -45,11 +45,10 @@ import { IGravestoneItem } from "src/types/gravestone";
 // ----------------------------------------------------------------------
 
 type ParamsProps = {
-  params: IGravestoneItem;
+  gravestones: IGravestoneItem[];
 };
 
-export default function HomeSearchResult({ params }: ParamsProps) {
-  const { products: searchResult } = useSearchGravestoneLists(params);
+export default function HomeSearchResult({ gravestones }: ParamsProps) {
   return (
     <Stack
       spacing={3}
@@ -63,32 +62,29 @@ export default function HomeSearchResult({ params }: ParamsProps) {
           px: { xs: 1, md: 1.5 },
         }}
       >
-        {searchResult?.map((element) => (
+        {gravestones?.map((element, index) => (
           <Box
             sx={{
-              backgroundColor: "white",
+              backgroundColor: 'white',
               p: { xs: 1, md: 1.5 },
             }}
+            key={index}
           >
             <Box
               sx={{
-                display: "flex",
-                justifyContent: "space-between",
+                display: 'flex',
+                justifyContent: 'space-between',
               }}
             >
               <Typography
                 sx={{
-                  display: "block",
+                  display: 'block',
                   p: { xs: 1.5, md: 1.5 },
-                  fontSize: "18px",
+                  fontSize: '18px',
                 }}
                 color="primary"
               >
-                <Button
-                  component={RouterLink}
-                  href={PATH_SEARCH_GRAVESTONE}
-                  variant="text"
-                >
+                <Button component={RouterLink} href={PATH_SEARCH_GRAVESTONE} variant="text">
                   {element?.name}
                 </Button>
                 {/* <Link href="/customer/serviceorder">{element?.name}</Link> */}
@@ -97,10 +93,10 @@ export default function HomeSearchResult({ params }: ParamsProps) {
                 variant="contained"
                 color="success"
                 sx={{
-                  display: { xs: "none", md: "block" },
+                  display: { xs: 'none', md: 'block' },
                 }}
               >
-                {element?.fellesraadName}
+                {element?.name}
               </Button>
             </Box>
             <Box
@@ -108,8 +104,8 @@ export default function HomeSearchResult({ params }: ParamsProps) {
               display="grid"
               alignItems="center"
               gridTemplateColumns={{
-                xs: "repeat(1, 1fr)",
-                md: "repeat(3, 1fr)",
+                xs: 'repeat(1, 1fr)',
+                md: 'repeat(3, 1fr)',
               }}
             >
               <m.div variants={varFade().inUp}>
@@ -117,11 +113,11 @@ export default function HomeSearchResult({ params }: ParamsProps) {
                   sx={{
                     py: { xs: 0.5, md: 0.5 },
                     px: { xs: 1.5, md: 1.5 },
-                    fontSize: "14px",
+                    fontSize: '14px',
                   }}
                   color="common.black"
                 >
-                  Born: {element?.born}
+                  Born: {element?.birthday}
                 </Typography>
               </m.div>
               <m.div variants={varFade().inUp}>
@@ -129,11 +125,11 @@ export default function HomeSearchResult({ params }: ParamsProps) {
                   sx={{
                     py: { xs: 0.5, md: 0.5 },
                     px: { xs: 1.5, md: 1.5 },
-                    fontSize: "14px",
+                    fontSize: '14px',
                   }}
                   color="common.black"
                 >
-                  Deceased: {element?.deceased}
+                  Deceased: {element?.deceasedDate}
                 </Typography>
               </m.div>
               <m.div variants={varFade().inUp}>
@@ -141,11 +137,11 @@ export default function HomeSearchResult({ params }: ParamsProps) {
                   sx={{
                     py: { xs: 0.5, md: 0.5 },
                     px: { xs: 1.5, md: 1.5 },
-                    fontSize: "14px",
+                    fontSize: '14px',
                   }}
                   color="common.black"
                 >
-                  Buried: {element?.buried}
+                  Buried: {element?.buriedDate}
                 </Typography>
               </m.div>
             </Box>
@@ -154,8 +150,8 @@ export default function HomeSearchResult({ params }: ParamsProps) {
               display="grid"
               alignItems="center"
               gridTemplateColumns={{
-                xs: "repeat(1, 1fr)",
-                md: "repeat(3, 1fr)",
+                xs: 'repeat(1, 1fr)',
+                md: 'repeat(3, 1fr)',
               }}
             >
               <m.div variants={varFade().inUp}>
@@ -163,12 +159,12 @@ export default function HomeSearchResult({ params }: ParamsProps) {
                   sx={{
                     py: { xs: 0.5, md: 0.5 },
                     px: { xs: 1.5, md: 1.5 },
-                    fontSize: "14px",
-                    fontStyle: "bold",
+                    fontSize: '14px',
+                    fontStyle: 'bold',
                   }}
                   color="common.black"
                 >
-                  {element?.graveyardName}
+                  {/* {element?.graveyardName} */}
                 </Typography>
               </m.div>
               <m.div variants={varFade().inUp}>
@@ -176,11 +172,11 @@ export default function HomeSearchResult({ params }: ParamsProps) {
                   sx={{
                     py: { xs: 0.5, md: 0.5 },
                     px: { xs: 1.5, md: 1.5 },
-                    fontSize: "14px",
+                    fontSize: '14px',
                   }}
                   color="common.black"
                 >
-                  Quarter: {element?.quater}
+                  Quarter: {element?.quarter}
                 </Typography>
               </m.div>
               <m.div variants={varFade().inUp}>
@@ -188,7 +184,7 @@ export default function HomeSearchResult({ params }: ParamsProps) {
                   sx={{
                     py: { xs: 0.5, md: 0.5 },
                     px: { xs: 1.5, md: 1.5 },
-                    fontSize: "14px",
+                    fontSize: '14px',
                   }}
                   color="common.black"
                 >
@@ -201,8 +197,8 @@ export default function HomeSearchResult({ params }: ParamsProps) {
               display="grid"
               alignItems="center"
               gridTemplateColumns={{
-                xs: "repeat(1, 1fr)",
-                md: "repeat(3, 1fr)",
+                xs: 'repeat(1, 1fr)',
+                md: 'repeat(3, 1fr)',
               }}
             >
               <m.div variants={varFade().inUp}>
@@ -210,12 +206,12 @@ export default function HomeSearchResult({ params }: ParamsProps) {
                   sx={{
                     py: { xs: 0.5, md: 0.5 },
                     px: { xs: 1.5, md: 1.5 },
-                    fontSize: "14px",
-                    fontStyle: "bold",
+                    fontSize: '14px',
+                    fontStyle: 'bold',
                   }}
                   color="common.black"
                 >
-                  Hometown: {element?.hometown}
+                  Hometown: {element?.homeTown}
                 </Typography>
               </m.div>
             </Box>
@@ -224,8 +220,8 @@ export default function HomeSearchResult({ params }: ParamsProps) {
               display="grid"
               alignItems="center"
               gridTemplateColumns={{
-                xs: "repeat(1, 1fr)",
-                md: "repeat(3, 1fr)",
+                xs: 'repeat(1, 1fr)',
+                md: 'repeat(3, 1fr)',
               }}
             >
               <m.div variants={varFade().inUp}>
@@ -233,12 +229,12 @@ export default function HomeSearchResult({ params }: ParamsProps) {
                   sx={{
                     py: { xs: 0.5, md: 0.5 },
                     px: { xs: 1.5, md: 1.5 },
-                    fontSize: "14px",
-                    fontStyle: "bold",
+                    fontSize: '14px',
+                    fontStyle: 'bold',
                   }}
                   color="common.black"
                 >
-                  Grave site number: {element?.siteNumber}
+                  Grave site number: {element?.graveSiteNumber}
                 </Typography>
               </m.div>
             </Box>

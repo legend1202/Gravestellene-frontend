@@ -32,14 +32,18 @@ export const GetGravestones = async (graveyardId: string) => {
   return memoizedValue;
 };
 
-export const getFilteredGravestones = async (graveyardId: string) => {
-  const res = await axiosInstance.get(`${endpoints.gravestone.getByGraveyardId}/${graveyardId}`);
-
+export const useGetFilteredGravestones = (query: any) => {
+  console.log(query);
+  const { data, isLoading, error, isValidating } = useSWR(
+    [endpoints.gravestone.getGravestones, query],
+    fetcher
+  );
+  console.log(data);
   const memoizedValue = {
-    gravestones: res?.data.result as IGravestoneItem[],
-    graveyardLoading: false,
-    graveyardError: false,
-    graveyardValidating: false,
+    gravestones: data?.result as IGravestoneItem[],
+    gravestonesLoading: false,
+    gravestonesError: false,
+    gravestonesValidating: false,
   };
   return memoizedValue;
 };

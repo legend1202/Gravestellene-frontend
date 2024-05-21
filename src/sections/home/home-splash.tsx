@@ -12,8 +12,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import { alpha, styled } from '@mui/material/styles';
 
 import { useBoolean } from 'src/hooks/use-boolean';
+import { useDebounce } from 'src/hooks/use-debounce';
 
 import { bgGradient } from 'src/theme/css';
+import { useGetFilteredGravestones } from 'src/api/gravestone';
 import {
   PRODUCT_COLOR_OPTIONS,
   PRODUCT_GENDER_OPTIONS,
@@ -67,7 +69,47 @@ export default function HomeSplash() {
 
   const [searchKeyState, setSearchKeyState] = useState(false);
 
-  const [searchKey, setSearchKey] = useState<IGravestoneItem | any>({});
+  // const {gravestones} = useGetFilteredGravestones({})
+
+  const [graveyardName, setGraveyardName] = useState('');
+  const [startDOB, setStartDOB] = useState<any>('');
+  const [endDOB, setEndDOB] = useState<any>('');
+  const [startDeceasedDate, setStartDeceasedDate] = useState<any>('');
+  const [endDeceasedDate, setEndDeceasedDate] = useState<any>('');
+  const [graveSite, setGraveSite] = useState<any>('');
+
+  const debouncedName = useDebounce(graveyardName);
+  const debouncedStartDOB = useDebounce(startDOB);
+  const debouncedEndDOB = useDebounce(endDOB);
+  const debouncedStartDeceasedDate = useDebounce(startDeceasedDate);
+  const debouncedEndDeceasedDate = useDebounce(endDeceasedDate);
+  const debouncedGraveSite = useDebounce(graveSite);
+
+  const { gravestones } = useGetFilteredGravestones({
+    name: debouncedName,
+    birthday: {
+      start: debouncedStartDOB,
+      end: debouncedEndDOB,
+    },
+    deceasedDate: {
+      start: debouncedStartDeceasedDate,
+      end: debouncedEndDeceasedDate,
+    },
+    graveSite: debouncedGraveSite,
+  });
+
+  console.log({
+    name: debouncedName,
+    birthday: {
+      start: debouncedStartDOB,
+      end: debouncedEndDOB,
+    },
+    deceasedDate: {
+      start: debouncedStartDeceasedDate,
+      end: debouncedEndDeceasedDate,
+    },
+    graveSite: debouncedGraveSite,
+  });
 
   const openFilters = useBoolean();
 
@@ -81,7 +123,12 @@ export default function HomeSplash() {
   }, []);
 
   const handleResetFilters = useCallback(() => {
-    setFilters(defaultFilters);
+    setGraveyardName('');
+    setStartDOB('');
+    setEndDOB('');
+    setStartDeceasedDate('');
+    setEndDeceasedDate('');
+    setGraveSite('');
   }, []);
 
   const canReset = !isEqual(defaultFilters, filters);
@@ -101,7 +148,7 @@ export default function HomeSplash() {
   }, [scrollY]);
 
   const handleShowSearchResult = () => {
-    setSearchKey('');
+    // setSearchKey('');
     setSearchKeyState(true);
   };
 
@@ -130,10 +177,18 @@ export default function HomeSplash() {
           canReset={canReset}
           onResetFilters={handleResetFilters}
           //
-          colorOptions={PRODUCT_COLOR_OPTIONS}
-          ratingOptions={PRODUCT_RATING_OPTIONS}
-          genderOptions={PRODUCT_GENDER_OPTIONS}
-          categoryOptions={['all', ...PRODUCT_CATEGORY_OPTIONS]}
+          graveyardName={graveyardName}
+          startDOB={startDOB}
+          endDOB={endDOB}
+          startDeceasedDate={startDeceasedDate}
+          endDeceasedDate={endDeceasedDate}
+          graveSite={graveSite}
+          setGraveyardName={setGraveyardName}
+          setStartDOB={setStartDOB}
+          setEndDOB={setEndDOB}
+          setStartDeceasedDate={setStartDeceasedDate}
+          setEndDeceasedDate={setEndDeceasedDate}
+          setGraveSite={setGraveSite}
           handleShowSearchResult={handleShowSearchResult}
         />
       </Stack>
@@ -185,8 +240,6 @@ export default function HomeSplash() {
                   <b>with the symbol *, you can also order grave care.</b>
                 </Typography>
               </m.div>
-
-              {/* <Button variant='base' color="primary">Link</Button> */}
             </Stack>
           )}
           <Stack
@@ -231,7 +284,7 @@ export default function HomeSplash() {
                 variant="soft"
                 color="default"
               >
-                You can search by name, cemetery, place, administration and/or date:
+                You can search by name:
               </Label>
               <Box
                 sx={{
@@ -239,15 +292,19 @@ export default function HomeSplash() {
                   justifyContent: 'space-around',
                 }}
               >
-                <TextField variant="outlined" required fullWidth label="" defaultValue="" />
-                <IconButton aria-label="search" color="success" onClick={handleShowSearchResult}>
-                  <SearchIcon />
-                </IconButton>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  label=""
+                  defaultValue=""
+                  onChange={(e) => setGraveyardName(e.target.value)}
+                />
               </Box>
             </Box>
             <Stack spacing={0}>{renderFilters}</Stack>
           </Stack>
-          {searchKeyState && <HomeSearchResult params={searchKey} />}
+          {gravestones && gravestones.length > 0 && <HomeSearchResult gravestones={gravestones} />}
         </Container>
       </Box>
     </StyledRoot>

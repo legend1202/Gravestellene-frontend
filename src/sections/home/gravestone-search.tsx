@@ -1,18 +1,20 @@
-import Stack from "@mui/material/Stack";
-import Badge from "@mui/material/Badge";
-import Drawer from "@mui/material/Drawer";
-import Button from "@mui/material/Button";
-import Divider from "@mui/material/Divider";
-import Tooltip from "@mui/material/Tooltip";
-import TextField from "@mui/material/TextField";
-import { DatePicker } from "@mui/x-date-pickers";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
+import Stack from '@mui/material/Stack';
+import Badge from '@mui/material/Badge';
+import Drawer from '@mui/material/Drawer';
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import Tooltip from '@mui/material/Tooltip';
+import TextField from '@mui/material/TextField';
+import { DatePicker } from '@mui/x-date-pickers';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
 
-import Iconify from "src/components/iconify";
-import Scrollbar from "src/components/scrollbar";
+import Iconify from 'src/components/iconify';
+import Scrollbar from 'src/components/scrollbar';
 
-import { IProductFilters, IProductFilterValue } from "src/types/product";
+import { IProductFilters, IProductFilterValue } from 'src/types/product';
+import { Dispatch, SetStateAction } from 'react';
+import { fmDate } from 'src/utils/format-time';
 
 // ----------------------------------------------------------------------
 
@@ -27,13 +29,19 @@ type Props = {
   canReset: boolean;
   onResetFilters: VoidFunction;
   //
-  genderOptions: {
-    value: string;
-    label: string;
-  }[];
-  categoryOptions: string[];
-  ratingOptions: string[];
-  colorOptions: string[];
+
+  graveyardName: string;
+  startDOB: string;
+  endDOB: string;
+  startDeceasedDate: string;
+  endDeceasedDate: string;
+  graveSite: string;
+  setGraveyardName: any;
+  setStartDOB: any;
+  setEndDOB: any;
+  setStartDeceasedDate: any;
+  setEndDeceasedDate: any;
+  setGraveSite: any;
   handleShowSearchResult: VoidFunction;
 };
 
@@ -48,13 +56,20 @@ export default function GravestoneSearch({
   canReset,
   onResetFilters,
   //
-  colorOptions,
-  genderOptions,
-  ratingOptions,
-  categoryOptions,
+  graveyardName,
+  startDOB,
+  endDOB,
+  startDeceasedDate,
+  endDeceasedDate,
+  graveSite,
+  setGraveyardName,
+  setStartDOB,
+  setEndDOB,
+  setStartDeceasedDate,
+  setEndDeceasedDate,
+  setGraveSite,
   handleShowSearchResult,
 }: Props) {
-
   const renderHead = (
     <Stack
       direction="row"
@@ -89,25 +104,11 @@ export default function GravestoneSearch({
         variant="outlined"
         required
         fullWidth
-        label="First Name"
+        label="Name"
         defaultValue=""
         sx={{ my: 1 }}
-      />
-      <TextField
-        variant="outlined"
-        required
-        fullWidth
-        label="Maiden Name"
-        defaultValue=""
-        sx={{ my: 1 }}
-      />
-      <TextField
-        variant="outlined"
-        required
-        fullWidth
-        label="Last Name"
-        defaultValue=""
-        sx={{ my: 1 }}
+        value={graveyardName}
+        onChange={(e) => setGraveyardName(e.target.value)}
       />
     </Stack>
   );
@@ -119,14 +120,16 @@ export default function GravestoneSearch({
       </Typography>
       <DatePicker
         label="From"
-        // value={value}
-        // onChange={(newValue) => setValue(newValue)}
+        // value={startDOB}
+        onChange={(newValue) => {
+          setStartDOB(fmDate(newValue));
+        }}
         sx={{ my: 1 }}
       />
       <DatePicker
         label="To"
-        // value={value}
-        // onChange={(newValue) => setValue(newValue)}
+        // value={endDOB}
+        onChange={(newValue) => setEndDOB(fmDate(newValue))}
         sx={{ my: 1 }}
       />
     </Stack>
@@ -139,14 +142,14 @@ export default function GravestoneSearch({
       </Typography>
       <DatePicker
         label="From"
-        // value={value}
-        // onChange={(newValue) => setValue(newValue)}
+        // value={startDeceasedDate}
+        onChange={(newValue) => setStartDeceasedDate(fmDate(newValue))}
         sx={{ my: 1 }}
       />
       <DatePicker
         label="To"
-        // value={value}
-        // onChange={(newValue) => setValue(newValue)}
+        // value={endDeceasedDate}
+        onChange={(newValue) => setEndDeceasedDate(fmDate(newValue))}
         sx={{ my: 1 }}
       />
     </Stack>
@@ -155,7 +158,7 @@ export default function GravestoneSearch({
   const renderLocation = (
     <Stack>
       <Typography variant="subtitle2" sx={{ mb: 1 }}>
-        Location
+        Grave Site
       </Typography>
       <TextField
         variant="outlined"
@@ -164,6 +167,8 @@ export default function GravestoneSearch({
         label="Locatin"
         defaultValue=""
         sx={{ my: 1 }}
+        value={graveSite}
+        onChange={(e) => setGraveSite(e.target.value)}
       />
     </Stack>
   );
@@ -209,13 +214,9 @@ export default function GravestoneSearch({
 
             {renderLocation}
 
-            <Button
-              variant="contained"
-              color="success"
-              onClick={handleShowSearchResult}
-            >
+            {/* <Button variant="contained" color="success" onClick={handleShowSearchResult}>
               Search
-            </Button>
+            </Button> */}
           </Stack>
         </Scrollbar>
       </Drawer>
