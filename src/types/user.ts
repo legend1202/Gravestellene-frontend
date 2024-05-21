@@ -1,4 +1,4 @@
-import { CustomFile } from 'src/components/upload';
+import { CustomFile } from "src/components/upload";
 
 // ----------------------------------------------------------------------
 
@@ -107,6 +107,13 @@ export type IUserItem = {
   avatarUrl: string;
   phoneNumber: string;
   isVerified: boolean;
+};
+
+export type ITUserItem = {
+  email: string;
+  id: string;
+  name: string;
+  role: string;
 };
 
 export type IUserAccount = {

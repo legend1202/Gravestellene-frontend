@@ -8,7 +8,7 @@ export default function ProductCreatePage() {
   return (
     <>
       <Helmet>
-        <title> Graveyard: List of the Graveyard</title>
+        <title> Admin: List of Users</title>
       </Helmet>
 
       <AdminUserList />

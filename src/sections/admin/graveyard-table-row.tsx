@@ -29,11 +29,10 @@ export function RenderCellApprove({ params }: ParamsProps) {
   );
 }
 
-export function RenderCellLocation({ params }: ParamsProps) {
+export function RenderCellRole({ params }: ParamsProps) {
   return (
     <ListItemText
-      primary={params.row.location}
-      secondary={params.row.location}
+      primary={params.row.role}
       primaryTypographyProps={{ typography: "body2", noWrap: true }}
       secondaryTypographyProps={{
         mt: 0.5,

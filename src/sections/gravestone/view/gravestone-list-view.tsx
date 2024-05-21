@@ -280,11 +280,14 @@ export default function GravestoneList() {
               PaperPropsSx={{ textTransform: "capitalize" }}
               sx={{ mb: 1 }}
             >
-              {graveyards.map((option) => (
-                <MenuItem key={option.id} value={option?.id}>
-                  {option?.name}
-                </MenuItem>
-              ))}
+              {graveyards.map(
+                (option) =>
+                  option?.approved && (
+                    <MenuItem key={option.id} value={option?.id}>
+                      {option?.name}
+                    </MenuItem>
+                  )
+              )}
             </RHFSelect>
           </FormProvider>
         )}
