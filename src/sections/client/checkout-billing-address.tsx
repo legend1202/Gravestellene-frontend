@@ -1,92 +1,121 @@
+import { useMemo, useState } from "react";
+
 import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
 import Grid from "@mui/material/Unstable_Grid2";
-
-import { useBoolean } from "src/hooks/use-boolean";
-
-import { _addressBooks } from "src/_mock";
-
-import Iconify from "src/components/iconify";
-
-import CheckoutSummary from "./checkout-summary";
-import { AddressItem, AddressNewForm } from "../address";
-import { useCheckoutContext } from "../checkout/context";
 
 // ----------------------------------------------------------------------
 
-export default function CheckoutBillingAddress() {
+import * as Yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+import Card from "@mui/material/Card";
+import Alert from "@mui/material/Alert";
+import CardHeader from "@mui/material/CardHeader";
+import LoadingButton from "@mui/lab/LoadingButton";
+
+import { useAuthContext } from "src/auth/hooks";
+
+import FormProvider, { RHFTextField } from "src/components/hook-form";
+
+import { useCheckoutContext } from "../checkout/context";
+
+type Props = {
+  handleSetContactInfo: (query: any) => void;
+};
+
+export default function CheckoutBillingAddress({
+  handleSetContactInfo,
+}: Props) {
+  const { user } = useAuthContext();
+
+  const [errorMsg] = useState("");
+
   const checkout = useCheckoutContext();
 
-  const addressForm = useBoolean();
+  const NewProductSchema = Yup.object().shape({
+    name: Yup.string().required("Name is required"),
+    ssn: Yup.string().required("SSN is required"),
+    email: Yup.string().required("Mail is required"),
+    phone: Yup.string().required("Phone is required"),
+  });
+
+  const defaultValues = useMemo(
+    () => ({
+      name: user?.name || "",
+      ssn: user?.ssn || "",
+      email: user?.email || "",
+      phone: user?.phone || "",
+    }),
+    [user]
+  );
+
+  const methods = useForm({
+    resolver: yupResolver(NewProductSchema),
+    defaultValues,
+  });
+
+  const {
+    watch,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods;
+
+  const values = watch();
+
+  const address = {
+    name: values.name,
+    fullAddress: values.email,
+  };
+  const onSubmit = handleSubmit(() => {
+    handleSetContactInfo(values);
+    checkout.onCreateBilling(address);
+  });
+  const renderDetails = (
+    <Grid xs={12} md={12}>
+      <Card>
+        <CardHeader title="Details" />
+
+        <Stack spacing={3} sx={{ p: 3 }}>
+          <RHFTextField name="ssn" label="Social Security Number" />
+          <RHFTextField name="name" label="Your Name" />
+          <RHFTextField name="email" label="Your E-mail" />
+          <RHFTextField name="phone" label="Your Phone" />
+        </Stack>
+      </Card>
+    </Grid>
+  );
+
+  const renderActions = (
+    <Grid
+      xs={12}
+      md={12}
+      sx={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}
+    >
+      <LoadingButton
+        type="submit"
+        variant="contained"
+        size="large"
+        loading={isSubmitting}
+      >
+        Save Contact
+      </LoadingButton>
+    </Grid>
+  );
 
   return (
-    <>
+    <FormProvider methods={methods} onSubmit={onSubmit}>
       <Grid container spacing={3}>
-        <Grid xs={12} md={8}>
-          {_addressBooks.slice(0, 4).map((address) => (
-            <AddressItem
-              key={address.id}
-              address={address}
-              action={
-                <Stack flexDirection="row" flexWrap="wrap" flexShrink={0}>
-                  {!address.primary && (
-                    <Button size="small" color="error" sx={{ mr: 1 }}>
-                      Delete
-                    </Button>
-                  )}
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    onClick={() => checkout.onCreateBilling(address)}
-                  >
-                    Deliver to this Address
-                  </Button>
-                </Stack>
-              }
-              sx={{
-                p: 3,
-                mb: 3,
-                borderRadius: 2,
-                boxShadow: (theme) => theme.customShadows.card,
-              }}
-            />
-          ))}
+        {!!errorMsg && (
+          <Alert severity="error" sx={{ mb: 3 }}>
+            {errorMsg}
+          </Alert>
+        )}
 
-          <Stack direction="row" justifyContent="space-between">
-            <Button
-              size="small"
-              color="inherit"
-              onClick={checkout.onBackStep}
-              startIcon={<Iconify icon="eva:arrow-ios-back-fill" />}
-            >
-              Back
-            </Button>
+        {renderDetails}
 
-            <Button
-              size="small"
-              color="primary"
-              onClick={addressForm.onTrue}
-              startIcon={<Iconify icon="mingcute:add-line" />}
-            >
-              New Address
-            </Button>
-          </Stack>
-        </Grid>
-
-        <Grid xs={12} md={4}>
-          <CheckoutSummary
-            total={checkout.total}
-            subTotal={checkout.subTotal}
-            discount={checkout.discount}
-          />
-        </Grid>
+        {renderActions}
       </Grid>
-
-      <AddressNewForm
-        open={addressForm.value}
-        onClose={addressForm.onFalse}
-        onCreate={checkout.onCreateBilling}
-      />
-    </>
+    </FormProvider>
   );
 }

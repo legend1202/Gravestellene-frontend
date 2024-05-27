@@ -4,25 +4,28 @@ import Grid from "@mui/material/Unstable_Grid2";
 import CardHeader from "@mui/material/CardHeader";
 import Typography from "@mui/material/Typography";
 
-import { paths } from "src/routes/paths";
-import { RouterLink } from "src/routes/components";
-
-import Iconify from "src/components/iconify";
 import EmptyContent from "src/components/empty-content";
 
+import { IServiceRequestedItem } from "src/types/service";
+
 import CheckoutSummary from "./checkout-summary";
-// import { useGetServicesLists } from "src/api/service";
 import { useCheckoutContext } from "../checkout/context";
 import CheckoutCartProductList from "./checkout-cart-product-list";
 
 // ----------------------------------------------------------------------
-
-export default function CheckoutCart() {
+type Props = {
+  total: number;
+  services: IServiceRequestedItem[];
+  handleOrderListDelete: (id: string) => void;
+};
+export default function CheckoutCart({
+  total,
+  services,
+  handleOrderListDelete,
+}: Props) {
   const checkout = useCheckoutContext();
 
-  // const { products, productsLoading } = useGetServicesLists();
-
-  const empty = !checkout.items.length;
+  const empty = services && !services.length;
 
   return (
     <Grid container spacing={3}>
@@ -49,31 +52,17 @@ export default function CheckoutCart() {
             />
           ) : (
             <CheckoutCartProductList
-              products={checkout?.items}
-              onDelete={checkout.onDeleteCart}
+              products={services}
+              onDelete={handleOrderListDelete}
               onIncreaseQuantity={checkout.onIncreaseQuantity}
               onDecreaseQuantity={checkout.onDecreaseQuantity}
             />
           )}
         </Card>
-
-        <Button
-          component={RouterLink}
-          href={paths.product.root}
-          color="inherit"
-          startIcon={<Iconify icon="eva:arrow-ios-back-fill" />}
-        >
-          Continue Shopping
-        </Button>
       </Grid>
 
       <Grid xs={12} md={4}>
-        <CheckoutSummary
-          total={checkout.total}
-          discount={checkout.discount}
-          subTotal={checkout.subTotal}
-          onApplyDiscount={checkout.onApplyDiscount}
-        />
+        <CheckoutSummary total={total} />
 
         <Button
           fullWidth

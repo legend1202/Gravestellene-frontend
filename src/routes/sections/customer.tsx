@@ -23,7 +23,7 @@ export const customerRoutes = [
     ),
     children: [
       { element: <ServiceOrderPage />, index: true },
-      { path: "serviceorder", element: <ServiceOrderPage /> },
+      { path: "serviceorder/:id/:graveyardId", element: <ServiceOrderPage /> },
       // { path: "contact-us", element: <ContactPage /> },
       // { path: "faqs", element: <FaqsPage /> },
       // {

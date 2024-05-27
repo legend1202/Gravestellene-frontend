@@ -3,7 +3,11 @@ import { useMemo } from "react";
 
 import axiosInstance, { fetcher, endpoints } from "src/utils/axios";
 
-import { IServiceItem } from "src/types/service";
+import {
+  IServiceItem,
+  IServiceRequestItem,
+  IServiceRequestedItem,
+} from "src/types/service";
 
 // ----------------------------------------------------------------------
 
@@ -31,6 +35,15 @@ export const updateService = async (query: IServiceItem) => {
   return memoizedValue;
 };
 
+export const getAllServices = async () => {
+  const res = await axiosInstance.get(endpoints.services.getAll);
+
+  const memoizedValue = {
+    searchResults: res?.data || [],
+  };
+
+  return memoizedValue;
+};
 export function useGetServicesListsByCompanyId(companyId: string) {
   const URL = endpoints.services.getByCompanyId;
 
@@ -39,6 +52,26 @@ export function useGetServicesListsByCompanyId(companyId: string) {
   const memoizedValue = useMemo(
     () => ({
       services: data?.result as IServiceItem[],
+      servicesLoading: isLoading,
+      servicesError: error,
+      servicesValidating: isValidating,
+    }),
+    [data?.result, error, isLoading, isValidating]
+  );
+  // console.log(memoizedValue);
+  return memoizedValue;
+}
+
+export function useGetServicesListsByGraveyardId(graveyardId: string) {
+  const URL = graveyardId
+    ? [`${endpoints.services.getByGraveyardId}/${graveyardId}`]
+    : "";
+
+  const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
+
+  const memoizedValue = useMemo(
+    () => ({
+      services: data?.result as IServiceRequestedItem[],
       servicesLoading: isLoading,
       servicesError: error,
       servicesValidating: isValidating,
@@ -71,4 +104,62 @@ export async function deleteService(serviceId: string) {
   const res = await axiosInstance.delete(endpoints.services.delete, { data });
 
   return res.data;
+}
+
+export const ApproveService = async (query: string) => {
+  const res = await axiosInstance.put(endpoints.services.approveByAdmin, {
+    services: {
+      id: query,
+    },
+  });
+
+  const memoizedValue = {
+    searchResults: res?.data || [],
+  };
+
+  return memoizedValue;
+};
+
+export const ApproveServiceByFellesraad = async (query: string) => {
+  const res = await axiosInstance.put(endpoints.services.approveByFellesraad, {
+    requestId: query,
+  });
+
+  const memoizedValue = {
+    searchResults: res?.data || [],
+  };
+
+  return memoizedValue;
+};
+
+export const RequestService = async (query: IServiceRequestItem) => {
+  const res = await axiosInstance.post(endpoints.services.request, {
+    request: query,
+  });
+
+  const memoizedValue = {
+    searchResults: res?.data || [],
+  };
+
+  return memoizedValue;
+};
+
+export function useGetRequestedServices(companyId: string) {
+  const URL = companyId
+    ? [`${endpoints.services.requestedService}/${companyId}`]
+    : "";
+
+  const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
+
+  const memoizedValue = useMemo(
+    () => ({
+      rservices: data?.result as IServiceRequestedItem[],
+      rservicesLoading: isLoading,
+      rservicesError: error,
+      rserviceValidating: isValidating,
+    }),
+    [data?.result, error, isLoading, isValidating]
+  );
+
+  return memoizedValue;
 }

@@ -9,7 +9,16 @@ export function isAdminFn(inputValue: string) {
 
 export function isFellesraadFn(inputValue: string) {
   let isAdmin = false;
-  if (inputValue === "FELLESAAD") {
+  if (inputValue === "FELLESRAAD") {
+    isAdmin = true;
+  }
+
+  return isAdmin;
+}
+
+export function isCompanyFn(inputValue: string) {
+  let isAdmin = false;
+  if (inputValue === "COMPANY") {
     isAdmin = true;
   }
 

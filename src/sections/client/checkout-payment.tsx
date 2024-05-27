@@ -66,7 +66,12 @@ const CARDS_OPTIONS: ICheckoutCardOption[] = [
   { value: "MasterCard", label: "**** **** **** 4545 - Cole Armstrong" },
 ];
 
-export default function CheckoutPayment() {
+type Props = {
+  total: number;
+  handleSubmitData: () => void;
+};
+
+export default function CheckoutPayment({ total, handleSubmitData }: Props) {
   const checkout = useCheckoutContext();
 
   const PaymentSchema = Yup.object().shape({
@@ -83,16 +88,14 @@ export default function CheckoutPayment() {
     defaultValues,
   });
 
-  const {
-    handleSubmit,
-    formState: { isSubmitting },
-  } = methods;
+  const { handleSubmit } = methods;
 
   const onSubmit = handleSubmit(async (data) => {
     try {
       checkout.onNextStep();
       checkout.onReset();
       console.info("DATA", data);
+      handleSubmitData();
     } catch (error) {
       console.error(error);
     }
@@ -129,20 +132,15 @@ export default function CheckoutPayment() {
             onBackStep={checkout.onBackStep}
           />
 
-          <CheckoutSummary
-            total={checkout.total}
-            subTotal={checkout.subTotal}
-            discount={checkout.discount}
-            shipping={checkout.shipping}
-            onEdit={() => checkout.onGotoStep(0)}
-          />
+          <CheckoutSummary total={total} />
 
           <LoadingButton
             fullWidth
             size="large"
             type="submit"
             variant="contained"
-            loading={isSubmitting}
+            // loading={isSubmitting}
+            onClick={handleSubmitData}
           >
             Complete Order
           </LoadingButton>

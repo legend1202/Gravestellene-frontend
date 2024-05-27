@@ -22,7 +22,24 @@ export function RenderCellPrice({ params }: ParamsProps) {
 export function RenderCellApprove({ params }: ParamsProps) {
   return (
     <Label variant="soft" color={(params.row.approved && "info") || "default"}>
-      {params.row.approved ? "Approved" : ""}
+      {params.row.approved ? "Approved" : "Draft"}
+    </Label>
+  );
+}
+export function RenderCellRequestApprove({ params }: ParamsProps) {
+  if ("rapproved" in params.row) {
+    return (
+      <Label
+        variant="soft"
+        color={(params.row.rapproved && "info") || "default"}
+      >
+        {params.row.rapproved ? "Approved" : "Requested"}
+      </Label>
+    );
+  }
+  return (
+    <Label variant="soft" color="default">
+      Draft
     </Label>
   );
 }
@@ -74,4 +91,21 @@ export function RenderCellGraveyard({ params }: ParamsProps) {
       />
     </Stack>
   );
+}
+
+export function RenderCellRequestedGraveyard({ params }: ParamsProps) {
+  if ("graveyardName" in params.row) {
+    return (
+      <ListItemText
+        primary={params.row.graveyardName}
+        primaryTypographyProps={{ typography: "body2", noWrap: true }}
+        secondaryTypographyProps={{
+          mt: 0.5,
+          component: "span",
+          typography: "caption",
+        }}
+      />
+    );
+  }
+  return <Label variant="soft" color="default" />;
 }

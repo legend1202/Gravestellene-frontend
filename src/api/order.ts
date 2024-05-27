@@ -1,11 +1,4 @@
-// import useSWR from "swr";
-// import { useMemo } from "react";
-
-// import axiosInstance, { fetcher, endpoints } from "src/utils/axios";
-
-// import { IProductItem } from "src/types/product";
-// // import { IGraveItem } from "src/types/graveyard";
-// import { IImageType, IGraveyardItem } from "src/types/graveyard";
+import axiosInstance, { endpoints } from "src/utils/axios";
 
 // ----------------------------------------------------------------------
 
@@ -57,3 +50,15 @@ export function useGetOrderedServiceLists() {
 
   return tempData;
 }
+
+export const createOrder = async (query: any) => {
+  const res = await axiosInstance.post(endpoints.order.create, {
+    order: query,
+  });
+
+  const memoizedValue = {
+    results: res?.data || [],
+  };
+
+  return memoizedValue;
+};

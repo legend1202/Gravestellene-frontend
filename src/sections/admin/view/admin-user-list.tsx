@@ -1,5 +1,5 @@
 // import isEqual from "lodash/isEqual";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 
 import Card from "@mui/material/Card";
 import Container from "@mui/material/Container";
@@ -14,18 +14,16 @@ import {
 
 import { paths } from "src/routes/paths";
 
-import { useSnackbar } from "src/components/snackbar";
-
+import { useTranslate } from "src/locales";
 import { UserRoleUpdate, useGetUserLists } from "src/api/userlist";
 
 import Iconify from "src/components/iconify";
+import { useSnackbar } from "src/components/snackbar";
 import EmptyContent from "src/components/empty-content";
 import { useSettingsContext } from "src/components/settings";
 import CustomBreadcrumbs from "src/components/custom-breadcrumbs";
 
 import { ITUserItem } from "src/types/user";
-
-import { useTranslate } from "src/locales";
 
 import { RenderCellRole, RenderCellGraveyard } from "../graveyard-table-row";
 
@@ -45,7 +43,6 @@ export default function AdminUserList() {
   const { enqueueSnackbar } = useSnackbar();
 
   const { users, usersLoading } = useGetUserLists();
-  console.log(users);
 
   const [tableData, setTableData] = useState<ITUserItem[]>([]);
 

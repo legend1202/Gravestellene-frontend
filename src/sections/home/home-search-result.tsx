@@ -1,22 +1,21 @@
-import { m } from 'framer-motion';
+import { m } from "framer-motion";
 
-import Box from '@mui/material/Box';
+import Box from "@mui/material/Box";
 // import Card from "@mui/material/Card";
 // import Link from "@mui/material/Link";
-import { Button } from '@mui/material';
-import Stack from '@mui/material/Stack';
+import { Button } from "@mui/material";
+import Stack from "@mui/material/Stack";
 // import { alpha } from "@mui/material/styles";
 // import Container from "@mui/material/Container";
-import Typography from '@mui/material/Typography';
+import Typography from "@mui/material/Typography";
 
-import { RouterLink } from 'src/routes/components';
+import { RouterLink } from "src/routes/components";
 
-import { PATH_SEARCH_GRAVESTONE } from 'src/config-global';
-import { useSearchGravestoneLists } from 'src/api/gravestone';
+import { PATH_SEARCH_GRAVESTONE } from "src/config-global";
 
-import { varFade } from 'src/components/animate';
+import { varFade } from "src/components/animate";
 
-import { IGravestoneItem } from 'src/types/gravestone';
+import { IGravestoneItem } from "src/types/gravestone";
 
 // import { map } from "lodash";
 // import { elementMatches } from "@fullcalendar/core/internal";
@@ -65,47 +64,51 @@ export default function HomeSearchResult({ gravestones }: ParamsProps) {
         {gravestones?.map((element, index) => (
           <Box
             sx={{
-              backgroundColor: 'white',
+              backgroundColor: "white",
               p: { xs: 1, md: 1.5 },
             }}
             key={index}
           >
             <Box
               sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
+                display: "flex",
+                justifyContent: "space-between",
               }}
             >
               <Typography
                 sx={{
-                  display: 'block',
+                  display: "block",
                   p: { xs: 1.5, md: 1.5 },
-                  fontSize: '18px',
+                  fontSize: "18px",
                 }}
                 color="primary"
               >
-                <Button component={RouterLink} href={PATH_SEARCH_GRAVESTONE} variant="text">
+                <Button
+                  component={RouterLink}
+                  href={`${PATH_SEARCH_GRAVESTONE}/${element.id}/${element.graveyardId}`}
+                  variant="text"
+                >
                   {element?.name}
                 </Button>
                 {/* <Link href="/customer/serviceorder">{element?.name}</Link> */}
               </Typography>
-              <Button
+              {/* <Button
                 variant="contained"
                 color="success"
                 sx={{
-                  display: { xs: 'none', md: 'block' },
+                  display: { xs: "none", md: "block" },
                 }}
               >
                 {element?.name}
-              </Button>
+              </Button> */}
             </Box>
             <Box
               gap={{ xs: 3, lg: 10 }}
               display="grid"
               alignItems="center"
               gridTemplateColumns={{
-                xs: 'repeat(1, 1fr)',
-                md: 'repeat(3, 1fr)',
+                xs: "repeat(1, 1fr)",
+                md: "repeat(3, 1fr)",
               }}
             >
               <m.div variants={varFade().inUp}>
@@ -113,7 +116,7 @@ export default function HomeSearchResult({ gravestones }: ParamsProps) {
                   sx={{
                     py: { xs: 0.5, md: 0.5 },
                     px: { xs: 1.5, md: 1.5 },
-                    fontSize: '14px',
+                    fontSize: "14px",
                   }}
                   color="common.black"
                 >
@@ -125,7 +128,7 @@ export default function HomeSearchResult({ gravestones }: ParamsProps) {
                   sx={{
                     py: { xs: 0.5, md: 0.5 },
                     px: { xs: 1.5, md: 1.5 },
-                    fontSize: '14px',
+                    fontSize: "14px",
                   }}
                   color="common.black"
                 >
@@ -137,7 +140,7 @@ export default function HomeSearchResult({ gravestones }: ParamsProps) {
                   sx={{
                     py: { xs: 0.5, md: 0.5 },
                     px: { xs: 1.5, md: 1.5 },
-                    fontSize: '14px',
+                    fontSize: "14px",
                   }}
                   color="common.black"
                 >
@@ -150,8 +153,8 @@ export default function HomeSearchResult({ gravestones }: ParamsProps) {
               display="grid"
               alignItems="center"
               gridTemplateColumns={{
-                xs: 'repeat(1, 1fr)',
-                md: 'repeat(3, 1fr)',
+                xs: "repeat(1, 1fr)",
+                md: "repeat(3, 1fr)",
               }}
             >
               <m.div variants={varFade().inUp}>
@@ -159,8 +162,8 @@ export default function HomeSearchResult({ gravestones }: ParamsProps) {
                   sx={{
                     py: { xs: 0.5, md: 0.5 },
                     px: { xs: 1.5, md: 1.5 },
-                    fontSize: '14px',
-                    fontStyle: 'bold',
+                    fontSize: "14px",
+                    fontStyle: "bold",
                   }}
                   color="common.black"
                 >
@@ -172,7 +175,7 @@ export default function HomeSearchResult({ gravestones }: ParamsProps) {
                   sx={{
                     py: { xs: 0.5, md: 0.5 },
                     px: { xs: 1.5, md: 1.5 },
-                    fontSize: '14px',
+                    fontSize: "14px",
                   }}
                   color="common.black"
                 >
@@ -184,7 +187,7 @@ export default function HomeSearchResult({ gravestones }: ParamsProps) {
                   sx={{
                     py: { xs: 0.5, md: 0.5 },
                     px: { xs: 1.5, md: 1.5 },
-                    fontSize: '14px',
+                    fontSize: "14px",
                   }}
                   color="common.black"
                 >
@@ -197,8 +200,8 @@ export default function HomeSearchResult({ gravestones }: ParamsProps) {
               display="grid"
               alignItems="center"
               gridTemplateColumns={{
-                xs: 'repeat(1, 1fr)',
-                md: 'repeat(3, 1fr)',
+                xs: "repeat(1, 1fr)",
+                md: "repeat(3, 1fr)",
               }}
             >
               <m.div variants={varFade().inUp}>
@@ -206,8 +209,8 @@ export default function HomeSearchResult({ gravestones }: ParamsProps) {
                   sx={{
                     py: { xs: 0.5, md: 0.5 },
                     px: { xs: 1.5, md: 1.5 },
-                    fontSize: '14px',
-                    fontStyle: 'bold',
+                    fontSize: "14px",
+                    fontStyle: "bold",
                   }}
                   color="common.black"
                 >
@@ -220,8 +223,8 @@ export default function HomeSearchResult({ gravestones }: ParamsProps) {
               display="grid"
               alignItems="center"
               gridTemplateColumns={{
-                xs: 'repeat(1, 1fr)',
-                md: 'repeat(3, 1fr)',
+                xs: "repeat(1, 1fr)",
+                md: "repeat(3, 1fr)",
               }}
             >
               <m.div variants={varFade().inUp}>
@@ -229,8 +232,8 @@ export default function HomeSearchResult({ gravestones }: ParamsProps) {
                   sx={{
                     py: { xs: 0.5, md: 0.5 },
                     px: { xs: 1.5, md: 1.5 },
-                    fontSize: '14px',
-                    fontStyle: 'bold',
+                    fontSize: "14px",
+                    fontStyle: "bold",
                   }}
                   color="common.black"
                 >

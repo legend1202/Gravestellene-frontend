@@ -1,10 +1,10 @@
-import useSWR from 'swr';
-import { useMemo } from 'react';
+import useSWR from "swr";
+import { useMemo } from "react";
 
-import axiosInstance, { fetcher, endpoints } from 'src/utils/axios';
+import axiosInstance, { fetcher, endpoints } from "src/utils/axios";
 
-import { IMail } from 'src/types/mail';
-import { IGravestoneItem } from 'src/types/gravestone';
+import { IMail } from "src/types/mail";
+import { IGravestoneItem } from "src/types/gravestone";
 
 // ----------------------------------------------------------------------
 
@@ -21,7 +21,9 @@ export const createGravestone = async (query: any) => {
 };
 
 export const GetGravestones = async (graveyardId: string) => {
-  const res = await axiosInstance.get(`${endpoints.gravestone.getByGraveyardId}/${graveyardId}`);
+  const res = await axiosInstance.get(
+    `${endpoints.gravestone.getByGraveyardId}/${graveyardId}`
+  );
 
   const memoizedValue = {
     gravestones: res?.data.result as IGravestoneItem[],
@@ -33,12 +35,12 @@ export const GetGravestones = async (graveyardId: string) => {
 };
 
 export const useGetFilteredGravestones = (query: any) => {
-  console.log(query);
-  const { data, isLoading, error, isValidating } = useSWR(
+  // console.log(query);
+  const { data } = useSWR(
     [endpoints.gravestone.getGravestones, query],
     fetcher
   );
-  console.log(data);
+  // console.log(data);
   const memoizedValue = {
     gravestones: data?.result as IGravestoneItem[],
     gravestonesLoading: false,
@@ -50,7 +52,7 @@ export const useGetFilteredGravestones = (query: any) => {
 // ----------------------------------------------------------------------
 
 export function useGetMail(mailId: string) {
-  const URL = mailId ? [endpoints.mail.details, { params: { mailId } }] : '';
+  const URL = mailId ? [endpoints.mail.details, { params: { mailId } }] : "";
 
   const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
 
@@ -68,7 +70,9 @@ export function useGetMail(mailId: string) {
 }
 
 export const GetGravestone = async (gravestoneId: string) => {
-  const res = await axiosInstance.get(`${endpoints.gravestone.getById}/${gravestoneId}`);
+  const res = await axiosInstance.get(
+    `${endpoints.gravestone.getById}/${gravestoneId}`
+  );
   const memoizedValue = {
     gravestone: res?.data.result as IGravestoneItem[],
     graveyardLoading: !res?.data.success,
@@ -83,33 +87,33 @@ export function useGetServiceLists() {
   // const URL = endpoints.product.list;
   const tempProducts = [
     {
-      id: 'e99f09a7-dd88-49d5-b1c8-1daf80c2d7b1',
-      fellesraadId: 'fe99f09a7-dd88-49d5-b1c8-1daf80c2d7b1',
-      name: 'Service 1',
-      location: 'Graveyard 1',
-      content: 'string',
-      newsLink: 'string',
-      forecastLink: 'string',
+      id: "e99f09a7-dd88-49d5-b1c8-1daf80c2d7b1",
+      fellesraadId: "fe99f09a7-dd88-49d5-b1c8-1daf80c2d7b1",
+      name: "Service 1",
+      location: "Graveyard 1",
+      content: "string",
+      newsLink: "string",
+      forecastLink: "string",
       approved: true,
     },
     {
-      id: 'e99f09a7-dd88-49d5-b1c8-1daf80c2d7b2',
-      fellesraadId: 'fe99f09a7-dd88-49d5-b1c8-1daf80c2d7b2',
-      name: 'Service 1',
-      location: 'Graveyard 2',
-      content: 'string',
-      newsLink: 'string',
-      forecastLink: 'string',
+      id: "e99f09a7-dd88-49d5-b1c8-1daf80c2d7b2",
+      fellesraadId: "fe99f09a7-dd88-49d5-b1c8-1daf80c2d7b2",
+      name: "Service 1",
+      location: "Graveyard 2",
+      content: "string",
+      newsLink: "string",
+      forecastLink: "string",
       approved: true,
     },
     {
-      id: 'e99f09a7-dd88-49d5-b1c8-1daf80c2d7b3',
-      fellesraadId: 'fe99f09a7-dd88-49d5-b1c8-1daf80c2d7b3',
-      name: 'Service 2',
-      location: 'Graveyard 2',
-      content: 'string',
-      newsLink: 'string',
-      forecastLink: 'string',
+      id: "e99f09a7-dd88-49d5-b1c8-1daf80c2d7b3",
+      fellesraadId: "fe99f09a7-dd88-49d5-b1c8-1daf80c2d7b3",
+      name: "Service 2",
+      location: "Graveyard 2",
+      content: "string",
+      newsLink: "string",
+      forecastLink: "string",
       approved: false,
     },
   ];
@@ -129,33 +133,33 @@ export function useSearchGravestoneLists(params: IGravestoneItem | any) {
   // const URL = endpoints.product.list;
   const tempGravestones = [
     {
-      id: 'e99f09a7-dd88-49d5-b1c8-1daf80c2d7b1',
-      fellesraadId: 'fe99f09a7-dd88-49d5-b1c8-1daf80c2d7b1',
-      name: 'Amrén, Hi Maria Ingeborg',
-      fellesraadName: 'Västerås pastorate',
-      born: '$1965-03-04',
-      deceased: '2015-12-07',
-      buried: '2015-12-18',
-      graveyardName: 'BARKARÖ CEMETERY',
-      quater: 'quarter 09',
-      graveSite: '210-1',
-      hometown: 'Västerås-Barkarö parish',
-      siteNumber: '2109 210-1',
+      id: "e99f09a7-dd88-49d5-b1c8-1daf80c2d7b1",
+      fellesraadId: "fe99f09a7-dd88-49d5-b1c8-1daf80c2d7b1",
+      name: "Amrén, Hi Maria Ingeborg",
+      fellesraadName: "Västerås pastorate",
+      born: "$1965-03-04",
+      deceased: "2015-12-07",
+      buried: "2015-12-18",
+      graveyardName: "BARKARÖ CEMETERY",
+      quater: "quarter 09",
+      graveSite: "210-1",
+      hometown: "Västerås-Barkarö parish",
+      siteNumber: "2109 210-1",
       approved: true,
     },
     {
-      id: 'e99f09a7-dd88-49d5-b1c8-1daf80c2d7b2',
-      fellesraadId: 'fe99f09a7-dd88-49d5-b1c8-1daf80c2d7b2',
-      name: 'Amrén, Hi Maria Ingeborg',
-      fellesraadName: 'Västerås pastorate',
-      born: '1965-03-04',
-      deceased: '2015-12-07',
-      buried: '2015-12-18',
-      graveyardName: 'BARKARÖ CEMETERY',
-      quater: 'quarter 09',
-      graveSite: '210-1',
-      hometown: 'Västerås-Barkarö parish',
-      siteNumber: '2109 210-1',
+      id: "e99f09a7-dd88-49d5-b1c8-1daf80c2d7b2",
+      fellesraadId: "fe99f09a7-dd88-49d5-b1c8-1daf80c2d7b2",
+      name: "Amrén, Hi Maria Ingeborg",
+      fellesraadName: "Västerås pastorate",
+      born: "1965-03-04",
+      deceased: "2015-12-07",
+      buried: "2015-12-18",
+      graveyardName: "BARKARÖ CEMETERY",
+      quater: "quarter 09",
+      graveSite: "210-1",
+      hometown: "Västerås-Barkarö parish",
+      siteNumber: "2109 210-1",
       approved: true,
     },
   ];

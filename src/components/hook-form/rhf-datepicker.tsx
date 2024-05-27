@@ -14,7 +14,6 @@ type Props = TextFieldProps & {
 
 export default function RHFDatePicker({ name, label, defaultValue }: Props) {
   const { control } = useFormContext();
-  console.log("=========", new Date(defaultValue));
 
   return (
     <Controller

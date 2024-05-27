@@ -7,19 +7,19 @@ import ServiceEditPage from "src/pages/company/service/edit";
 
 import { LoadingScreen } from "src/components/loading-screen";
 
-const ServiceListApprove = lazy(() =>
-  import("src/pages/fellesraad/service/approve")
-);
-
 const ServiceCreatePage = lazy(() =>
   import("src/pages/company/service/create")
 );
 
-const ServiceRequestPage = lazy(() =>
+const ServiceOrderPage = lazy(() =>
   import("src/pages/company/service/order")
 );
 
 const ServiceListPage = lazy(() => import("src/pages/company/service/list"));
+
+const ServiceRequestPage = lazy(() =>
+  import("src/pages/company/service/request")
+);
 
 const ServiceDetailsPage = lazy(() =>
   import("src/pages/company/service/detail")
@@ -41,10 +41,11 @@ export const serviceRoutes = [
     ),
     children: [
       { element: <ServiceCreatePage />, index: true },
-      { path: "approve", element: <ServiceListApprove /> },
+      { path: "approve", element: <ServiceListPage /> },
       { path: "create", element: <ServiceCreatePage /> },
-      { path: "order", element: <ServiceRequestPage /> },
+      { path: "order", element: <ServiceOrderPage /> },
       { path: "list", element: <ServiceListPage /> },
+      { path: "request", element: <ServiceRequestPage /> },
       { path: "detail", element: <ServiceDetailsPage /> },
       //   { path: ":id", element: <GraveyardDetailsPage /> },
       //   { path: "create", element: <GraveyardCreateView /> },

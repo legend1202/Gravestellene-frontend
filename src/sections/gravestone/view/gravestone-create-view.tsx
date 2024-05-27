@@ -112,7 +112,6 @@ export default function GravestoneCreateView({ currentGravestone }: Props) {
   } = methods;
 
   const values = watch();
-  console.log(values);
 
   const handleClickMail = useCallback((graveyardId: string) => {
     setSelectedGraveyardId(graveyardId);

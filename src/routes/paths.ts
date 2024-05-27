@@ -23,6 +23,7 @@ const ROOTS = {
 // ----------------------------------------------------------------------
 
 export const paths = {
+  home: "/",
   comingSoon: "/coming-soon",
   maintenance: "/maintenance",
   pricing: "/pricing",
@@ -223,6 +224,7 @@ export const paths = {
       order: `${ROOTS.SERVICE}/order`,
       details: (id: string) => `${ROOTS.SERVICE}/${id}`,
       edit: (id: string) => `${ROOTS.SERVICE}/${id}/edit`,
+      request: `${ROOTS.SERVICE}/request`,
       approve: `${ROOTS.SERVICE}/approve`,
       demo: {
         details: `${ROOTS.SERVICE}/${MOCK_ID}`,

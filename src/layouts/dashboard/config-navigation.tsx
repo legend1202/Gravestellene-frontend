@@ -122,6 +122,7 @@ export function useNavData() {
             roles: ["FELLESRAAD"],
             children: [
               { title: t("approve"), path: paths.fellesraad.service.approve },
+              { title: t("Request"), path: paths.fellesraad.service.request },
               // { title: t("create"), path: paths.fellesraad.graveyard.create },
               // {
               //   title: t('details'),
@@ -266,6 +267,7 @@ export function useNavData() {
             children: [
               { title: t("create"), path: paths.fellesraad.service.create },
               { title: t("list"), path: paths.fellesraad.service.list },
+              { title: t("Request"), path: paths.fellesraad.service.request },
               { title: t("order"), path: paths.fellesraad.service.order },
               // { title: t("create"), path: paths.fellesraad.graveyard.create },
               // {

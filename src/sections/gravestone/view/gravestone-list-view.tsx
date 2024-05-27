@@ -73,6 +73,8 @@ export default function GravestoneList() {
 
   const { graveyards, graveyardsLoading } = useGetGraveyards();
 
+  // const { requestedServices, requestedServicesoading } = useGetRequestedServices();
+
   const [tableData, setTableData] = useState<IGravestoneItem[]>([]);
 
   const [selectedRowIds, setSelectedRowIds] = useState<GridRowSelectionModel>(
@@ -256,7 +258,7 @@ export default function GravestoneList() {
           action={
             <Button
               component={RouterLink}
-              href={paths.fellesraad.graveyard.create}
+              href={paths.fellesraad.gravestone.create}
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >

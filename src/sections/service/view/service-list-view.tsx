@@ -28,11 +28,16 @@ import { useBoolean } from "src/hooks/use-boolean";
 // import { PRODUCT_STOCK_OPTIONS } from "src/_mock";
 // import { useGetGraveyards } from "src/api/graveyard";
 
+import { isAdminFn, isCompanyFn } from "src/utils/role-check";
+
 import { useTranslate } from "src/locales";
-// import ProductTableToolbar from "../graveyard-table-toolbar";
 import { useAuthContext } from "src/auth/hooks";
-// import ProductTableFiltersResult from "../graveyard-table-filters-result";
-import { deleteService, useGetServicesListsByCompanyId } from "src/api/service";
+import {
+  deleteService,
+  getAllServices,
+  ApproveService,
+  useGetServicesListsByCompanyId,
+} from "src/api/service";
 
 import Iconify from "src/components/iconify";
 import { useSnackbar } from "src/components/snackbar";
@@ -75,6 +80,11 @@ const HIDE_COLUMNS_TOGGLABLE = ["category", "actions"];
 export default function ServiceListViewPage() {
   const { enqueueSnackbar } = useSnackbar();
 
+  const { user } = useAuthContext();
+
+  const [isComany, setCompany] = useState(false);
+  const [isAdmin, setAdmin] = useState(false);
+
   const { t } = useTranslate();
 
   const confirmRows = useBoolean();
@@ -83,9 +93,7 @@ export default function ServiceListViewPage() {
 
   const settings = useSettingsContext();
 
-  const { user } = useAuthContext();
-
-  console.log(user);
+  // const { user } = useAuthContext();
 
   const { services, servicesLoading } = useGetServicesListsByCompanyId(
     user?.userId
@@ -101,6 +109,13 @@ export default function ServiceListViewPage() {
     GridColumnVisibilityModel
   >(HIDE_COLUMNS);
 
+  useEffect(() => {
+    if (user?.role) {
+      setCompany(isCompanyFn(user?.role));
+      setAdmin(isAdminFn(user?.role));
+    }
+  }, [user?.role]);
+
   const handleEditRow = useCallback(
     (id: string) => {
       router.push(paths.fellesraad.service.edit(id));
@@ -108,11 +123,18 @@ export default function ServiceListViewPage() {
     [router]
   );
 
+  const handleGetAllServices = async () => {
+    const aServices = await getAllServices();
+    setServicesData(aServices.searchResults.result);
+  };
+
   useEffect(() => {
-    if (services && services.length > 0) {
+    if (isAdmin) {
+      handleGetAllServices();
+    } else if (services && services.length > 0) {
       setServicesData(services);
     }
-  }, [services]);
+  }, [isAdmin, services]);
 
   const handleDeleteRow = async (id: string) => {
     try {
@@ -125,6 +147,52 @@ export default function ServiceListViewPage() {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleApproveRow = async (id: string) => {
+    const result = await ApproveService(id);
+    if (result.searchResults.success) {
+      const updatedServices = servicesData.map((service) => {
+        if (service.id === result.searchResults.result.id)
+          return { ...service, approved: result.searchResults.result.approved };
+        return service;
+      });
+      setServicesData(updatedServices);
+      enqueueSnackbar("Approve success!");
+    } else {
+      console.error("Approve not success!");
+      // enqueueSnackbar("Approve success!");
+    }
+  };
+
+  const actions = (params: any) => {
+    if (isAdmin) {
+      return [
+        <GridActionsCellItem
+          showInMenu
+          icon={<Iconify icon="eva:checkmark-circle-2-fill" />}
+          label="Approve"
+          onClick={() => handleApproveRow(params.row.id)}
+        />,
+      ];
+    }
+    if (isComany) {
+      return [
+        <GridActionsCellItem
+          showInMenu
+          icon={<Iconify icon="solar:trash-bin-trash-bold" />}
+          label={t("delete")}
+          onClick={() => handleDeleteRow(params.row.id)}
+        />,
+        <GridActionsCellItem
+          showInMenu
+          icon={<Iconify icon="solar:pen-bold" />}
+          label={t("edit")}
+          onClick={() => handleEditRow(params.row.id)}
+        />,
+      ];
+    }
+    return [];
   };
 
   const columns: GridColDef[] = [
@@ -149,8 +217,8 @@ export default function ServiceListViewPage() {
       renderCell: (params) => <RenderCellPrice params={params} />,
     },
     {
-      field: "publish",
-      headerName: t("publish"),
+      field: "Approve",
+      headerName: t("approve"),
       width: 110,
       type: "singleSelect",
       editable: true,
@@ -167,20 +235,7 @@ export default function ServiceListViewPage() {
       sortable: false,
       filterable: false,
       disableColumnMenu: true,
-      getActions: (params) => [
-        <GridActionsCellItem
-          showInMenu
-          icon={<Iconify icon="solar:trash-bin-trash-bold" />}
-          label={t("delete")}
-          onClick={() => handleDeleteRow(params.row.id)}
-        />,
-        <GridActionsCellItem
-          showInMenu
-          icon={<Iconify icon="solar:pen-bold" />}
-          label={t("edit")}
-          onClick={() => handleEditRow(params.row.id)}
-        />,
-      ],
+      getActions: (params) => actions(params),
     },
   ];
 
@@ -228,6 +283,7 @@ export default function ServiceListViewPage() {
           flexGrow: { md: 1 },
           display: { md: "flex" },
           flexDirection: { md: "column" },
+          px: 3,
         }}
       >
         {servicesData && servicesData.length > 0 && (

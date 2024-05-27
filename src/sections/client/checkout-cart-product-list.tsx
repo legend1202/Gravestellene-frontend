@@ -5,24 +5,25 @@ import TableContainer from "@mui/material/TableContainer";
 import Scrollbar from "src/components/scrollbar";
 import { TableHeadCustom } from "src/components/table";
 
-import { ICheckoutItem } from "src/types/checkout";
+// import { ICheckoutItem } from "src/types/checkout";
+import { IServiceRequestedItem } from "src/types/service";
 
 import CheckoutCartProduct from "./checkout-cart-product";
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: "product", label: "Product" },
+  { id: "name", label: "Name" },
+  { id: "description", label: "Description" },
   { id: "price", label: "Price" },
-  { id: "quantity", label: "Quantity" },
-  { id: "totalAmount", label: "Total Price", align: "right" },
+  { id: "graveyard", label: "Graveyard", align: "center" },
   { id: "" },
 ];
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  products: ICheckoutItem[];
+  products: IServiceRequestedItem[];
   onDelete: (id: string) => void;
   onDecreaseQuantity: (id: string) => void;
   onIncreaseQuantity: (id: string) => void;
@@ -41,15 +42,16 @@ export default function CheckoutCartProductList({
           <TableHeadCustom headLabel={TABLE_HEAD} />
 
           <TableBody>
-            {products.map((row) => (
-              <CheckoutCartProduct
-                key={row.id}
-                row={row}
-                onDelete={() => onDelete(row.id)}
-                onDecrease={() => onDecreaseQuantity(row.id)}
-                onIncrease={() => onIncreaseQuantity(row.id)}
-              />
-            ))}
+            {products &&
+              products.map((row) => (
+                <CheckoutCartProduct
+                  key={row.id}
+                  row={row}
+                  onDelete={() => onDelete(row.id || "")}
+                  onDecrease={() => onDecreaseQuantity(row.id || "")}
+                  onIncrease={() => onIncreaseQuantity(row.id || "")}
+                />
+              ))}
           </TableBody>
         </Table>
       </Scrollbar>

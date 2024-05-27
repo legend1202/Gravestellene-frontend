@@ -24,7 +24,6 @@ import { useBoolean } from "src/hooks/use-boolean";
 import { isAdminFn, isFellesraadFn } from "src/utils/role-check";
 
 import { useAuthContext } from "src/auth/hooks";
-
 import {
   deleteGraveyard,
   ApproveGraveyard,
@@ -129,6 +128,16 @@ export default function GraveyardList() {
   const handleApproveRow = async (id: string) => {
     const result = await ApproveGraveyard(id);
     if (result.searchResults.success) {
+      const updatedTableData = tableData.map((graveyard) => {
+        if (graveyard.id === result.searchResults.result.id)
+          return {
+            ...graveyard,
+            approved: result.searchResults.result.approved,
+          };
+        return graveyard;
+      });
+      setTableData(updatedTableData);
+
       enqueueSnackbar("Approve success!");
     } else {
       console.error("Approve not success!");
