@@ -1,69 +1,44 @@
 // import isEqual from "lodash/isEqual";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 
 import Card from "@mui/material/Card";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import {
   DataGrid,
   GridColDef,
-  //   GridToolbarExport,
   GridActionsCellItem,
-  GridToolbarContainer,
-  GridRowSelectionModel,
-  GridToolbarQuickFilter,
-  //   GridToolbarFilterButton,
-  //   GridToolbarColumnsButton,
   GridColumnVisibilityModel,
 } from "@mui/x-data-grid";
 
 import { paths } from "src/routes/paths";
-import { useRouter } from "src/routes/hooks";
-// import { RouterLink } from "src/routes/components";
 
-import { useBoolean } from "src/hooks/use-boolean";
+import { isAdminFn } from "src/utils/role-check";
 
-// import { useGetProducts } from "src/api/product";
-// import { PRODUCT_STOCK_OPTIONS } from "src/_mock";
-// import { useGetGraveyards } from "src/api/graveyard";
-// import { useGetServiceLists } from "src/api/service";
-import { useGetOrderedServiceLists } from "src/api/order";
+import { useAuthContext } from "src/auth/hooks";
+import { ApproveOrderedList, GetOrderedServices } from "src/api/order";
 
 import Iconify from "src/components/iconify";
-// import { useSnackbar } from "src/components/snackbar";
+import { useSnackbar } from "src/components/snackbar";
 import EmptyContent from "src/components/empty-content";
-import { ConfirmDialog } from "src/components/custom-dialog";
 import { useSettingsContext } from "src/components/settings";
 import CustomBreadcrumbs from "src/components/custom-breadcrumbs";
 
-import {
-  IGraveyardItem,
-  // IGraveyardTableFilters,
-  // IGraveyardTableFilterValue,
-} from "src/types/graveyard";
+import { IOrderedList } from "src/types/order";
 
-// import ProductTableToolbar from "../graveyard-table-toolbar";
-// import ProductTableFiltersResult from "../graveyard-table-filters-result";
 import {
-  RenderCellStock,
-  //   RenderCellPrice,
+  RenderCellUser,
+  RenderCellPrice,
   RenderCellApprove,
-  RenderCellLocation,
+  RenderCellServices,
   RenderCellGraveyard,
 } from "../order-list-table-row";
 
 // ----------------------------------------------------------------------
 
 const PUBLISH_OPTIONS = [
-  { value: "published", label: "Published" },
+  { value: "approved", label: "Approved" },
   { value: "draft", label: "Draft" },
 ];
-
-// const defaultFilters: IGraveyardTableFilters = {
-//   name: "",
-//   approved: false,
-// };
 
 const HIDE_COLUMNS = {
   category: false,
@@ -74,121 +49,107 @@ const HIDE_COLUMNS_TOGGLABLE = ["category", "actions"];
 // ----------------------------------------------------------------------
 
 export default function OrderListApprove() {
-  //   const { enqueueSnackbar } = useSnackbar();
+  const { user } = useAuthContext();
 
-  const confirmRows = useBoolean();
+  // const [isFellesraad, setFellesraad] = useState(false);
+  const [isAdmin, setAdmin] = useState(false);
 
-  const tempFlag = false;
-
-  const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
 
   const settings = useSettingsContext();
 
-  const { products, productsLoading } = useGetOrderedServiceLists();
+  const { orders, ordersLoading } = GetOrderedServices();
 
-  const [tableData, setTableData] = useState<IGraveyardItem[]>([]);
-
-  // const [filters, setFilters] = useState(defaultFilters);
-
-  const [selectedRowIds, setSelectedRowIds] = useState<GridRowSelectionModel>(
-    []
-  );
+  const [tableData, setTableData] = useState<IOrderedList[]>([]);
 
   const [columnVisibilityModel, setColumnVisibilityModel] = useState<
     GridColumnVisibilityModel
   >(HIDE_COLUMNS);
 
   useEffect(() => {
-    if (products.length) {
-      setTableData([]);
+    if (user?.role) {
+      // setFellesraad(isFellesraadFn(user?.role));
+      setAdmin(isAdminFn(user?.role));
     }
-  }, [products]);
+  }, [user?.role]);
 
-  //   const dataFiltered = applyFilter({
-  //     inputData: tableData,
-  //     filters,
-  //   });
-
-  //   const canReset = !isEqual(defaultFilters, filters);
-
-  // const handleFilters = useCallback(
-  //   (name: string, value: IGraveyardTableFilterValue) => {
-  //     setFilters((prevState) => ({
-  //       ...prevState,
-  //       [name]: value,
-  //     }));
-  //   },
-  //   []
-  // );
-
-  //   const handleResetFilters = useCallback(() => {
-  //     setFilters(defaultFilters);
-  //   }, []);
-
-  //   const handleDeleteRow = useCallback(
-  //     (id: string) => {
-  //       const deleteRow = tableData.filter((row) => row.id !== id);
-
-  //       enqueueSnackbar("Delete success!");
-
-  //       setTableData(deleteRow);
-  //     },
-  //     [enqueueSnackbar, tableData]
-  //   );
-
-  const handleDeleteRows = useCallback(() => {
-    // const deleteRows = tableData.filter(
-    //   (row) => !selectedRowIds.includes(row?.id)
-    // );
-    // enqueueSnackbar("Delete success!");
-    // setTableData(deleteRows);
-  }, []);
-
-  const handleEditRow = useCallback(
-    (id: string) => {
-      // router.push(paths.fellesraad.graveyard.edit(id));
-      if (tempFlag) {
-        router.push(paths.fellesraad.graveyard.details(id));
+  useEffect(() => {
+    if (orders && orders.length > 0) {
+      if (isAdmin) {
+        setTableData(orders);
+      } else {
+        const approvedData = orders.filter((order) => order?.approved === true);
+        setTableData(approvedData);
       }
-    },
-    [router, tempFlag]
-  );
+    }
+  }, [orders, isAdmin]);
 
-  const handleViewRow = useCallback(
-    (id: string) => {
-      if (tempFlag) {
-        router.push(paths.fellesraad.graveyard.details(id));
-      }
-    },
-    [router, tempFlag]
-  );
+  const handleApproveRow = async (id: string) => {
+    const result = await ApproveOrderedList(id);
+    if (result.results.success) {
+      const updatedTableData = tableData.map((row) => {
+        if (row.id === result.results.result.id)
+          return {
+            ...row,
+            approved: result.results.result.approved,
+          };
+        return row;
+      });
+      setTableData(updatedTableData);
+      enqueueSnackbar("Approve success!");
+    } else {
+      console.error("Approve not success!");
+    }
+    // router.push(paths.fellesraad.graveyard.edit(id));
+  };
 
+  const actions = (params: any) => {
+    if (isAdmin) {
+      return [
+        <GridActionsCellItem
+          showInMenu
+          icon={<Iconify icon="eva:checkmark-circle-2-fill" />}
+          label="Approve"
+          onClick={() => handleApproveRow(params.row.id)}
+        />,
+      ];
+    }
+    return [];
+  };
   const columns: GridColDef[] = [
     {
-      field: "user",
-      headerName: "User",
+      field: "name",
+      headerName: "Client",
       flex: 1,
-      minWidth: 220,
+      minWidth: 140,
       hideable: false,
+      renderCell: (params) => <RenderCellUser params={params} />,
+    },
+    {
+      field: "orders",
+      headerName: "Orders",
+      minWidth: 140,
+      renderCell: (params) => <RenderCellServices params={params} />,
+    },
+    {
+      field: "price",
+      headerName: "Price",
+      minWidth: 140,
+      renderCell: (params) => <RenderCellPrice params={params} />,
+    },
+    {
+      field: "gravestone",
+      headerName: "Gravestone",
+      width: 110,
+      type: "singleSelect",
+      editable: true,
+      valueOptions: PUBLISH_OPTIONS,
       renderCell: (params) => <RenderCellGraveyard params={params} />,
-    },
-
-    {
-      field: "graveyard",
-      headerName: "Graveyard",
-      minWidth: 220,
-      renderCell: (params) => <RenderCellStock params={params} />,
-    },
-    {
-      field: "service",
-      headerName: "Service",
-      minWidth: 220,
-      renderCell: (params) => <RenderCellLocation params={params} />,
     },
     {
       field: "approve",
-      headerName: "Approved Status",
-      width: 150,
+      headerName: "Approve",
+      width: 110,
       type: "singleSelect",
       editable: true,
       valueOptions: PUBLISH_OPTIONS,
@@ -204,20 +165,7 @@ export default function OrderListApprove() {
       sortable: false,
       filterable: false,
       disableColumnMenu: true,
-      getActions: (params) => [
-        <GridActionsCellItem
-          showInMenu
-          icon={<Iconify icon="solar:eye-bold" />}
-          label="Approve"
-          onClick={() => handleViewRow(params.row.id)}
-        />,
-        <GridActionsCellItem
-          showInMenu
-          icon={<Iconify icon="solar:pen-bold" />}
-          label="Reject"
-          onClick={() => handleEditRow(params.row.id)}
-        />,
-      ],
+      getActions: (params) => actions(params),
     },
   ];
 
@@ -227,53 +175,44 @@ export default function OrderListApprove() {
       .map((column) => column.field);
 
   return (
-    <>
-      <Container
-        maxWidth={settings.themeStretch ? false : "lg"}
+    <Container
+      maxWidth={settings.themeStretch ? false : "lg"}
+      sx={{
+        flexGrow: 1,
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <CustomBreadcrumbs
+        heading="List"
+        links={[
+          { name: "Order", href: paths.dashboard.root },
+          { name: "List" },
+        ]}
         sx={{
-          flexGrow: 1,
-          display: "flex",
-          flexDirection: "column",
+          mb: {
+            xs: 3,
+            md: 5,
+          },
+        }}
+      />
+
+      <Card
+        sx={{
+          height: { xs: 800, md: 2 },
+          px: 3,
+          flexGrow: { md: 1 },
+          display: { md: "flex" },
+          flexDirection: { md: "column" },
         }}
       >
-        <CustomBreadcrumbs
-          heading="Ordered Services"
-          links={[
-            { name: "Fellesraad", href: paths.dashboard.root },
-            { name: "Orders" },
-          ]}
-          // action={
-          //   <Button
-          //     component={RouterLink}
-          //     href={paths.fellesraad.graveyard.create}
-          //     variant="contained"
-          //     startIcon={<Iconify icon="mingcute:add-line" />}
-          //   >
-          //     New Graveyard
-          //   </Button>
-          // }
-          sx={{
-            mb: {
-              xs: 3,
-              md: 5,
-            },
-          }}
-        />
-
-        <Card
-          sx={{
-            height: { xs: 800, md: 2 },
-            flexGrow: { md: 1 },
-            display: { md: "flex" },
-            flexDirection: { md: "column" },
-          }}
-        >
+        {orders && (
           <DataGrid
-            checkboxSelection
+            // checkboxSelection
             disableRowSelectionOnClick
             rows={tableData}
             columns={columns}
-            loading={productsLoading}
+            loading={ordersLoading}
             getRowHeight={() => "auto"}
             pageSizeOptions={[5, 10, 25]}
             initialState={{
@@ -281,63 +220,11 @@ export default function OrderListApprove() {
                 paginationModel: { pageSize: 10 },
               },
             }}
-            onRowSelectionModelChange={(newSelectionModel) => {
-              setSelectedRowIds(newSelectionModel);
-            }}
             columnVisibilityModel={columnVisibilityModel}
             onColumnVisibilityModelChange={(newModel) =>
               setColumnVisibilityModel(newModel)
             }
             slots={{
-              toolbar: () => (
-                <>
-                  <GridToolbarContainer>
-                    {/* <ProductTableToolbar
-                      filters={filters}
-                      onFilters={handleFilters}
-                      stockOptions={PRODUCT_STOCK_OPTIONS}
-                      publishOptions={PUBLISH_OPTIONS}
-                    /> */}
-
-                    <GridToolbarQuickFilter />
-
-                    <Stack
-                      spacing={1}
-                      flexGrow={1}
-                      direction="row"
-                      alignItems="center"
-                      justifyContent="flex-end"
-                    >
-                      {!!selectedRowIds.length && (
-                        <Button
-                          size="small"
-                          color="error"
-                          startIcon={
-                            <Iconify icon="solar:trash-bin-trash-bold" />
-                          }
-                          onClick={confirmRows.onTrue}
-                        >
-                          Reject ({selectedRowIds.length})
-                        </Button>
-                      )}
-
-                      {/* <GridToolbarColumnsButton />
-                      <GridToolbarFilterButton />
-                      <GridToolbarExport /> */}
-                    </Stack>
-                  </GridToolbarContainer>
-
-                  {/* {canReset && (
-                    <ProductTableFiltersResult
-                      filters={filters}
-                      onFilters={handleFilters}
-                      onResetFilters={handleResetFilters}
-                      results={tableData.length}
-                      sx={{ p: 2.5, pt: 0 }}
-                    />
-                  )} */}
-                </>
-              ),
               noRowsOverlay: () => <EmptyContent title="No Data" />,
               noResultsOverlay: () => <EmptyContent title="No results found" />,
             }}
@@ -347,58 +234,8 @@ export default function OrderListApprove() {
               },
             }}
           />
-        </Card>
-      </Container>
-
-      <ConfirmDialog
-        open={confirmRows.value}
-        onClose={confirmRows.onFalse}
-        title="Delete"
-        content={
-          <>
-            Are you sure want to delete{" "}
-            <strong> {selectedRowIds.length} </strong> items?
-          </>
-        }
-        action={
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => {
-              handleDeleteRows();
-              confirmRows.onFalse();
-            }}
-          >
-            Delete
-          </Button>
-        }
-      />
-    </>
+        )}
+      </Card>
+    </Container>
   );
 }
-
-// ----------------------------------------------------------------------
-
-// function applyFilter({
-//   inputData,
-//   filters,
-// }: {
-//   inputData: IProductItem[];
-//   filters: IGraveyardTableFilters;
-// }) {
-//   const { stock, publish } = filters;
-
-//   if (stock.length) {
-//     inputData = inputData.filter((product) =>
-//       stock.includes(product.inventoryType)
-//     );
-//   }
-
-//   if (publish.length) {
-//     inputData = inputData.filter((product) =>
-//       publish.includes(product.publish)
-//     );
-//   }
-
-//   return inputData;
-// }

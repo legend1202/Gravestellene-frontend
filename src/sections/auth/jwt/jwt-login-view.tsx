@@ -38,8 +38,8 @@ export default function JwtLoginView() {
   });
 
   const defaultValues = {
-    email: "sorokinart777@gmail.com",
-    password: "Crab1202!",
+    email: "",
+    password: "",
   };
 
   const methods = useForm({

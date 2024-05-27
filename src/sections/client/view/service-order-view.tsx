@@ -83,7 +83,7 @@ export default function ServiceOrderView({ id, graveyardId }: Props) {
   };
   const handleSubmitData = async () => {
     const idList: string[] = orderedServices
-      .map((item) => item.id)
+      .map((item) => item.serviceId)
       .filter((itemId) => itemId !== undefined) as string[];
 
     const submitData = {
@@ -95,10 +95,12 @@ export default function ServiceOrderView({ id, graveyardId }: Props) {
 
     const createResult = await createOrder(submitData);
     if (createResult.results.success) {
+      checkout.onReset();
       enqueueSnackbar("Order success!");
       router.push(PATH_AFTER_LOGIN);
     } else {
       console.error("Order did not success!");
+      checkout.onReset();
     }
   };
   return (

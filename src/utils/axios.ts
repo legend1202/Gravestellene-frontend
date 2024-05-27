@@ -101,5 +101,7 @@ export const endpoints = {
   },
   order: {
     create: "/api/order/create",
+    get: "/api/order/get",
+    approve: "/api/order/approve",
   },
 };

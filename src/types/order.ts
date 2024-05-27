@@ -71,3 +71,13 @@ export type IOrderItem = {
   items: IOrderProductItem[];
   createdAt: Date;
 };
+
+export type IOrderedList = {
+  approved: boolean;
+  graveyardId: string;
+  gravestoneId: string;
+  userId: string;
+  servicesList: string[];
+  ssn: string;
+  id: string;
+};
