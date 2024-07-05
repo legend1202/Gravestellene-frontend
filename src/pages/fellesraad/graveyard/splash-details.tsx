@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { useParams } from 'src/routes/hooks';
 
 // import { ProductDetailsView } from "src/sections/product/view";
-import GraveyardDetailsView from 'src/sections/graveyard/view/graveyard-detail-view';
+import SplashGraveyardDetailsView from 'src/sections/graveyard/view/splash-graveyard-detail-view';
 // ----------------------------------------------------------------------
 
 export default function GraveyardDetailsPage() {
@@ -17,7 +17,7 @@ export default function GraveyardDetailsPage() {
         <title> Fellesraad: Graveyard Details</title>
       </Helmet>
 
-      <GraveyardDetailsView id={`${id}`} />
+      <SplashGraveyardDetailsView id={`${id}`} />
     </>
   );
 }

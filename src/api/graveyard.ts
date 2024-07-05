@@ -80,8 +80,27 @@ export function useGetGraveyard(graveyardId: string) {
 
 export function useGetGraveyards() {
   const URL = endpoints.graveyard.list;
-
+  
   const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
+
+  const memoizedValue = useMemo(
+    () => ({
+      graveyards: data?.result as IGraveyardItem[],
+      graveyardsLoading: isLoading,
+      graveyardsError: error,
+      graveyardsValidating: isValidating,
+    }),
+    [data?.result, error, isLoading, isValidating]
+  );
+
+  return memoizedValue;
+}
+
+export function useGetAllGraveyards() {
+  const URL = endpoints.graveyard.dashboardlist;
+  
+  const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
+
   const memoizedValue = useMemo(
     () => ({
       graveyards: data?.result as IGraveyardItem[],

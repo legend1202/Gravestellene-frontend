@@ -26,7 +26,7 @@ export default axiosInstance;
 
 export const fetcher = async (args: string | [string, AxiosRequestConfig]) => {
   const [url, config] = Array.isArray(args) ? args : [args];
-
+  
   const res = await axiosInstance.get(url, { params: { ...config } });
 
   return res.data;
@@ -68,6 +68,7 @@ export const endpoints = {
     update: "/api/graveyard/update",
     upload: "/api/upload/images",
     list: "api/graveyard/getByToken",
+    dashboardlist: "api/graveyard/getAllGraveyard",
     delete: "api/graveyard/delete",
     getById: "api/graveyard/getById",
     details: "/api/product/details",

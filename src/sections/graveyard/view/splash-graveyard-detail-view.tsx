@@ -4,6 +4,7 @@ import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
+import Stack, { StackProps } from '@mui/material/Stack';
 
 import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
@@ -27,7 +28,7 @@ type Props = {
   id: string;
 };
 
-export default function GraveyardDetailsView({ id }: Props) {
+export default function SplashGraveyardDetailsView({ id }: Props) {
   const { graveyard, graveyardLoading, graveyardError } = useGetGraveyard(id);
 
   const settings = useSettingsContext();
@@ -66,14 +67,21 @@ export default function GraveyardDetailsView({ id }: Props) {
 
   const renderProduct = graveyard && (
     <>
-      <GraveyardDetailsToolbar
-        backLink={paths.fellesraad.graveyard.root}
-        editLink={paths.fellesraad.graveyard.edit(`${graveyard?.id}`)}
-        liveLink={paths.fellesraad.graveyard.details(`${graveyard?.id}`)}
-        publish={publish}
-        onChangePublish={handleChangePublish}
-        publishOptions={GRAVEYARD_PUBLISH_OPTIONS}
-      />
+      <Stack
+        spacing={1.5}
+        direction="row"
+        sx={{
+          mb: { xs: 3, md: 5 },
+        }}
+      >
+        <Button
+          component={RouterLink}
+          href={paths.graveyard.root}
+          startIcon={<Iconify icon="eva:arrow-ios-back-fill" width={16} />}
+        >
+          Back
+        </Button>
+      </Stack>
 
       <Grid container spacing={{ xs: 3, md: 5, lg: 8 }}>
         <Grid xs={12} md={6} lg={7}>

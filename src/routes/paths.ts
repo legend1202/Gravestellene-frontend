@@ -58,6 +58,10 @@ export const paths = {
       details: `/post/${paramCase(MOCK_TITLE)}`,
     },
   },
+  graveyard: {
+    root: `/splash-graveyard`,
+    details: (id: string) => `/splash-graveyard/${id}`,
+  },
   // AUTH
   auth: {
     amplify: {
