@@ -36,6 +36,7 @@ import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import { IGraveyardItem } from 'src/types/graveyard';
 
 import { RenderCellApprove, RenderCellLocation, RenderCellGraveyard } from '../graveyard-table-row';
+import { useTranslate } from 'src/locales';
 
 // ----------------------------------------------------------------------
 
@@ -54,6 +55,7 @@ const HIDE_COLUMNS_TOGGLABLE = ['category', 'actions'];
 
 export default function GraveyardList() {
   const { user } = useAuthContext();
+  const { t } = useTranslate();
 
   const [isFellesraad, setFellesraad] = useState(false);
   const [isAdmin, setAdmin] = useState(false);
@@ -166,7 +168,7 @@ export default function GraveyardList() {
   const columns: GridColDef[] = [
     {
       field: 'name',
-      headerName: 'Graveyard',
+      headerName: t('Graveyard'),
       flex: 1,
       minWidth: 280,
       hideable: false,
@@ -174,13 +176,13 @@ export default function GraveyardList() {
     },
     {
       field: 'location',
-      headerName: 'location',
+      headerName: t('Location'),
       minWidth: 280,
       renderCell: (params) => <RenderCellLocation params={params} />,
     },
     {
       field: 'publish',
-      headerName: 'Publish',
+      headerName: t('Publish'),
       width: 110,
       type: 'singleSelect',
       editable: true,
@@ -217,8 +219,8 @@ export default function GraveyardList() {
         }}
       >
         <CustomBreadcrumbs
-          heading="List"
-          links={[{ name: 'Graveyard', href: paths.dashboard.root }, { name: 'List' }]}
+          heading={t('List')}
+          links={[{ name: t('Graveyard'), href: paths.dashboard.root }, { name: t('List') }]}
           action={
             isFellesraad && (
               <Button
@@ -227,7 +229,7 @@ export default function GraveyardList() {
                 variant="contained"
                 startIcon={<Iconify icon="mingcute:add-line" />}
               >
-                New Graveyard
+                {t('new_graveyard')}
               </Button>
             )
           }
@@ -284,7 +286,7 @@ export default function GraveyardList() {
                           startIcon={<Iconify icon="solar:trash-bin-trash-bold" />}
                           onClick={confirmRows.onTrue}
                         >
-                          Delete ({selectedRowIds.length})
+                          {t('delete')} ({selectedRowIds.length})
                         </Button>
                       )}
                     </Stack>

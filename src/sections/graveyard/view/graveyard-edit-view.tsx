@@ -1,14 +1,15 @@
-import Container from "@mui/material/Container";
+import Container from '@mui/material/Container';
 
-import { paths } from "src/routes/paths";
+import { paths } from 'src/routes/paths';
 
 // import { useGetProduct } from "src/api/product";
-import { useGetGraveyard } from "src/api/graveyard";
+import { useGetGraveyard } from 'src/api/graveyard';
 
-import { useSettingsContext } from "src/components/settings";
-import CustomBreadcrumbs from "src/components/custom-breadcrumbs";
+import { useSettingsContext } from 'src/components/settings';
+import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 
-import GraveyardNewEditForm from "../graveyard-new-edit-from";
+import GraveyardNewEditForm from '../graveyard-new-edit-from';
+import { useTranslate } from 'src/locales';
 
 // ----------------------------------------------------------------------
 
@@ -19,19 +20,21 @@ type Props = {
 export default function GraveyardEditView({ id }: Props) {
   const settings = useSettingsContext();
 
+  const { t } = useTranslate();
+
   const { graveyard: currentProduct } = useGetGraveyard(id);
 
   return (
-    <Container maxWidth={settings.themeStretch ? false : "lg"}>
+    <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
-        heading="Edit"
+        heading={t('Edit')}
         links={[
-          { name: "Dashboard", href: paths.dashboard.root },
+          { name: t('Dashboard'), href: paths.dashboard.root },
           {
-            name: "Product",
+            name: t('Product'),
             href: paths.dashboard.product.root,
           },
-          { name: currentProduct?.name },
+          // { name: currentProduct?.name },
         ]}
         sx={{
           mb: { xs: 3, md: 5 },

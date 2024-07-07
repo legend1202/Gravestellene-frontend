@@ -1,13 +1,13 @@
-import * as Yup from "yup";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useMemo, useState, useEffect, useCallback } from "react";
+import * as Yup from 'yup';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useMemo, useState, useEffect, useCallback } from 'react';
 
-import Card from "@mui/material/Card";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
-import MenuItem from "@mui/material/MenuItem";
-import Container from "@mui/material/Container";
+import Card from '@mui/material/Card';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import MenuItem from '@mui/material/MenuItem';
+import Container from '@mui/material/Container';
 import {
   DataGrid,
   GridColDef,
@@ -16,26 +16,26 @@ import {
   GridRowSelectionModel,
   GridToolbarQuickFilter,
   GridColumnVisibilityModel,
-} from "@mui/x-data-grid";
+} from '@mui/x-data-grid';
 
-import { paths } from "src/routes/paths";
-import { useRouter } from "src/routes/hooks";
-import { RouterLink } from "src/routes/components";
+import { paths } from 'src/routes/paths';
+import { useRouter } from 'src/routes/hooks';
+import { RouterLink } from 'src/routes/components';
 
-import { useBoolean } from "src/hooks/use-boolean";
+import { useBoolean } from 'src/hooks/use-boolean';
 
-import { GetGravestones } from "src/api/gravestone";
-import { deleteGraveyard, useGetGraveyards } from "src/api/graveyard";
+import { GetGravestones } from 'src/api/gravestone';
+import { deleteGraveyard, useGetGraveyards } from 'src/api/graveyard';
 
-import Iconify from "src/components/iconify";
-import { useSnackbar } from "src/components/snackbar";
-import EmptyContent from "src/components/empty-content";
-import { ConfirmDialog } from "src/components/custom-dialog";
-import { useSettingsContext } from "src/components/settings";
-import CustomBreadcrumbs from "src/components/custom-breadcrumbs";
-import FormProvider, { RHFSelect } from "src/components/hook-form";
+import Iconify from 'src/components/iconify';
+import { useSnackbar } from 'src/components/snackbar';
+import EmptyContent from 'src/components/empty-content';
+import { ConfirmDialog } from 'src/components/custom-dialog';
+import { useSettingsContext } from 'src/components/settings';
+import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import FormProvider, { RHFSelect } from 'src/components/hook-form';
 
-import { IGravestoneItem } from "src/types/gravestone";
+import { IGravestoneItem } from 'src/types/gravestone';
 
 import {
   RenderCellSite,
@@ -45,25 +45,28 @@ import {
   RenderCellGravestone,
   RenderCellBuriedDate,
   RenderCellDeceaseDate,
-} from "../graveyard-table-row";
+} from '../graveyard-table-row';
+import { useTranslate } from 'src/locales';
 
 // ----------------------------------------------------------------------
 
 const PUBLISH_OPTIONS = [
-  { value: "published", label: "Published" },
-  { value: "draft", label: "Draft" },
+  { value: 'published', label: 'Published' },
+  { value: 'draft', label: 'Draft' },
 ];
 
 const HIDE_COLUMNS = {
   category: false,
 };
 
-const HIDE_COLUMNS_TOGGLABLE = ["category", "actions"];
+const HIDE_COLUMNS_TOGGLABLE = ['category', 'actions'];
 
 // ----------------------------------------------------------------------
 
 export default function GravestoneList() {
   const { enqueueSnackbar } = useSnackbar();
+
+  const { t } = useTranslate();
 
   const confirmRows = useBoolean();
 
@@ -77,21 +80,18 @@ export default function GravestoneList() {
 
   const [tableData, setTableData] = useState<IGravestoneItem[]>([]);
 
-  const [selectedRowIds, setSelectedRowIds] = useState<GridRowSelectionModel>(
-    []
-  );
+  const [selectedRowIds, setSelectedRowIds] = useState<GridRowSelectionModel>([]);
 
-  const [columnVisibilityModel, setColumnVisibilityModel] = useState<
-    GridColumnVisibilityModel
-  >(HIDE_COLUMNS);
+  const [columnVisibilityModel, setColumnVisibilityModel] =
+    useState<GridColumnVisibilityModel>(HIDE_COLUMNS);
 
   const newGravestoneSchema = Yup.object().shape({
-    id: Yup.string().required("Please select Graveyard!"),
+    id: Yup.string().required('Please select Graveyard!'),
   });
 
   const defaultValues = useMemo(
     () => ({
-      id: "",
+      id: '',
     }),
     []
   );
@@ -115,7 +115,7 @@ export default function GravestoneList() {
       if (result.success) {
         const deleteRow = tableData.filter((row) => row.id !== id);
 
-        enqueueSnackbar("Delete success!");
+        enqueueSnackbar('Delete success!');
 
         setTableData(deleteRow);
       }
@@ -130,7 +130,7 @@ export default function GravestoneList() {
     // );
     // enqueueSnackbar("Delete success!");
     // setTableData(deleteRows);
-    console.log("delete id");
+    console.log('delete id');
   }, []);
 
   const handleEditRow = useCallback(
@@ -143,70 +143,70 @@ export default function GravestoneList() {
 
   const columns: GridColDef[] = [
     {
-      field: "name",
-      headerName: "Name",
+      field: 'name',
+      headerName: t('Name'),
       flex: 1,
       minWidth: 220,
       hideable: false,
       renderCell: (params) => <RenderCellGravestone params={params} />,
     },
     {
-      field: "birthday",
-      headerName: "Birthday",
+      field: 'birthday',
+      headerName: t('Birthday'),
       minWidth: 150,
       renderCell: (params) => <RenderCellBirthday params={params} />,
     },
     {
-      field: "deceasedDate",
-      headerName: "Deceased Date",
+      field: 'deceasedDate',
+      headerName: t('deceased_date'),
       width: 150,
-      type: "singleSelect",
+      type: 'singleSelect',
       editable: true,
       valueOptions: PUBLISH_OPTIONS,
       renderCell: (params) => <RenderCellDeceaseDate params={params} />,
     },
     {
-      field: "buriedDate",
-      headerName: "Beried Date",
+      field: 'buriedDate',
+      headerName: t('buried_date'),
       width: 150,
-      type: "singleSelect",
+      type: 'singleSelect',
       editable: true,
       valueOptions: PUBLISH_OPTIONS,
       renderCell: (params) => <RenderCellBuriedDate params={params} />,
     },
     {
-      field: "homeTown",
-      headerName: "Home Town",
+      field: 'homeTown',
+      headerName: t('Hometown'),
       width: 180,
-      type: "singleSelect",
+      type: 'singleSelect',
       editable: true,
       valueOptions: PUBLISH_OPTIONS,
       renderCell: (params) => <RenderCellHomeTown params={params} />,
     },
     {
-      field: "graveSiteNumber",
-      headerName: "Site",
+      field: 'graveSiteNumber',
+      headerName: t('gravesite_number'),
       width: 110,
-      type: "singleSelect",
+      type: 'singleSelect',
       editable: true,
       valueOptions: PUBLISH_OPTIONS,
       renderCell: (params) => <RenderCellSite params={params} />,
     },
     {
-      field: "quarter",
-      headerName: "Quarter",
+      field: 'quarter',
+      headerName: t('Quarter'),
       width: 110,
-      type: "singleSelect",
+      type: 'singleSelect',
       editable: true,
       valueOptions: PUBLISH_OPTIONS,
       renderCell: (params) => <RenderCellQuarter params={params} />,
     },
     {
-      type: "actions",
-      field: "actions",
-      headerName: " ",
-      align: "right",
-      headerAlign: "right",
+      type: 'actions',
+      field: 'actions',
+      headerName: ' ',
+      align: 'right',
+      headerAlign: 'right',
       width: 80,
       sortable: false,
       filterable: false,
@@ -242,18 +242,18 @@ export default function GravestoneList() {
   return (
     <>
       <Container
-        maxWidth={settings.themeStretch ? false : "lg"}
+        maxWidth={settings.themeStretch ? false : 'lg'}
         sx={{
           flexGrow: 1,
-          display: "flex",
-          flexDirection: "column",
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
         <CustomBreadcrumbs
-          heading="List"
+          heading={t('List')}
           links={[
-            { name: "Gravestone", href: paths.fellesraad.gravestone.create },
-            { name: "List" },
+            { name: t('Gravestone'), href: paths.fellesraad.gravestone.create },
+            { name: t('List') },
           ]}
           action={
             <Button
@@ -262,7 +262,7 @@ export default function GravestoneList() {
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >
-              New Gravestone
+              {t('new_gravestone')}
             </Button>
           }
           sx={{
@@ -277,9 +277,9 @@ export default function GravestoneList() {
             <RHFSelect
               fullWidth
               name="id"
-              label="Graveyard"
+              label={t('Graveyard')}
               InputLabelProps={{ shrink: true }}
-              PaperPropsSx={{ textTransform: "capitalize" }}
+              PaperPropsSx={{ textTransform: 'capitalize' }}
               sx={{ mb: 1 }}
             >
               {graveyards.map(
@@ -298,8 +298,8 @@ export default function GravestoneList() {
           sx={{
             height: { xs: 800, md: 2 },
             flexGrow: { md: 1 },
-            display: { md: "flex" },
-            flexDirection: { md: "column" },
+            display: { md: 'flex' },
+            flexDirection: { md: 'column' },
           }}
         >
           {tableData && (
@@ -309,7 +309,7 @@ export default function GravestoneList() {
               rows={tableData}
               columns={columns}
               loading={graveyardsLoading}
-              getRowHeight={() => "auto"}
+              getRowHeight={() => 'auto'}
               pageSizeOptions={[5, 10, 25]}
               initialState={{
                 pagination: {
@@ -320,9 +320,7 @@ export default function GravestoneList() {
                 setSelectedRowIds(newSelectionModel);
               }}
               columnVisibilityModel={columnVisibilityModel}
-              onColumnVisibilityModelChange={(newModel) =>
-                setColumnVisibilityModel(newModel)
-              }
+              onColumnVisibilityModelChange={(newModel) => setColumnVisibilityModel(newModel)}
               slots={{
                 toolbar: () => (
                   <GridToolbarContainer>
@@ -339,9 +337,7 @@ export default function GravestoneList() {
                         <Button
                           size="small"
                           color="error"
-                          startIcon={
-                            <Iconify icon="solar:trash-bin-trash-bold" />
-                          }
+                          startIcon={<Iconify icon="solar:trash-bin-trash-bold" />}
                           onClick={confirmRows.onTrue}
                         >
                           Delete ({selectedRowIds.length})
@@ -351,9 +347,7 @@ export default function GravestoneList() {
                   </GridToolbarContainer>
                 ),
                 noRowsOverlay: () => <EmptyContent title="No Data" />,
-                noResultsOverlay: () => (
-                  <EmptyContent title="No results found" />
-                ),
+                noResultsOverlay: () => <EmptyContent title="No results found" />,
               }}
               slotProps={{
                 columnsPanel: {
@@ -371,8 +365,7 @@ export default function GravestoneList() {
         title="Delete"
         content={
           <>
-            Are you sure want to delete{" "}
-            <strong> {selectedRowIds.length} </strong> items?
+            Are you sure want to delete <strong> {selectedRowIds.length} </strong> items?
           </>
         }
         action={

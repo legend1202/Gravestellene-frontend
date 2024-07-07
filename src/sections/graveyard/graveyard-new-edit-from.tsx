@@ -1,32 +1,29 @@
-import * as Yup from "yup";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useMemo, useState, useEffect, useCallback } from "react";
+import * as Yup from 'yup';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useMemo, useState, useEffect, useCallback } from 'react';
 
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import Alert from "@mui/material/Alert";
-import Stack from "@mui/material/Stack";
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
 // import Switch from "@mui/material/Switch";
-import Grid from "@mui/material/Unstable_Grid2";
-import CardHeader from "@mui/material/CardHeader";
-import Typography from "@mui/material/Typography";
-import LoadingButton from "@mui/lab/LoadingButton";
+import Grid from '@mui/material/Unstable_Grid2';
+import CardHeader from '@mui/material/CardHeader';
+import Typography from '@mui/material/Typography';
+import LoadingButton from '@mui/lab/LoadingButton';
 // import FormControlLabel from "@mui/material/FormControlLabel";
 
-import { paths } from "src/routes/paths";
-import { useRouter } from "src/routes/hooks";
+import { paths } from 'src/routes/paths';
+import { useRouter } from 'src/routes/hooks';
 
-import { upload, createGraveyard, updateGraveyard } from "src/api/graveyard";
+import { upload, createGraveyard, updateGraveyard } from 'src/api/graveyard';
 
-import { useSnackbar } from "src/components/snackbar";
-import FormProvider, {
-  RHFEditor,
-  RHFUpload,
-  RHFTextField,
-} from "src/components/hook-form";
+import { useSnackbar } from 'src/components/snackbar';
+import FormProvider, { RHFEditor, RHFUpload, RHFTextField } from 'src/components/hook-form';
 
-import { IUploadUrlTYpe, IGraveyardItem } from "src/types/graveyard";
+import { IUploadUrlTYpe, IGraveyardItem } from 'src/types/graveyard';
+import { useTranslate } from 'src/locales';
 
 // ----------------------------------------------------------------------
 
@@ -36,27 +33,29 @@ type Props = {
 
 export default function GraveyardNewEditForm({ currentProduct }: Props) {
   const { enqueueSnackbar } = useSnackbar();
-  const [errorMsg, setErrorMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState('');
   const router = useRouter();
   const [uploadUrls, setUploadUrls] = useState([] as IUploadUrlTYpe);
 
+  const { t } = useTranslate();
+
   const NewProductSchema = Yup.object().shape({
-    name: Yup.string().required("Name is required"),
-    location: Yup.string().required("Location is required"),
-    picture: Yup.array().min(1, "Images is required"),
-    content: Yup.string().required("Content is required"),
-    newsLink: Yup.string().required("News is required"),
-    forecastLink: Yup.string().required("Forecast is required"),
+    name: Yup.string().required('Name is required'),
+    location: Yup.string().required('Location is required'),
+    picture: Yup.array().min(1, 'Images is required'),
+    content: Yup.string().required('Content is required'),
+    newsLink: Yup.string().required('News is required'),
+    forecastLink: Yup.string().required('Forecast is required'),
   });
 
   const defaultValues = useMemo(
     () => ({
-      name: currentProduct?.name || "",
-      location: currentProduct?.location || "",
+      name: currentProduct?.name || '',
+      location: currentProduct?.location || '',
       picture: currentProduct?.picture || [],
-      content: currentProduct?.content || "",
-      newsLink: currentProduct?.newsLink || "",
-      forecastLink: currentProduct?.forecastLink || "",
+      content: currentProduct?.content || '',
+      newsLink: currentProduct?.newsLink || '',
+      forecastLink: currentProduct?.forecastLink || '',
     }),
     [currentProduct]
   );
@@ -90,7 +89,7 @@ export default function GraveyardNewEditForm({ currentProduct }: Props) {
         const updateResults: any = await updateGraveyard(saveData);
         if (updateResults.searchResults?.success) {
           reset();
-          enqueueSnackbar("Update success!");
+          enqueueSnackbar('Update success!');
         } else {
           setErrorMsg(updateResults?.message);
         }
@@ -99,7 +98,7 @@ export default function GraveyardNewEditForm({ currentProduct }: Props) {
         const saveResults: any = await createGraveyard(saveData);
         if (saveResults.searchResults?.success) {
           reset();
-          enqueueSnackbar("Create success!");
+          enqueueSnackbar('Create success!');
         } else {
           setErrorMsg(saveResults?.message);
         }
@@ -128,15 +127,14 @@ export default function GraveyardNewEditForm({ currentProduct }: Props) {
       } else {
         setUploadUrls([...newUploadUrls]);
       }
-      setValue("picture", [...files, ...newFiles], { shouldValidate: true });
+      setValue('picture', [...files, ...newFiles], { shouldValidate: true });
     },
     [setValue, values.picture, uploadUrls, currentProduct?.picture]
   );
 
   const handleRemoveFile = useCallback(
     (inputFile: File | string) => {
-      const filtered =
-        values.picture && values.picture?.filter((file) => file !== inputFile);
+      const filtered = values.picture && values.picture?.filter((file) => file !== inputFile);
 
       values.picture?.forEach((file, index) => {
         if (file === inputFile) {
@@ -144,36 +142,36 @@ export default function GraveyardNewEditForm({ currentProduct }: Props) {
           setUploadUrls(urlFiltered);
         }
       });
-      setValue("picture", filtered);
+      setValue('picture', filtered);
     },
     [setValue, values.picture, uploadUrls]
   );
 
   const handleRemoveAllFiles = useCallback(() => {
-    setValue("picture", []);
+    setValue('picture', []);
     setUploadUrls([]);
   }, [setValue]);
 
   const handleUploadImage = async () => {
-    console.log("");
+    console.log('');
   };
   const renderDetails = (
     <Grid xs={12} md={12}>
       <Card>
-        <CardHeader title="Details" />
+        <CardHeader title={t('Details')} />
 
         <Stack spacing={3} sx={{ p: 3 }}>
-          <RHFTextField name="name" label="Graveyard Name" />
+          <RHFTextField name="name" label={t('Graveyard_Name')} />
 
-          <RHFTextField name="location" label="Graveyard location" />
+          <RHFTextField name="location" label={t('Graveyard_Location')} />
 
           <Stack spacing={1.5}>
-            <Typography variant="subtitle2">Content</Typography>
+            <Typography variant="subtitle2">{t('Content')}</Typography>
             <RHFEditor simple name="content" />
           </Stack>
 
           <Stack spacing={1.5}>
-            <Typography variant="subtitle2">Pictures</Typography>
+            <Typography variant="subtitle2">{t('Pictures')}</Typography>
             <RHFUpload
               multiple
               thumbnail
@@ -193,7 +191,7 @@ export default function GraveyardNewEditForm({ currentProduct }: Props) {
   const renderProperties = (
     <Grid xs={12} md={12}>
       <Card>
-        <CardHeader title="Properties" />
+        <CardHeader title={t('Properties')} />
 
         <Stack spacing={3} sx={{ p: 3 }}>
           <Box
@@ -201,13 +199,13 @@ export default function GraveyardNewEditForm({ currentProduct }: Props) {
             rowGap={3}
             display="grid"
             gridTemplateColumns={{
-              xs: "repeat(1, 1fr)",
-              md: "repeat(1, 1fr)",
+              xs: 'repeat(1, 1fr)',
+              md: 'repeat(1, 1fr)',
             }}
           >
-            <RHFTextField name="newsLink" label="News" />
+            <RHFTextField name="newsLink" label={t('News')} />
 
-            <RHFTextField name="forecastLink" label="Forecast" />
+            <RHFTextField name="forecastLink" label={t('Forecast')} />
           </Box>
         </Stack>
       </Card>
@@ -218,7 +216,7 @@ export default function GraveyardNewEditForm({ currentProduct }: Props) {
     <Grid
       xs={12}
       md={12}
-      sx={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}
+      sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}
     >
       {/* <FormControlLabel
         control={<Switch defaultChecked />}
@@ -226,13 +224,8 @@ export default function GraveyardNewEditForm({ currentProduct }: Props) {
         sx={{ flexGrow: 1, pl: 3 }}
       /> */}
 
-      <LoadingButton
-        type="submit"
-        variant="contained"
-        size="large"
-        loading={isSubmitting}
-      >
-        {!currentProduct ? "Create Product" : "Save Changes"}
+      <LoadingButton type="submit" variant="contained" size="large" loading={isSubmitting}>
+        {!currentProduct ? t('create_product') : t('save_changes')}
       </LoadingButton>
     </Grid>
   );

@@ -1,14 +1,14 @@
 // import isEqual from "lodash/isEqual";
-import * as Yup from "yup";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useMemo, useState, useEffect, useCallback } from "react";
+import * as Yup from 'yup';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useMemo, useState, useEffect, useCallback } from 'react';
 
-import Card from "@mui/material/Card";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
-import MenuItem from "@mui/material/MenuItem";
-import Container from "@mui/material/Container";
+import Card from '@mui/material/Card';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import MenuItem from '@mui/material/MenuItem';
+import Container from '@mui/material/Container';
 import {
   DataGrid,
   GridColDef,
@@ -17,38 +17,35 @@ import {
   GridRowSelectionModel,
   GridToolbarQuickFilter,
   GridColumnVisibilityModel,
-} from "@mui/x-data-grid";
+} from '@mui/x-data-grid';
 
-import { paths } from "src/routes/paths";
-import { RouterLink } from "src/routes/components";
+import { paths } from 'src/routes/paths';
+import { RouterLink } from 'src/routes/components';
 
-import { useBoolean } from "src/hooks/use-boolean";
+import { useBoolean } from 'src/hooks/use-boolean';
 
-import { isCompanyFn, isFellesraadFn } from "src/utils/role-check";
-import {
-  getMergedServiceLists,
-  getRequestedServiceLists,
-} from "src/utils/getRServicesList";
+import { isCompanyFn, isFellesraadFn } from 'src/utils/role-check';
+import { getMergedServiceLists, getRequestedServiceLists } from 'src/utils/getRServicesList';
 
-import { useTranslate } from "src/locales";
+import { useTranslate } from 'src/locales';
 // import { useAuthContext } from "src/auth/hooks";
-import { useGetGraveyards } from "src/api/graveyard";
+import { useGetGraveyards } from 'src/api/graveyard';
 import {
   RequestService,
   useGetRequestedServices,
   ApproveServiceByFellesraad,
   useGetServicesListsByCompanyId,
-} from "src/api/service";
+} from 'src/api/service';
 
-import Iconify from "src/components/iconify";
-import { useSnackbar } from "src/components/snackbar";
+import Iconify from 'src/components/iconify';
+import { useSnackbar } from 'src/components/snackbar';
 // import { useSnackbar } from "src/components/snackbar";
-import EmptyContent from "src/components/empty-content";
-import { useSettingsContext } from "src/components/settings";
-import CustomBreadcrumbs from "src/components/custom-breadcrumbs";
-import FormProvider, { RHFSelect } from "src/components/hook-form";
+import EmptyContent from 'src/components/empty-content';
+import { useSettingsContext } from 'src/components/settings';
+import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import FormProvider, { RHFSelect } from 'src/components/hook-form';
 
-import { IServiceItem } from "src/types/service";
+import { IServiceItem } from 'src/types/service';
 
 import {
   RenderCellPrice,
@@ -56,20 +53,20 @@ import {
   RenderCellDescription,
   RenderCellRequestApprove,
   RenderCellRequestedGraveyard,
-} from "../graveyard-table-row";
+} from '../graveyard-table-row';
 
 // ----------------------------------------------------------------------
 
 const PUBLISH_OPTIONS = [
-  { value: "published", label: "Published" },
-  { value: "draft", label: "Draft" },
+  { value: 'published', label: 'Published' },
+  { value: 'draft', label: 'Draft' },
 ];
 
 const HIDE_COLUMNS = {
   category: false,
 };
 
-const HIDE_COLUMNS_TOGGLABLE = ["category", "actions"];
+const HIDE_COLUMNS_TOGGLABLE = ['category', 'actions'];
 
 // ----------------------------------------------------------------------
 type Props = {
@@ -91,29 +88,24 @@ export default function ServiceRequest({ user }: Props) {
 
   // const { user } = useAuthContext();
 
-  const { services, servicesLoading } = useGetServicesListsByCompanyId(
-    user?.userId
-  );
+  const { services, servicesLoading } = useGetServicesListsByCompanyId(user?.userId);
   const { rservices } = useGetRequestedServices(user?.userId);
   const { graveyards } = useGetGraveyards();
 
   const [servicesData, setServicesData] = useState<IServiceItem[] | []>([]);
 
-  const [selectedRowIds, setSelectedRowIds] = useState<GridRowSelectionModel>(
-    []
-  );
+  const [selectedRowIds, setSelectedRowIds] = useState<GridRowSelectionModel>([]);
 
-  const [columnVisibilityModel, setColumnVisibilityModel] = useState<
-    GridColumnVisibilityModel
-  >(HIDE_COLUMNS);
+  const [columnVisibilityModel, setColumnVisibilityModel] =
+    useState<GridColumnVisibilityModel>(HIDE_COLUMNS);
 
   const newGravesyardSchema = Yup.object().shape({
-    id: Yup.string().required("Please select Graveyard!"),
+    id: Yup.string().required('Please select Graveyard!'),
   });
 
   const defaultValues = useMemo(
     () => ({
-      id: "",
+      id: '',
     }),
     []
   );
@@ -153,25 +145,23 @@ export default function ServiceRequest({ user }: Props) {
 
   const handleRequestRow = async (id: string) => {
     try {
-      const fellesraad = graveyards.filter(
-        (graveyard) => graveyard?.id === values.id
-      );
+      const fellesraad = graveyards.filter((graveyard) => graveyard?.id === values.id);
       if (!values?.id) {
-        console.error("Select Graveyard!");
+        console.error('Select Graveyard!');
       }
       const requestQuery = {
-        fellesraadId: fellesraad[0]?.fellesraadId || "",
-        graveyardId: values?.id || "",
-        serviceId: id || "",
-        companyId: user?.userId || "",
+        fellesraadId: fellesraad[0]?.fellesraadId || '',
+        graveyardId: values?.id || '',
+        serviceId: id || '',
+        companyId: user?.userId || '',
       };
       const result = await RequestService(requestQuery);
 
       if (result.searchResults?.success) {
-        enqueueSnackbar("Service request success!");
+        enqueueSnackbar('Service request success!');
       }
     } catch (error) {
-      window.prompt("Please select the Graveyard!");
+      window.prompt('Please select the Graveyard!');
     }
   };
 
@@ -187,9 +177,9 @@ export default function ServiceRequest({ user }: Props) {
         return service;
       });
       setServicesData(updatedServices);
-      enqueueSnackbar("Approve success!");
+      enqueueSnackbar('Approve success!');
     } else {
-      console.error("Approve not success!");
+      console.error('Approve not success!');
       // enqueueSnackbar("Approve success!");
     }
   };
@@ -206,12 +196,12 @@ export default function ServiceRequest({ user }: Props) {
       ];
     }
     if (isComany) {
-      if (!("rapproved" in params.row)) {
+      if (!('rapproved' in params.row)) {
         return [
           <GridActionsCellItem
             showInMenu
             icon={<Iconify icon="solar:trash-bin-trash-bold" />}
-            label={t("Request")}
+            label={t('Request')}
             onClick={() => handleRequestRow(params.row.id)}
           />,
         ];
@@ -222,49 +212,49 @@ export default function ServiceRequest({ user }: Props) {
 
   const columns: GridColDef[] = [
     {
-      field: "name",
-      headerName: t("service_name"),
+      field: 'name',
+      headerName: t('service_name'),
       flex: 1,
       minWidth: 100,
       hideable: false,
       renderCell: (params) => <RenderCellGraveyard params={params} />,
     },
     {
-      field: "description",
-      headerName: t("description"),
+      field: 'description',
+      headerName: t('description'),
       minWidth: 280,
       renderCell: (params) => <RenderCellDescription params={params} />,
     },
     {
-      field: "price",
-      headerName: t("price"),
+      field: 'price',
+      headerName: t('price'),
       minWidth: 110,
       renderCell: (params) => <RenderCellPrice params={params} />,
     },
     {
-      field: "Graveyard",
-      headerName: t("Graveyard"),
+      field: 'Graveyard',
+      headerName: t('Graveyard'),
       width: 280,
-      type: "singleSelect",
+      type: 'singleSelect',
       editable: true,
       valueOptions: PUBLISH_OPTIONS,
       renderCell: (params) => <RenderCellRequestedGraveyard params={params} />,
     },
     {
-      field: "Approve",
-      headerName: t("Approve"),
+      field: 'Approve',
+      headerName: t('Approve'),
       width: 110,
-      type: "singleSelect",
+      type: 'singleSelect',
       editable: true,
       valueOptions: PUBLISH_OPTIONS,
       renderCell: (params) => <RenderCellRequestApprove params={params} />,
     },
     {
-      type: "actions",
-      field: "actions",
-      headerName: " ",
-      align: "right",
-      headerAlign: "right",
+      type: 'actions',
+      field: 'actions',
+      headerName: ' ',
+      align: 'right',
+      headerAlign: 'right',
       width: 80,
       sortable: false,
       filterable: false,
@@ -280,19 +270,16 @@ export default function ServiceRequest({ user }: Props) {
 
   return (
     <Container
-      maxWidth={settings.themeStretch ? false : "lg"}
+      maxWidth={settings.themeStretch ? false : 'lg'}
       sx={{
         flexGrow: 1,
-        display: "flex",
-        flexDirection: "column",
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
       <CustomBreadcrumbs
-        heading="List"
-        links={[
-          { name: t("service"), href: paths.fellesraad.service.root },
-          { name: t("list") },
-        ]}
+        heading={t('List')}
+        links={[{ name: t('service'), href: paths.fellesraad.service.root }, { name: t('List') }]}
         action={
           isComany && (
             <Button
@@ -301,7 +288,7 @@ export default function ServiceRequest({ user }: Props) {
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >
-              {t("new_service")}
+              {t('new_service')}
             </Button>
           )
         }
@@ -318,9 +305,9 @@ export default function ServiceRequest({ user }: Props) {
           <RHFSelect
             fullWidth
             name="id"
-            label="Graveyard"
+            label={t('Graveyard')}
             InputLabelProps={{ shrink: true }}
-            PaperPropsSx={{ textTransform: "capitalize" }}
+            PaperPropsSx={{ textTransform: 'capitalize' }}
             sx={{ mb: 1 }}
           >
             {graveyards.map(
@@ -339,8 +326,8 @@ export default function ServiceRequest({ user }: Props) {
         sx={{
           height: { xs: 800, md: 2 },
           flexGrow: { md: 1 },
-          display: { md: "flex" },
-          flexDirection: { md: "column" },
+          display: { md: 'flex' },
+          flexDirection: { md: 'column' },
           px: 3,
         }}
       >
@@ -351,7 +338,7 @@ export default function ServiceRequest({ user }: Props) {
             rows={servicesData}
             columns={columns}
             loading={servicesLoading}
-            getRowHeight={() => "auto"}
+            getRowHeight={() => 'auto'}
             pageSizeOptions={[5, 10, 25]}
             initialState={{
               pagination: {
@@ -362,9 +349,7 @@ export default function ServiceRequest({ user }: Props) {
               setSelectedRowIds(newSelectionModel);
             }}
             columnVisibilityModel={columnVisibilityModel}
-            onColumnVisibilityModelChange={(newModel) =>
-              setColumnVisibilityModel(newModel)
-            }
+            onColumnVisibilityModelChange={(newModel) => setColumnVisibilityModel(newModel)}
             slots={{
               toolbar: () => (
                 <GridToolbarContainer>
@@ -388,9 +373,7 @@ export default function ServiceRequest({ user }: Props) {
                       <Button
                         size="small"
                         color="error"
-                        startIcon={
-                          <Iconify icon="solar:trash-bin-trash-bold" />
-                        }
+                        startIcon={<Iconify icon="solar:trash-bin-trash-bold" />}
                         onClick={confirmRows.onTrue}
                       >
                         Delete ({selectedRowIds.length})

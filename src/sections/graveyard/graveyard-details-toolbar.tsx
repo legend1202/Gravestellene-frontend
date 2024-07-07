@@ -10,6 +10,7 @@ import { RouterLink } from 'src/routes/components';
 
 import Iconify from 'src/components/iconify';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
+import { useTranslate } from 'src/locales';
 
 // ----------------------------------------------------------------------
 
@@ -37,6 +38,8 @@ export default function GraveyardDetailsToolbar({
 }: Props) {
   const popover = usePopover();
 
+  const { t } = useTranslate();
+
   return (
     <>
       <Stack
@@ -53,7 +56,7 @@ export default function GraveyardDetailsToolbar({
           href={backLink}
           startIcon={<Iconify icon="eva:arrow-ios-back-fill" width={16} />}
         >
-          Back
+          {t('Back')}
         </Button>
 
         <Box sx={{ flexGrow: 1 }} />

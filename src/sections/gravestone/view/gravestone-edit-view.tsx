@@ -1,17 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
-import Container from "@mui/material/Container";
+import Container from '@mui/material/Container';
 
-import { paths } from "src/routes/paths";
+import { paths } from 'src/routes/paths';
 
-import { GetGravestone } from "src/api/gravestone";
+import { GetGravestone } from 'src/api/gravestone';
 
-import { useSettingsContext } from "src/components/settings";
-import CustomBreadcrumbs from "src/components/custom-breadcrumbs";
+import { useSettingsContext } from 'src/components/settings';
+import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 
-import { IGravestoneItem } from "src/types/gravestone";
+import { IGravestoneItem } from 'src/types/gravestone';
 
-import GravestoneCreateView from "./gravestone-create-view";
+import GravestoneCreateView from './gravestone-create-view';
+import { useTranslate } from 'src/locales';
 
 // ----------------------------------------------------------------------
 
@@ -21,6 +22,8 @@ type Props = {
 
 export default function GravestoneEditView({ id }: Props) {
   const settings = useSettingsContext();
+
+  const { t } = useTranslate();
 
   const [currentGravestone, setCurrentGravestone] = useState<IGravestoneItem>();
 
@@ -36,24 +39,22 @@ export default function GravestoneEditView({ id }: Props) {
   };
 
   return (
-    <Container maxWidth={settings.themeStretch ? false : "lg"}>
+    <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
-        heading="Edit"
+        heading={t('Edit')}
         links={[
-          { name: "Fellesraad", href: paths.dashboard.root },
+          { name: t('Fellesraad'), href: paths.dashboard.root },
           {
-            name: "Graveyard",
+            name: t('Graveyard'),
             href: paths.dashboard.product.root,
           },
-          { name: currentGravestone?.name },
+          // { name: currentGravestone?.name },
         ]}
         sx={{
           mb: { xs: 3, md: 5 },
         }}
       />
-      {currentGravestone && (
-        <GravestoneCreateView currentGravestone={currentGravestone} />
-      )}
+      {currentGravestone && <GravestoneCreateView currentGravestone={currentGravestone} />}
     </Container>
   );
 }

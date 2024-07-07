@@ -1,28 +1,31 @@
-import Container from "@mui/material/Container";
+import Container from '@mui/material/Container';
 
-import { paths } from "src/routes/paths";
+import { paths } from 'src/routes/paths';
 
-import { useSettingsContext } from "src/components/settings";
-import CustomBreadcrumbs from "src/components/custom-breadcrumbs";
+import { useSettingsContext } from 'src/components/settings';
+import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 
-import GraveyardNewEditForm from "../graveyard-new-edit-from";
+import GraveyardNewEditForm from '../graveyard-new-edit-from';
+import { useTranslate } from 'src/locales';
 
 // ----------------------------------------------------------------------
 
 export default function GraveyardCreateView() {
   const settings = useSettingsContext();
 
+  const { t } = useTranslate();
+
   return (
-    <Container maxWidth={settings.themeStretch ? false : "lg"}>
+    <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
-        heading="Create a new Graveyard"
+        heading={t('create_a_new_graveyard')}
         links={[
           {
-            name: "Graveyard",
+            name: t('Graveyard'),
             href: paths.fellesraad.root,
           },
           {
-            name: "New Graveyard",
+            name: t('new_graveyard'),
           },
         ]}
         sx={{

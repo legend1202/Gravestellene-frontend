@@ -1,13 +1,14 @@
-import Container from "@mui/material/Container";
+import Container from '@mui/material/Container';
 
-import { paths } from "src/routes/paths";
+import { paths } from 'src/routes/paths';
 
-import { useGetService } from "src/api/service";
+import { useGetService } from 'src/api/service';
 
-import { useSettingsContext } from "src/components/settings";
-import CustomBreadcrumbs from "src/components/custom-breadcrumbs";
+import { useSettingsContext } from 'src/components/settings';
+import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 
-import GraveyardNewEditForm from "../service-new-edit-form";
+import GraveyardNewEditForm from '../service-new-edit-form';
+import { useTranslate } from 'src/locales';
 
 // ----------------------------------------------------------------------
 
@@ -18,16 +19,18 @@ type Props = {
 export default function ServiceEditView({ id }: Props) {
   const settings = useSettingsContext();
 
+  const { t } = useTranslate();
+
   const { service: currentService } = useGetService(id);
 
   return (
-    <Container maxWidth={settings.themeStretch ? false : "lg"}>
+    <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
-        heading="Edit"
+        heading={t('Edit')}
         links={[
-          { name: "Dashboard", href: paths.dashboard.root },
+          { name: t('Dashboard'), href: paths.dashboard.root },
           {
-            name: "Service",
+            name: t('Service'),
             href: paths.fellesraad.service.root,
           },
           { name: currentService?.name },
