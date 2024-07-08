@@ -4,6 +4,7 @@ import Container from '@mui/material/Container';
 
 import { paths } from 'src/routes/paths';
 
+import { useTranslate } from 'src/locales';
 import { GetGravestone } from 'src/api/gravestone';
 
 import { useSettingsContext } from 'src/components/settings';
@@ -12,7 +13,6 @@ import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import { IGravestoneItem } from 'src/types/gravestone';
 
 import GravestoneCreateView from './gravestone-create-view';
-import { useTranslate } from 'src/locales';
 
 // ----------------------------------------------------------------------
 

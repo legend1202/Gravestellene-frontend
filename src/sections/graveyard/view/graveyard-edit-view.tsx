@@ -2,14 +2,13 @@ import Container from '@mui/material/Container';
 
 import { paths } from 'src/routes/paths';
 
-// import { useGetProduct } from "src/api/product";
+import { useTranslate } from 'src/locales';
 import { useGetGraveyard } from 'src/api/graveyard';
 
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 
 import GraveyardNewEditForm from '../graveyard-new-edit-from';
-import { useTranslate } from 'src/locales';
 
 // ----------------------------------------------------------------------
 

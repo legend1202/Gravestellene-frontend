@@ -1,16 +1,13 @@
-import { useState, useEffect, useCallback } from 'react';
-
 import Card from '@mui/material/Card';
+import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
-import Stack, { StackProps } from '@mui/material/Stack';
 
 import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
 
 import { useGetGraveyard } from 'src/api/graveyard';
-import { GRAVEYARD_PUBLISH_OPTIONS } from 'src/_mock';
 
 import Iconify from 'src/components/iconify';
 import EmptyContent from 'src/components/empty-content';
@@ -18,7 +15,6 @@ import { useSettingsContext } from 'src/components/settings';
 
 import { GraveyardDetailsSkeleton } from '../graveyard-skeleton';
 import GraveyardDetailsSummary from '../graveyard-details-summary';
-import GraveyardDetailsToolbar from '../graveyard-details-toolbar';
 import GraveyardDetailsCarousel from '../graveyard-details-carousel';
 import GraveyardDetailsDescription from '../graveyard-details-description';
 
@@ -33,17 +29,17 @@ export default function SplashGraveyardDetailsView({ id }: Props) {
 
   const settings = useSettingsContext();
 
-  const [publish, setPublish] = useState<boolean | any>(false);
+  // const [publish, setPublish] = useState<boolean | any>(false);
 
-  useEffect(() => {
-    if (graveyard) {
-      setPublish(graveyard?.approved);
-    }
-  }, [graveyard]);
+  // useEffect(() => {
+  //   if (graveyard) {
+  //     setPublish(graveyard?.approved);
+  //   }
+  // }, [graveyard]);
 
-  const handleChangePublish = useCallback((newValue: boolean) => {
-    setPublish(newValue);
-  }, []);
+  // const handleChangePublish = useCallback((newValue: boolean) => {
+  //   setPublish(newValue);
+  // }, []);
 
   const renderSkeleton = <GraveyardDetailsSkeleton />;
 

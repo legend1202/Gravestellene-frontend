@@ -24,6 +24,7 @@ import { RouterLink } from 'src/routes/components';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
+import { useTranslate } from 'src/locales';
 import { GetGravestones } from 'src/api/gravestone';
 import { deleteGraveyard, useGetGraveyards } from 'src/api/graveyard';
 
@@ -46,7 +47,6 @@ import {
   RenderCellBuriedDate,
   RenderCellDeceaseDate,
 } from '../graveyard-table-row';
-import { useTranslate } from 'src/locales';
 
 // ----------------------------------------------------------------------
 

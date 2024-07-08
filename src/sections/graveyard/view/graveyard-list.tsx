@@ -23,6 +23,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 
 import { isAdminFn, isFellesraadFn } from 'src/utils/role-check';
 
+import { useTranslate } from 'src/locales';
 import { useAuthContext } from 'src/auth/hooks';
 import { deleteGraveyard, ApproveGraveyard, useGetGraveyards } from 'src/api/graveyard';
 
@@ -36,7 +37,6 @@ import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import { IGraveyardItem } from 'src/types/graveyard';
 
 import { RenderCellApprove, RenderCellLocation, RenderCellGraveyard } from '../graveyard-table-row';
-import { useTranslate } from 'src/locales';
 
 // ----------------------------------------------------------------------
 

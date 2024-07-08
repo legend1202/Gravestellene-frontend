@@ -8,9 +8,10 @@ import Stack, { StackProps } from '@mui/material/Stack';
 
 import { RouterLink } from 'src/routes/components';
 
+import { useTranslate } from 'src/locales';
+
 import Iconify from 'src/components/iconify';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
-import { useTranslate } from 'src/locales';
 
 // ----------------------------------------------------------------------
 

@@ -13,7 +13,6 @@ import { fCurrency } from 'src/utils/format-number';
 import { paths } from 'src/routes/paths';
 
 import Label from 'src/components/label';
-import path from 'path';
 
 // ----------------------------------------------------------------------
 
@@ -68,8 +67,8 @@ export function RenderCellStock({ params }: ParamsProps) {
 
 export function RenderCellGraveyard({ params }: ParamsProps) {
   const router = useRouter();
-  const handleClickItem = (path: string) => {
-    router.push(paths.fellesraad.graveyard.details(path));
+  const handleClickItem = (pathUrl: string) => {
+    router.push(paths.fellesraad.graveyard.details(pathUrl));
   };
 
   return (
@@ -97,8 +96,8 @@ export function RenderCellGraveyard({ params }: ParamsProps) {
 
 export function RenderCellSplashGraveyard({ params }: ParamsProps) {
   const router = useRouter();
-  const handleClickItem = (path: string) => {
-    router.push(paths.graveyard.details(path));
+  const handleClickItem = (pathUrl: string) => {
+    router.push(paths.graveyard.details(pathUrl));
   };
 
   return (
