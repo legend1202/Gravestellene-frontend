@@ -29,18 +29,6 @@ export default function SplashGraveyardDetailsView({ id }: Props) {
 
   const settings = useSettingsContext();
 
-  // const [publish, setPublish] = useState<boolean | any>(false);
-
-  // useEffect(() => {
-  //   if (graveyard) {
-  //     setPublish(graveyard?.approved);
-  //   }
-  // }, [graveyard]);
-
-  // const handleChangePublish = useCallback((newValue: boolean) => {
-  //   setPublish(newValue);
-  // }, []);
-
   const renderSkeleton = <GraveyardDetailsSkeleton />;
 
   const renderError = (

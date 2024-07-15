@@ -92,6 +92,7 @@ export const endpoints = {
     update: "/api/services/update",
     getAll: "/api/services/getAll",
     getByCompanyId: "/api/services/getByCompanyId",
+    getListsByGraveyardId: "/api/services/getByGraveyardId",
     getByGraveyardId: "/api/services/getRequestsByGraveyardId",
     getById: "/api/services/getById",
     delete: "/api/services/delete",

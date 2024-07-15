@@ -9,6 +9,20 @@ export type IServiceItem = {
   graveyardDetails?: any;
 };
 
+export type IServiceListItem = {
+  id: string;
+  unit: string;
+  name: string;
+  price: string;
+  picture: [];
+  approved: boolean;
+  companyId: string;
+  createdAt: string;
+  updatedAt: string;
+  description: string;
+  graveyardIds: string[];
+};
+
 export type IServiceRequestItem = {
   fellesraadId: string;
   graveyardId: string;

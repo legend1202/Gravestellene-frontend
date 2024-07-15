@@ -5,6 +5,7 @@ import axiosInstance, { fetcher, endpoints } from "src/utils/axios";
 
 import {
   IServiceItem,
+  IServiceListItem,
   IServiceRequestItem,
   IServiceRequestedItem,
 } from "src/types/service";
@@ -61,6 +62,28 @@ export function useGetServicesListsByCompanyId(companyId: string) {
   // console.log(memoizedValue);
   return memoizedValue;
 }
+
+
+export function useGetServicesByGraveyardId(graveyardId: string) {
+  const URL = graveyardId
+    ? [`${endpoints.services.getListsByGraveyardId}/${graveyardId}`]
+    : "";
+
+  const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
+
+  const memoizedValue = useMemo(
+    () => ({
+      services: data?.result as IServiceListItem[],
+      servicesLoading: isLoading,
+      servicesError: error,
+      servicesValidating: isValidating,
+    }),
+    [data?.result, error, isLoading, isValidating]
+  );
+  // console.log(memoizedValue);
+  return memoizedValue;
+}
+
 
 export function useGetServicesListsByGraveyardId(graveyardId: string) {
   const URL = graveyardId
