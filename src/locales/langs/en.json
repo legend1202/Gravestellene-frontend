@@ -8,6 +8,7 @@
   "App": "App",
   "back": "Back",
   "Back": "Back",
+  "back_to_list": "Back to List",
   "blog": "Blog",
   "Blog": "Blog",
   "browse": "Browse",
@@ -20,6 +21,7 @@
   "client": "Client",
   "Client": "Client",
   "company": "Company",
+  "contact_me": "Contact Me!",
   "content": "Content",
   "Content": "Content",
   "create": "Create",
@@ -88,6 +90,7 @@
   "orders": "Orders",
   "Orders": "Orders",
   "overview": "Overview",
+  "phone_number": "Phone Number",
   "pictures": "Pictures",
   "Pictures": "Pictures",
   "Price": "Price",
@@ -114,5 +117,9 @@
   "User": "User",
   "welcome": "Welcome",
   "Welcome": "Welcome",
-  "write_something_awesome": "Write Something Awesome"
+  "write_something_awesome": "Write Something Awesome",
+  "email": "Email",
+  "address": "Address",
+  "find_more": "Find More",
+  "search_by_name": "Search By Name:"
 }

@@ -82,7 +82,7 @@ export function RenderCellGraveyard({ params }: ParamsProps) {
 
       <ListItemText
         disableTypography
-        onClick={() => handleClickItem(`${params?.id}`)}
+        onClick={() => handleClickItem(`${params?.row.name}`)}
         secondary={
           <Box component="div" sx={{ typography: 'body2', color: 'text.disabled' }}>
             {params.row.name}
@@ -111,7 +111,7 @@ export function RenderCellSplashGraveyard({ params }: ParamsProps) {
 
       <ListItemText
         disableTypography
-        onClick={() => handleClickItem(`${params?.id}`)}
+        onClick={() => handleClickItem(`${params?.row.name}`)}
         secondary={
           <Box component="div" sx={{ typography: 'body2', color: 'text.disabled' }}>
             {params.row.name}

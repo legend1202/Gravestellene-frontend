@@ -8,15 +8,17 @@ import Rating from '@mui/material/Rating';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 
-import { useGetServicesByGraveyardId } from 'src/api/service';
+import { useTranslate } from 'src/locales';
+import { useGetServicesListsByGraveyardId } from 'src/api/service';
 
 import Iconify from 'src/components/iconify';
 import FormProvider from 'src/components/hook-form';
 
 import { ICheckoutItem } from 'src/types/checkout';
 import { IGraveyardItem } from 'src/types/graveyard';
-import { IServiceListItem } from 'src/types/service';
+import { IServiceRequestedItem } from 'src/types/service';
 
+import GraveyardDetailsSevices from './graveyard-details-services';
 // ----------------------------------------------------------------------
 
 type Props = {
@@ -35,11 +37,12 @@ export default function GraveyardDetailsSummary({
   disabledActions,
   ...other
 }: Props) {
+  const { t } = useTranslate();
   const { id, fellesraadId, name, location, picture, content, newsLink, forecastLink } = graveyard;
 
-  const [serviceLists, setServiceLists] = useState<IServiceListItem[]>();
+  const [serviceLists, setServiceLists] = useState<IServiceRequestedItem[]>();
 
-  const { services, servicesLoading } = useGetServicesByGraveyardId(id || '');
+  const { services, servicesLoading } = useGetServicesListsByGraveyardId(id || '');
 
   const defaultValues = {
     id,
@@ -72,7 +75,7 @@ export default function GraveyardDetailsSummary({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [servicesLoading]);
 
-  const renderContactinfoTitle = <Box sx={{ typography: 'h5' }}>Contact me!</Box>;
+  const renderContactinfoTitle = <Box sx={{ typography: 'h5' }}>{t('contact_me')}</Box>;
 
   const renderShare = (
     <Stack direction="row" spacing={3} justifyContent="center">
@@ -116,23 +119,7 @@ export default function GraveyardDetailsSummary({
 
   const renderFindmore = (
     <>
-      <Box sx={{ typography: 'h5' }}>Find More!</Box>
-      {/* <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-        <Link
-          variant="subtitle2"
-          sx={{
-            color: 'text.secondary',
-            display: 'inline-flex',
-            alignItems: 'center',
-          }}
-          href="https://www.google.com/maps/place/%D0%9D%D0%BE%D1%80%D0%B2%D0%B5%D0%B3%D0%B8%D1%8F/@64.55875,17.7099499,5z/data=!3m1!4b1!4m6!3m5!1s0x461268458f4de5bf:0xa1b03b9db864d02b!8m2!3d60.472024!4d8.468946!16zL20vMDViNHc?entry=ttu"
-          target="_blank"
-          rel="noopener"
-        >
-          <Iconify icon="mingcute:add-line" width={16} sx={{ mr: 1 }} />
-          Map - You can see Google Map!
-        </Link>
-      </Typography> */}
+      <Box sx={{ typography: 'h5' }}>{t('find_more')}</Box>
       <Typography variant="body2" sx={{ color: 'text.secondary' }}>
         <Link
           variant="subtitle2"
@@ -146,7 +133,7 @@ export default function GraveyardDetailsSummary({
           rel="noopener"
         >
           <Iconify icon="mingcute:add-line" width={16} sx={{ mr: 1 }} />
-          News - {newsLink}
+          {t('news')} - {newsLink}
         </Link>
       </Typography>
       <Typography variant="body2" sx={{ color: 'text.secondary' }}>
@@ -162,7 +149,7 @@ export default function GraveyardDetailsSummary({
           rel="noopener"
         >
           <Iconify icon="mingcute:add-line" width={16} sx={{ mr: 1 }} />
-          Forecast
+          {t('forecast')}
         </Link>
       </Typography>
     </>
@@ -171,17 +158,21 @@ export default function GraveyardDetailsSummary({
   const renderContactinfo = (
     <>
       <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-        Phone number:
+        {t('contact_me')}:
       </Typography>
       <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-        E-mail:
+        {t('email')}:
       </Typography>
       <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-        Address: {location}
+        {t('address')}: {location}
       </Typography>
     </>
   );
-  const renderSevicesTitle = <Box sx={{ typography: 'h5' }}>Services</Box>;
+  const renderSevicesTitle = (
+    <Box sx={{ typography: 'h5' }}>
+      {t('services')} <small>( {t('company')})</small>
+    </Box>
+  );
 
   const renderLocation = (
     <Stack
@@ -215,13 +206,7 @@ export default function GraveyardDetailsSummary({
             serviceLists.map(
               (servicelist) =>
                 servicelist?.approved && (
-                  <Typography
-                    key={servicelist?.id}
-                    variant="body2"
-                    sx={{ color: 'text.secondary' }}
-                  >
-                    {servicelist?.name}
-                  </Typography>
+                  <GraveyardDetailsSevices key={servicelist?.id} service={servicelist} />
                 )
             )}
         </Stack>

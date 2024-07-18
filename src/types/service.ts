@@ -53,4 +53,7 @@ export type IServiceRequestedItem = {
     price: string;
     unit: string;
   };
+  companyDetails: {
+    name?: string;
+  };
 };

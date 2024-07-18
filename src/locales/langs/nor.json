@@ -8,6 +8,7 @@
   "App": "App",
   "back": "tilbake",
   "Back": "Tilbake",
+  "back_to_list": "Tilbake til listen",
   "blog": "blogg",
   "Blog": "Blogg",
   "browse": "søk",
@@ -20,6 +21,7 @@
   "client": "klient",
   "Client": "Klient",
   "company": "Selskap",
+  "contact_me": "Kontakt meg!",
   "content": "innhold",
   "Content": "Innhold",
   "create": "opprett",
@@ -89,6 +91,7 @@
   "orders": "bestillinger",
   "Orders": "Bestillinger",
   "overview": "Oversikt",
+  "phone_number": "Telefonnummer",
   "pictures": "bilder",
   "Pictures": "Bilder",
   "Price": "Pris",
@@ -115,5 +118,9 @@
   "User": "Bruker",
   "welcome": "velkommen",
   "Welcome": "Velkommen",
-  "write_something_awesome": "Skriv innhold her"
+  "write_something_awesome": "Skriv innhold her",
+  "email": "E-post",
+  "address": "Adresse",
+  "find_more": "Finn mer",
+  "search_by_name": "Søk etter navn:"
 }
