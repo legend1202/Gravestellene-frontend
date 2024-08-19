@@ -20,7 +20,6 @@ import {
 
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
-import { RouterLink } from 'src/routes/components';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
@@ -33,7 +32,6 @@ import { useSnackbar } from 'src/components/snackbar';
 import EmptyContent from 'src/components/empty-content';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { useSettingsContext } from 'src/components/settings';
-import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import FormProvider, { RHFSelect } from 'src/components/hook-form';
 
 import { IGravestoneItem } from 'src/types/gravestone';
@@ -45,6 +43,7 @@ import {
   RenderCellBirthday,
   RenderCellGravestone,
   RenderCellBuriedDate,
+  RenderCellBuriedWith,
   RenderCellDeceaseDate,
 } from '../graveyard-table-row';
 
@@ -80,6 +79,8 @@ export default function GravestoneList() {
 
   const [tableData, setTableData] = useState<IGravestoneItem[]>([]);
 
+  const [tableLoading, setTableLoading] = useState<boolean>(false);
+
   const [selectedRowIds, setSelectedRowIds] = useState<GridRowSelectionModel>([]);
 
   const [columnVisibilityModel, setColumnVisibilityModel] =
@@ -102,6 +103,10 @@ export default function GravestoneList() {
   const { watch } = methods;
 
   const values = watch();
+
+  useEffect(() => {
+    setTableLoading(graveyardsLoading);
+  }, [graveyardsLoading]);
 
   useEffect(() => {
     if (values?.id) {
@@ -167,7 +172,7 @@ export default function GravestoneList() {
     },
     {
       field: 'buriedDate',
-      headerName: t('buried_date'),
+      headerName: t('Death Age'),
       width: 150,
       type: 'singleSelect',
       editable: true,
@@ -176,7 +181,7 @@ export default function GravestoneList() {
     },
     {
       field: 'homeTown',
-      headerName: t('Hometown'),
+      headerName: t('Field'),
       width: 180,
       type: 'singleSelect',
       editable: true,
@@ -185,7 +190,7 @@ export default function GravestoneList() {
     },
     {
       field: 'graveSiteNumber',
-      headerName: t('gravesite_number'),
+      headerName: t('Row'),
       width: 110,
       type: 'singleSelect',
       editable: true,
@@ -194,12 +199,21 @@ export default function GravestoneList() {
     },
     {
       field: 'quarter',
-      headerName: t('Quarter'),
+      headerName: t('Place'),
       width: 110,
       type: 'singleSelect',
       editable: true,
       valueOptions: PUBLISH_OPTIONS,
       renderCell: (params) => <RenderCellQuarter params={params} />,
+    },
+    {
+      field: 'buriedWith',
+      headerName: t('Buried With'),
+      width: 220,
+      type: 'singleSelect',
+      editable: true,
+      valueOptions: PUBLISH_OPTIONS,
+      renderCell: (params) => <RenderCellBuriedWith params={params} />,
     },
     {
       type: 'actions',
@@ -229,10 +243,12 @@ export default function GravestoneList() {
   ];
 
   const handleSearchResult = async (graveyardId: string) => {
+    setTableLoading(true);
     const searchResult = await GetGravestones(graveyardId);
     if (searchResult) {
       setTableData(searchResult?.gravestones);
     }
+    setTableLoading(false);
   };
   const getTogglableColumns = () =>
     columns
@@ -249,7 +265,7 @@ export default function GravestoneList() {
           flexDirection: 'column',
         }}
       >
-        <CustomBreadcrumbs
+        {/* <CustomBreadcrumbs
           heading={t('List')}
           links={[
             { name: t('Gravestone'), href: paths.fellesraad.gravestone.create },
@@ -271,7 +287,7 @@ export default function GravestoneList() {
               md: 5,
             },
           }}
-        />
+        /> */}
         {graveyards && (
           <FormProvider methods={methods}>
             <RHFSelect
@@ -308,7 +324,7 @@ export default function GravestoneList() {
               disableRowSelectionOnClick
               rows={tableData}
               columns={columns}
-              loading={graveyardsLoading}
+              loading={tableLoading}
               getRowHeight={() => 'auto'}
               pageSizeOptions={[5, 10, 25]}
               initialState={{

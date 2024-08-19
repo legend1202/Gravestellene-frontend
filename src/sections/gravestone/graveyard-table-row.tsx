@@ -1,7 +1,7 @@
-import Stack from "@mui/material/Stack";
-import Avatar from "@mui/material/Avatar";
-import { GridCellParams } from "@mui/x-data-grid";
-import ListItemText from "@mui/material/ListItemText";
+import Stack from '@mui/material/Stack';
+import Avatar from '@mui/material/Avatar';
+import { GridCellParams } from '@mui/x-data-grid';
+import ListItemText from '@mui/material/ListItemText';
 
 // ----------------------------------------------------------------------
 
@@ -16,16 +16,16 @@ export function RenderCellGravestone({ params }: ParamsProps) {
         alt={params.row.name}
         src={params.row.coverUrl}
         variant="rounded"
-        sx={{ width: 64, height: 64, mr: 2 }}
+        sx={{ width: 24, height: 24, mr: 2 }}
       />
 
       <ListItemText
         primary={params.row.name}
-        primaryTypographyProps={{ typography: "body2", noWrap: true }}
+        primaryTypographyProps={{ typography: 'body2', noWrap: true }}
         secondaryTypographyProps={{
           mt: 0.5,
-          component: "span",
-          typography: "caption",
+          component: 'span',
+          typography: 'caption',
         }}
       />
     </Stack>
@@ -35,11 +35,11 @@ export function RenderCellBirthday({ params }: ParamsProps) {
   return (
     <ListItemText
       primary={params.row.birthday}
-      primaryTypographyProps={{ typography: "body2", noWrap: true }}
+      primaryTypographyProps={{ typography: 'body2', noWrap: true }}
       secondaryTypographyProps={{
         mt: 0.5,
-        component: "span",
-        typography: "caption",
+        component: 'span',
+        typography: 'caption',
       }}
     />
   );
@@ -48,11 +48,11 @@ export function RenderCellDeceaseDate({ params }: ParamsProps) {
   return (
     <ListItemText
       primary={params.row.deceasedDate}
-      primaryTypographyProps={{ typography: "body2", noWrap: true }}
+      primaryTypographyProps={{ typography: 'body2', noWrap: true }}
       secondaryTypographyProps={{
         mt: 0.5,
-        component: "span",
-        typography: "caption",
+        component: 'span',
+        typography: 'caption',
       }}
     />
   );
@@ -61,12 +61,12 @@ export function RenderCellDeceaseDate({ params }: ParamsProps) {
 export function RenderCellBuriedDate({ params }: ParamsProps) {
   return (
     <ListItemText
-      primary={params.row.buriedDate}
-      primaryTypographyProps={{ typography: "body2", noWrap: true }}
+      primary={params.row.ageOnDeath}
+      primaryTypographyProps={{ typography: 'body2', noWrap: true }}
       secondaryTypographyProps={{
         mt: 0.5,
-        component: "span",
-        typography: "caption",
+        component: 'span',
+        typography: 'caption',
       }}
     />
   );
@@ -75,12 +75,12 @@ export function RenderCellBuriedDate({ params }: ParamsProps) {
 export function RenderCellHomeTown({ params }: ParamsProps) {
   return (
     <ListItemText
-      primary={params.row.homeTown}
-      primaryTypographyProps={{ typography: "body2", noWrap: true }}
+      primary={params.row.field}
+      primaryTypographyProps={{ typography: 'body2', noWrap: true }}
       secondaryTypographyProps={{
         mt: 0.5,
-        component: "span",
-        typography: "caption",
+        component: 'span',
+        typography: 'caption',
       }}
     />
   );
@@ -89,12 +89,12 @@ export function RenderCellHomeTown({ params }: ParamsProps) {
 export function RenderCellSite({ params }: ParamsProps) {
   return (
     <ListItemText
-      primary={params.row.graveSiteNumber}
-      primaryTypographyProps={{ typography: "body2", noWrap: true }}
+      primary={params.row.row}
+      primaryTypographyProps={{ typography: 'body2', noWrap: true }}
       secondaryTypographyProps={{
         mt: 0.5,
-        component: "span",
-        typography: "caption",
+        component: 'span',
+        typography: 'caption',
       }}
     />
   );
@@ -102,12 +102,26 @@ export function RenderCellSite({ params }: ParamsProps) {
 export function RenderCellQuarter({ params }: ParamsProps) {
   return (
     <ListItemText
-      primary={params.row.quarter}
-      primaryTypographyProps={{ typography: "body2", noWrap: true }}
+      primary={params.row.place}
+      primaryTypographyProps={{ typography: 'body2', noWrap: true }}
       secondaryTypographyProps={{
         mt: 0.5,
-        component: "span",
-        typography: "caption",
+        component: 'span',
+        typography: 'caption',
+      }}
+    />
+  );
+}
+
+export function RenderCellBuriedWith({ params }: ParamsProps) {
+  return (
+    <ListItemText
+      primary={params.row.burriedWith}
+      primaryTypographyProps={{ typography: 'body2', noWrap: true }}
+      secondaryTypographyProps={{
+        mt: 0.5,
+        component: 'span',
+        typography: 'caption',
       }}
     />
   );

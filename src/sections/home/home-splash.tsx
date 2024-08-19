@@ -1,6 +1,6 @@
+import { m } from 'framer-motion';
 import isEqual from 'lodash/isEqual';
-import { m, useScroll } from 'framer-motion';
-import { useRef, useState, useEffect, useCallback } from 'react';
+import { useRef, useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -53,10 +53,6 @@ const defaultFilters: IProductFilters = {
 
 export default function HomeSplash() {
   const heroRef = useRef<HTMLDivElement | null>(null);
-
-  const { scrollY } = useScroll();
-
-  const [percent, setPercent] = useState(0);
 
   const [searchKeyState, setSearchKeyState] = useState(false);
 
@@ -111,30 +107,10 @@ export default function HomeSplash() {
 
   const canReset = !isEqual(defaultFilters, filters);
 
-  const getScroll = useCallback(() => {
-    let heroHeight = 0;
-
-    if (heroRef.current) {
-      heroHeight = heroRef.current.offsetHeight;
-    }
-
-    scrollY.on('change', (scrollHeight) => {
-      const scrollPercent = (scrollHeight * 100) / heroHeight;
-
-      setPercent(Math.floor(scrollPercent));
-    });
-  }, [scrollY]);
-
   const handleShowSearchResult = () => {
     // setSearchKey('');
     setSearchKeyState(true);
   };
-
-  useEffect(() => {
-    getScroll();
-  }, [getScroll]);
-
-  const hide = percent > 120;
 
   const renderFilters = (
     <Stack
@@ -174,14 +150,7 @@ export default function HomeSplash() {
   );
 
   return (
-    <StyledRoot
-      ref={heroRef}
-      sx={{
-        ...(hide && {
-          opacity: 0,
-        }),
-      }}
-    >
+    <StyledRoot ref={heroRef}>
       <Box
         sx={{
           height: '100%',

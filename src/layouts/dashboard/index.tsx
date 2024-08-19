@@ -1,19 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
-import Box from "@mui/material/Box";
+import Box from '@mui/material/Box';
 
-import { useBoolean } from "src/hooks/use-boolean";
-import { useResponsive } from "src/hooks/use-responsive";
+import { useBoolean } from 'src/hooks/use-boolean';
+import { useResponsive } from 'src/hooks/use-responsive';
 
-import { useAuthContext } from "src/auth/hooks";
+import { useAuthContext } from 'src/auth/hooks';
 
-import { useSettingsContext } from "src/components/settings";
+import { useSettingsContext } from 'src/components/settings';
 
-import Main from "./main";
-import Header from "./header";
-import NavMini from "./nav-mini";
-import NavVertical from "./nav-vertical";
-import NavHorizontal from "./nav-horizontal";
+import Main from './main';
+import Header from './header';
+import NavMini from './nav-mini';
+import NavVertical from './nav-vertical';
+import NavHorizontal from './nav-horizontal';
 
 // ----------------------------------------------------------------------
 
@@ -27,24 +27,22 @@ export default function DashboardLayout({ children }: Props) {
 
   const [isClient, setClient] = useState(false);
 
-  const lgUp = useResponsive("up", "lg");
+  const lgUp = useResponsive('up', 'lg');
 
   const nav = useBoolean();
 
-  const isHorizontal = settings.themeLayout === "horizontal";
+  const isHorizontal = settings.themeLayout === 'horizontal';
 
-  const isMini = settings.themeLayout === "mini";
+  const isMini = settings.themeLayout === 'mini';
 
   const renderNavMini = <NavMini />;
 
   const renderHorizontal = <NavHorizontal />;
 
-  const renderNavVertical = (
-    <NavVertical openNav={nav.value} onCloseNav={nav.onFalse} />
-  );
+  const renderNavVertical = <NavVertical openNav={nav.value} onCloseNav={nav.onFalse} />;
 
   useEffect(() => {
-    if (user?.role === "CLIENT") {
+    if (user?.role === 'CLIENT') {
       setClient(true);
     }
   }, [user]);
@@ -69,8 +67,8 @@ export default function DashboardLayout({ children }: Props) {
         <Box
           sx={{
             minHeight: 1,
-            display: "flex",
-            flexDirection: { xs: "column", lg: "row" },
+            display: 'flex',
+            flexDirection: { xs: 'column', lg: 'row' },
           }}
         >
           {!isClient && lgUp ? renderNavMini : renderNavVertical}

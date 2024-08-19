@@ -77,7 +77,7 @@ export function RenderCellGraveyard({ params }: ParamsProps) {
         alt={params.row.name}
         src={params.row.coverUrl}
         variant="rounded"
-        sx={{ width: 64, height: 64, mr: 2 }}
+        sx={{ width: 24, height: 24, mr: 2 }}
       />
 
       <ListItemText
@@ -106,7 +106,7 @@ export function RenderCellSplashGraveyard({ params }: ParamsProps) {
         alt={params.row.name}
         src={params.row.coverUrl}
         variant="rounded"
-        sx={{ width: 64, height: 64, mr: 2 }}
+        sx={{ width: 24, height: 24, mr: 2 }}
       />
 
       <ListItemText

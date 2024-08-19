@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useMemo, useState, useEffect, useCallback } from 'react';
 
+import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import MenuItem from '@mui/material/MenuItem';
 import Grid from '@mui/material/Unstable_Grid2';
@@ -180,7 +181,10 @@ export default function GravestoneCreateView({ currentGravestone }: Props) {
           }}
         />
       ) : (
-        <Stack spacing={3} sx={{ p: 1, flex: 1, justifyContent: 'space-between' }}>
+        <Stack
+          spacing={3}
+          sx={{ p: 1, flex: 1, justifyContent: 'space-between', overflowY: 'scroll' }}
+        >
           <RHFTextField name="name" label={t('Last_Name_and_First_Name')} />
           <RHFSelect
             fullWidth
@@ -265,13 +269,7 @@ export default function GravestoneCreateView({ currentGravestone }: Props) {
             bgcolor: 'background.neutral',
           }}
         >
-          <Stack
-            spacing={1}
-            direction="row"
-            sx={{
-              minHeight: { md: 720 },
-            }}
-          >
+          <Stack component={Card} direction="row" sx={{ height: '72vh' }}>
             {renderMailList}
 
             {renderMailDetails}

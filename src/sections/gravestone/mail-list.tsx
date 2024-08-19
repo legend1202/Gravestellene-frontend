@@ -1,15 +1,15 @@
-import Stack from "@mui/material/Stack";
-import Drawer from "@mui/material/Drawer";
-import TextField from "@mui/material/TextField";
-import InputAdornment from "@mui/material/InputAdornment";
+import Stack from '@mui/material/Stack';
+import Drawer from '@mui/material/Drawer';
+import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
 
-import { useResponsive } from "src/hooks/use-responsive";
+import { useResponsive } from 'src/hooks/use-responsive';
 
-import Iconify from "src/components/iconify";
-import Scrollbar from "src/components/scrollbar";
+import Iconify from 'src/components/iconify';
+import Scrollbar from 'src/components/scrollbar';
 
-import MailItem from "./mail-item";
-import { MailItemSkeleton } from "./mail-skeleton";
+import MailItem from './mail-item';
+import { MailItemSkeleton } from './mail-skeleton';
 
 // ----------------------------------------------------------------------
 
@@ -36,7 +36,7 @@ export default function MailList({
   selectedLabelId,
   selectedMailId,
 }: Props) {
-  const mdUp = useResponsive("up", "md");
+  const mdUp = useResponsive('up', 'md');
 
   const renderSkeleton = (
     <>
@@ -70,10 +70,7 @@ export default function MailList({
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <Iconify
-                  icon="eva:search-fill"
-                  sx={{ color: "text.disabled" }}
-                />
+                <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
               </InputAdornment>
             ),
           }}
@@ -94,7 +91,7 @@ export default function MailList({
         width: 320,
         flexShrink: 0,
         borderRadius: 1.5,
-        bgcolor: "background.default",
+        bgcolor: 'background.default',
       }}
     >
       {renderContent}

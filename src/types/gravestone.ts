@@ -10,6 +10,7 @@ export type IGravestoneItem = {
   graveSite: string;
   homeTown: string;
   graveSiteNumber: string;
+  burriedWith?: string;
   approved?: boolean;
   createdAt?: Date;
   updateAt?: Date;

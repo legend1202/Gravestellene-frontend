@@ -1,13 +1,11 @@
 import { Navigate, useRoutes } from 'react-router-dom';
 
-import MainLayout from 'src/layouts/main';
-
 import { authRoutes } from './auth';
+import { mainRoutes } from './main';
 import { adminRoutes } from './admin';
 import { orderRoutes } from './order';
 import { serviceRoutes } from './service';
 import { customerRoutes } from './customer';
-import { HomePage, mainRoutes } from './main';
 import { dashboardRoutes } from './dashboard';
 import { graveyardRoutes } from './graveyard';
 import { gravestoneRoutes } from './gravestone';
@@ -17,14 +15,6 @@ import { gravestoneRoutes } from './gravestone';
 export default function Router() {
   return useRoutes([
     // SET INDEX PAGE WITH HOME PAGE
-    {
-      path: '/',
-      element: (
-        <MainLayout>
-          <HomePage />
-        </MainLayout>
-      ),
-    },
 
     // Auth routes
     ...authRoutes,
