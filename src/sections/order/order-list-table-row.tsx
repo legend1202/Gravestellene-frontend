@@ -1,15 +1,11 @@
-import Box from "@mui/material/Box";
-// import Link from "@mui/material/Link";
-import Stack from "@mui/material/Stack";
-// import Avatar from "@mui/material/Avatar";
-import { GridCellParams } from "@mui/x-data-grid";
-import ListItemText from "@mui/material/ListItemText";
-// import LinearProgress from "@mui/material/LinearProgress";
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import { GridCellParams } from '@mui/x-data-grid';
+import ListItemText from '@mui/material/ListItemText';
 
-import { fCurrency } from "src/utils/format-number";
-// import { fTime, fDate } from "src/utils/format-time";
+import { fCurrency } from 'src/utils/format-number';
 
-import Label from "src/components/label";
+import Label from 'src/components/label';
 
 // ----------------------------------------------------------------------
 
@@ -25,14 +21,11 @@ export function RenderCellPrice({ params }: ParamsProps) {
           key={service.id}
           disableTypography
           primary={
-            <Box
-              component="div"
-              sx={{ typography: "body2", color: "text.disabled" }}
-            >
+            <Box component="div" sx={{ typography: 'body2', color: 'text.disabled' }}>
               {fCurrency(service.price)}
             </Box>
           }
-          sx={{ display: "flex", flexDirection: "column" }}
+          sx={{ display: 'flex', flexDirection: 'column' }}
         />
       ))}
     </>
@@ -41,8 +34,8 @@ export function RenderCellPrice({ params }: ParamsProps) {
 
 export function RenderCellApprove({ params }: ParamsProps) {
   return (
-    <Label variant="soft" color={(params.row.approved && "info") || "default"}>
-      {params.row.approved ? "Approved" : "Draft"}
+    <Label variant="soft" color={(params.row.approved && 'info') || 'default'}>
+      {params.row.approved ? 'Approved' : 'Draft'}
     </Label>
   );
 }
@@ -50,14 +43,8 @@ export function RenderCellApprove({ params }: ParamsProps) {
 export function RenderCellGraveyard({ params }: ParamsProps) {
   return (
     <ListItemText
-      primary={params.row.gravestoneDetails.graveSite}
-      // secondary={params.row.graveyardId}
-      primaryTypographyProps={{ typography: "body2", noWrap: true }}
-      // secondaryTypographyProps={{
-      //   mt: 0.5,
-      //   component: "span",
-      //   typography: "caption",
-      // }}
+      primary={`${params.row.gravestoneDetails.firstName} ${params.row.gravestoneDetails.lastName}`}
+      primaryTypographyProps={{ typography: 'body2', noWrap: true }}
     />
   );
 }
@@ -70,14 +57,11 @@ export function RenderCellServices({ params }: ParamsProps) {
           key={service.id}
           disableTypography
           primary={
-            <Box
-              component="div"
-              sx={{ typography: "body2", color: "text.disabled" }}
-            >
+            <Box component="div" sx={{ typography: 'body2', color: 'text.disabled' }}>
               {service.name}
             </Box>
           }
-          sx={{ display: "flex", flexDirection: "column" }}
+          sx={{ display: 'flex', flexDirection: 'column' }}
         />
       ))}
     </Stack>
@@ -98,10 +82,7 @@ export function RenderCellUser({ params }: ParamsProps) {
       <ListItemText
         disableTypography
         primary={
-          <Box
-            component="div"
-            sx={{ typography: "body2", color: "text.disabled" }}
-          >
+          <Box component="div" sx={{ typography: 'body2', color: 'text.disabled' }}>
             {params.row.userDetails.name}
           </Box>
         }

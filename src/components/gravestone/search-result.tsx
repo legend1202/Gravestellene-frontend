@@ -116,6 +116,86 @@ export default function GraveStoneSearchResult({ gravestones }: ParamsProps) {
                 </Typography>
               </m.div>
             </Box>
+            <Box
+              gap={{ xs: 3, lg: 10 }}
+              display="grid"
+              alignItems="center"
+              gridTemplateColumns={{
+                xs: 'repeat(1, 1fr)',
+                md: 'repeat(3, 1fr)',
+              }}
+            >
+              <m.div variants={varFade().inUp}>
+                <Typography
+                  sx={{
+                    py: { xs: 0.5, md: 0.5 },
+                    px: { xs: 1.5, md: 1.5 },
+                    fontSize: '14px',
+                  }}
+                  color="common.black"
+                >
+                  Graveyard: {element?.graveyardDetails[0].name}
+                </Typography>
+              </m.div>
+              <m.div variants={varFade().inUp}>
+                <Typography
+                  sx={{
+                    py: { xs: 0.5, md: 0.5 },
+                    px: { xs: 0.5, md: 0.5 },
+                    fontSize: '14px',
+                  }}
+                  color="common.black"
+                >
+                  Church Number: {element?.churchNumber}
+                </Typography>
+              </m.div>
+              <m.div variants={varFade().inUp}>
+                <Typography
+                  sx={{
+                    py: { xs: 0.5, md: 0.5 },
+                    px: { xs: 0.5, md: 0.5 },
+                    fontSize: '14px',
+                  }}
+                  color="common.black"
+                >
+                  Field: {element?.field}
+                </Typography>
+              </m.div>
+            </Box>
+            <Box
+              gap={{ xs: 3, lg: 10 }}
+              display="grid"
+              alignItems="center"
+              gridTemplateColumns={{
+                xs: 'repeat(1, 1fr)',
+                md: 'repeat(3, 1fr)',
+              }}
+            >
+              <m.div variants={varFade().inUp}>
+                <Typography
+                  sx={{
+                    py: { xs: 1.5, md: 1.5 },
+                    px: { xs: 1.5, md: 1.5 },
+                    fontSize: '14px',
+                  }}
+                  color="common.black"
+                >
+                  Row: {element?.row}
+                </Typography>
+              </m.div>
+              <m.div variants={varFade().inUp}>
+                <Typography
+                  sx={{
+                    py: { xs: 0.5, md: 0.5 },
+                    px: { xs: 0.5, md: 0.5 },
+                    fontSize: '14px',
+                  }}
+                  color="common.black"
+                >
+                  Place: {element?.place}
+                </Typography>
+              </m.div>
+            </Box>
           </Box>
         ))}
       </Box>

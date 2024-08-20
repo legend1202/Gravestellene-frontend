@@ -35,12 +35,6 @@ import {
 } from '../order-list-table-row';
 
 // ----------------------------------------------------------------------
-
-const PUBLISH_OPTIONS = [
-  { value: 'approved', label: 'Approved' },
-  { value: 'draft', label: 'Draft' },
-];
-
 const HIDE_COLUMNS = {
   category: false,
 };
@@ -68,7 +62,6 @@ export default function OrderListApprove() {
 
   useEffect(() => {
     if (user?.role) {
-      // setFellesraad(isFellesraadFn(user?.role));
       setAdmin(isAdminFn(user?.role));
     }
   }, [user?.role]);
@@ -123,36 +116,37 @@ export default function OrderListApprove() {
       flex: 1,
       minWidth: 140,
       hideable: false,
+      disableColumnMenu: true,
       renderCell: (params) => <RenderCellUser params={params} />,
     },
     {
       field: 'orders',
       headerName: t('Orders'),
       minWidth: 140,
+      disableColumnMenu: true,
       renderCell: (params) => <RenderCellServices params={params} />,
     },
     {
       field: 'price',
       headerName: t('Price'),
       minWidth: 140,
+      disableColumnMenu: true,
       renderCell: (params) => <RenderCellPrice params={params} />,
     },
     {
       field: 'gravestone',
       headerName: t('Gravestone'),
-      width: 110,
+      minWidth: 280,
       type: 'singleSelect',
-      editable: true,
-      valueOptions: PUBLISH_OPTIONS,
+      disableColumnMenu: true,
       renderCell: (params) => <RenderCellGraveyard params={params} />,
     },
     {
       field: 'approve',
       headerName: t('Approve'),
-      width: 110,
+      minWidth: 110,
       type: 'singleSelect',
-      editable: true,
-      valueOptions: PUBLISH_OPTIONS,
+      disableColumnMenu: true,
       renderCell: (params) => <RenderCellApprove params={params} />,
     },
     {

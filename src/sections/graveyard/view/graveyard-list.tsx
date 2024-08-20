@@ -39,12 +39,6 @@ import { IGraveyardItem } from 'src/types/graveyard';
 import { RenderCellApprove, RenderCellLocation, RenderCellGraveyard } from '../graveyard-table-row';
 
 // ----------------------------------------------------------------------
-
-const PUBLISH_OPTIONS = [
-  { value: 'approved', label: 'Approved' },
-  { value: 'draft', label: 'Draft' },
-];
-
 const HIDE_COLUMNS = {
   category: false,
 };
@@ -159,7 +153,7 @@ export default function GraveyardList() {
           showInMenu
           icon={<Iconify icon="solar:pen-bold" />}
           label="Edit"
-          onClick={() => handleEditRow(params.row.id)}
+          onClick={() => handleEditRow(params.row.name)}
         />,
       ];
     }
@@ -172,21 +166,21 @@ export default function GraveyardList() {
       flex: 1,
       minWidth: 280,
       hideable: false,
+      disableColumnMenu: true,
       renderCell: (params) => <RenderCellGraveyard params={params} />,
     },
     {
       field: 'location',
       headerName: t('Location'),
       minWidth: 280,
+      disableColumnMenu: true,
       renderCell: (params) => <RenderCellLocation params={params} />,
     },
     {
       field: 'publish',
       headerName: t('Publish'),
-      width: 110,
-      type: 'singleSelect',
-      editable: true,
-      valueOptions: PUBLISH_OPTIONS,
+      minWidth: 110,
+      disableColumnMenu: true,
       renderCell: (params) => <RenderCellApprove params={params} />,
     },
     {
@@ -195,7 +189,7 @@ export default function GraveyardList() {
       headerName: ' ',
       align: 'right',
       headerAlign: 'right',
-      width: 80,
+      minWidth: 80,
       sortable: false,
       filterable: false,
       disableColumnMenu: true,

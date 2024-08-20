@@ -6,12 +6,9 @@ import { useMemo, useState, useEffect, useCallback } from 'react';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-import MenuItem from '@mui/material/MenuItem';
 import Grid from '@mui/material/Unstable_Grid2';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-// import Switch from "@mui/material/Switch";
-// import FormControlLabel from "@mui/material/FormControlLabel";
 import LoadingButton from '@mui/lab/LoadingButton';
 
 import { useSearchParams } from 'src/routes/hooks';
@@ -34,7 +31,7 @@ import { fmDate } from 'src/utils/format-time';
 
 import { useTranslate } from 'src/locales';
 
-import FormProvider, { RHFSelect, RHFTextField, RHFDatePicker } from 'src/components/hook-form';
+import FormProvider, { RHFTextField, RHFDatePicker } from 'src/components/hook-form';
 
 import { IGravestoneItem } from 'src/types/gravestone';
 
@@ -66,30 +63,28 @@ export default function GravestoneCreateView({ currentGravestone }: Props) {
   const openMail = useBoolean();
 
   const newGravestoneSchema = Yup.object().shape({
-    // graveyardId: Yup.string().required("graveyardId is required"),
-    name: Yup.string().required('name is required'),
-    gender: Yup.string().required('gender is required'),
+    firstName: Yup.string().required('name is required'),
+    lastName: Yup.string().required('name is required'),
     birthday: Yup.string().required('birthday is required'),
     deceasedDate: Yup.string().required('deceasedDate is required'),
     buriedDate: Yup.string().required('buriedDate is required'),
-    quarter: Yup.string().required('quarter is required'),
-    graveSite: Yup.string().required('graveSite is required'),
-    homeTown: Yup.string().required('homeTown is required'),
-    graveSiteNumber: Yup.string().required('graveSiteNumber is required'),
   });
 
   const defaultValues = useMemo(
     () => ({
-      // graveyardId: currentProduct ? currentProduct.graveyardId : selectedMailId,
-      name: currentGravestone ? currentGravestone.name : '',
-      gender: currentGravestone ? currentGravestone.gender : '',
+      graveyardId: currentGravestone ? currentGravestone.graveyardId : '',
+      firstName: currentGravestone ? currentGravestone.firstName : '',
+      lastName: currentGravestone ? currentGravestone.lastName : '',
       birthday: currentGravestone ? currentGravestone.birthday : '',
       deceasedDate: currentGravestone ? currentGravestone.deceasedDate : '',
       buriedDate: currentGravestone ? currentGravestone.buriedDate : '',
-      quarter: currentGravestone ? currentGravestone.quarter : '',
-      graveSite: currentGravestone ? currentGravestone.graveSite : '',
-      homeTown: currentGravestone ? currentGravestone.homeTown : '',
-      graveSiteNumber: currentGravestone ? currentGravestone.graveSiteNumber : '',
+      ageOnDeath: currentGravestone ? currentGravestone.ageOnDeath : '',
+      churchNumber: currentGravestone ? currentGravestone.churchNumber : '',
+      field: currentGravestone ? currentGravestone.field : '',
+      row: currentGravestone ? currentGravestone.row : '',
+      place: currentGravestone ? currentGravestone.place : '',
+      burriedWith: currentGravestone ? currentGravestone.burriedWith : '',
+      bio: currentGravestone ? currentGravestone.bio : '',
     }),
     [currentGravestone]
   );
@@ -136,6 +131,7 @@ export default function GravestoneCreateView({ currentGravestone }: Props) {
           buriedDate,
           deceasedDate,
           graveyardId: selectedGraveyardId,
+          name: `${values.firstName} ${values.lastName}`,
         };
         const result = await createGravestone(saveData);
         if (result?.searchResults.success) {
@@ -185,20 +181,8 @@ export default function GravestoneCreateView({ currentGravestone }: Props) {
           spacing={3}
           sx={{ p: 1, flex: 1, justifyContent: 'space-between', overflowY: 'scroll' }}
         >
-          <RHFTextField name="name" label={t('Last_Name_and_First_Name')} />
-          <RHFSelect
-            fullWidth
-            name="gender"
-            label={t('Gender')}
-            InputLabelProps={{ shrink: true }}
-            PaperPropsSx={{ textTransform: 'capitalize' }}
-          >
-            {['MAN', 'WOMAN'].map((option) => (
-              <MenuItem key={option} value={option}>
-                {option}
-              </MenuItem>
-            ))}
-          </RHFSelect>
+          <RHFTextField name="firstName" label={t('First Name')} />
+          <RHFTextField name="lastName" label={t('Last Name')} />
 
           <RHFDatePicker
             name="birthday"
@@ -218,13 +202,19 @@ export default function GravestoneCreateView({ currentGravestone }: Props) {
             defaultValue={currentGravestone?.buriedDate || '05/10/2024'}
           />
 
-          <RHFTextField name="quarter" label={t('Quarter')} />
+          <RHFTextField name="ageOnDeath" label={t('Age On Death')} />
 
-          <RHFTextField name="graveSite" label={t('grave_site')} />
+          <RHFTextField name="churchNumber" label={t('Church Number')} />
 
-          <RHFTextField name="homeTown" label={t('Hometown')} />
+          <RHFTextField name="field" label={t('Field')} />
 
-          <RHFTextField name="graveSiteNumber" label={t('gravesite_number')} />
+          <RHFTextField name="row" label={t('Row')} />
+
+          <RHFTextField name="place" label={t('Place')} />
+
+          <RHFTextField name="burriedWith" label={t('Buried With')} />
+
+          <RHFTextField name="bio" label={t('Bio')} />
         </Stack>
       )}
     </>

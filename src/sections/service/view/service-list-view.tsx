@@ -1,4 +1,3 @@
-// import isEqual from "lodash/isEqual";
 import { useState, useEffect, useCallback } from 'react';
 
 import Card from '@mui/material/Card';
@@ -8,14 +7,10 @@ import Container from '@mui/material/Container';
 import {
   DataGrid,
   GridColDef,
-  //   GridToolbarExport,
   GridActionsCellItem,
   GridToolbarContainer,
   GridRowSelectionModel,
   GridToolbarQuickFilter,
-  //   GridToolbarFilterButton,
-  //   GridToolbarColumnsButton,
-  GridColumnVisibilityModel,
 } from '@mui/x-data-grid';
 
 import { paths } from 'src/routes/paths';
@@ -23,10 +18,6 @@ import { useRouter } from 'src/routes/hooks';
 import { RouterLink } from 'src/routes/components';
 
 import { useBoolean } from 'src/hooks/use-boolean';
-
-// import { useGetProducts } from "src/api/product";
-// import { PRODUCT_STOCK_OPTIONS } from "src/_mock";
-// import { useGetGraveyards } from "src/api/graveyard";
 
 import { isAdminFn, isCompanyFn } from 'src/utils/role-check';
 
@@ -41,7 +32,6 @@ import {
 
 import Iconify from 'src/components/iconify';
 import { useSnackbar } from 'src/components/snackbar';
-// import { useSnackbar } from "src/components/snackbar";
 import EmptyContent from 'src/components/empty-content';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
@@ -49,31 +39,11 @@ import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import { IServiceItem } from 'src/types/service';
 
 import {
-  //   RenderCellStock,
   RenderCellPrice,
-  //   RenderCellPrice,
   RenderCellApprove,
   RenderCellGraveyard,
   RenderCellDescription,
 } from '../graveyard-table-row';
-
-// ----------------------------------------------------------------------
-
-const PUBLISH_OPTIONS = [
-  { value: 'published', label: 'Published' },
-  { value: 'draft', label: 'Draft' },
-];
-
-// const defaultFilters: IGraveyardTableFilters = {
-//   name: "",
-//   approved: false,
-// };
-
-const HIDE_COLUMNS = {
-  category: false,
-};
-
-const HIDE_COLUMNS_TOGGLABLE = ['category', 'actions'];
 
 // ----------------------------------------------------------------------
 
@@ -93,16 +63,11 @@ export default function ServiceListViewPage() {
 
   const settings = useSettingsContext();
 
-  // const { user } = useAuthContext();
-
   const { services, servicesLoading } = useGetServicesListsByCompanyId(user?.userId);
 
   const [servicesData, setServicesData] = useState<IServiceItem[] | []>([]);
 
-  const [selectedRowIds, setSelectedRowIds] = useState<GridRowSelectionModel>([]);
-
-  const [columnVisibilityModel, setColumnVisibilityModel] =
-    useState<GridColumnVisibilityModel>(HIDE_COLUMNS);
+  const [selectedRowIds] = useState<GridRowSelectionModel>([]);
 
   useEffect(() => {
     if (user?.role) {
@@ -195,29 +160,31 @@ export default function ServiceListViewPage() {
       field: 'name',
       headerName: t('service_name'),
       flex: 1,
-      minWidth: 100,
+      minWidth: 220,
       hideable: false,
+      disableColumnMenu: true,
       renderCell: (params) => <RenderCellGraveyard params={params} />,
     },
     {
       field: 'description',
       headerName: t('Description'),
       minWidth: 280,
+      disableColumnMenu: true,
       renderCell: (params) => <RenderCellDescription params={params} />,
     },
     {
       field: 'price',
       headerName: t('Price'),
-      minWidth: 280,
+      minWidth: 140,
+      disableColumnMenu: true,
       renderCell: (params) => <RenderCellPrice params={params} />,
     },
     {
       field: 'Approve',
       headerName: t('Approve'),
-      width: 110,
+      minWidth: 110,
       type: 'singleSelect',
-      editable: true,
-      valueOptions: PUBLISH_OPTIONS,
+      disableColumnMenu: true,
       renderCell: (params) => <RenderCellApprove params={params} />,
     },
     {
@@ -233,11 +200,6 @@ export default function ServiceListViewPage() {
       getActions: (params) => actions(params),
     },
   ];
-
-  const getTogglableColumns = () =>
-    columns
-      .filter((column) => !HIDE_COLUMNS_TOGGLABLE.includes(column.field))
-      .map((column) => column.field);
 
   return (
     <Container
@@ -292,21 +254,9 @@ export default function ServiceListViewPage() {
                 paginationModel: { pageSize: 10 },
               },
             }}
-            onRowSelectionModelChange={(newSelectionModel) => {
-              setSelectedRowIds(newSelectionModel);
-            }}
-            columnVisibilityModel={columnVisibilityModel}
-            onColumnVisibilityModelChange={(newModel) => setColumnVisibilityModel(newModel)}
             slots={{
               toolbar: () => (
                 <GridToolbarContainer>
-                  {/* <ProductTableToolbar
-                      filters={filters}
-                      onFilters={handleFilters}
-                      stockOptions={PRODUCT_STOCK_OPTIONS}
-                      publishOptions={PUBLISH_OPTIONS}
-                    /> */}
-
                   <GridToolbarQuickFilter />
 
                   <Stack
@@ -331,11 +281,6 @@ export default function ServiceListViewPage() {
               ),
               noRowsOverlay: () => <EmptyContent title="No Data" />,
               noResultsOverlay: () => <EmptyContent title="No results found" />,
-            }}
-            slotProps={{
-              columnsPanel: {
-                getTogglableColumns,
-              },
             }}
           />
         )}

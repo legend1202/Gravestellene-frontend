@@ -1,28 +1,26 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Unstable_Grid2";
-import Typography from "@mui/material/Typography";
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Unstable_Grid2';
+import Typography from '@mui/material/Typography';
 
-import { useRouter } from "src/routes/hooks";
+import { useRouter } from 'src/routes/hooks';
 
-import { createOrder } from "src/api/order";
-import { PATH_AFTER_LOGIN } from "src/config-global";
-import { SERVICE_ORDER_STEPS } from "src/_mock/_product";
-import { useGetServicesListsByGraveyardId } from "src/api/service";
+import { createOrder } from 'src/api/order';
+import { PATH_AFTER_LOGIN } from 'src/config-global';
+import { SERVICE_ORDER_STEPS } from 'src/_mock/_product';
+import { useGetServicesListsByGraveyardId } from 'src/api/service';
 
-import { useSnackbar } from "src/components/snackbar";
-import { useSettingsContext } from "src/components/settings";
+import { useSnackbar } from 'src/components/snackbar';
+import { useSettingsContext } from 'src/components/settings';
 
-import { useCheckoutContext } from "src/sections/checkout/context";
+import { IServiceRequestedItem } from 'src/types/service';
 
-import { IServiceRequestedItem } from "src/types/service";
-
-import CheckoutCart from "../checkout-cart";
-import CheckoutSteps from "../checkout-steps";
-import CheckoutPayment from "../checkout-payment";
-import CheckoutOrderComplete from "../checkout-order-complete";
-import CheckoutBillingAddress from "../checkout-billing-address";
+import CheckoutCart from '../checkout-cart';
+import CheckoutSteps from '../checkout-steps';
+import CheckoutPayment from '../checkout-payment';
+import CheckoutOrderComplete from '../checkout-order-complete';
+import CheckoutBillingAddress from '../checkout-billing-address';
 
 // ----------------------------------------------------------------------
 
@@ -31,63 +29,84 @@ type Props = {
   graveyardId: string;
 };
 
+type ICheckout = {
+  completed: boolean;
+  activeStep: number;
+  items: IServiceRequestedItem[];
+  subTotal: number;
+  total: number;
+  discount: number;
+  shipping: number;
+  billing: null;
+  totalItems: number;
+  contactInfo: any;
+};
+
+type ITCheckout = {
+  completed?: boolean;
+  activeStep?: number;
+  items?: IServiceRequestedItem[];
+  subTotal?: number;
+  total?: number;
+  discount?: number;
+  shipping?: number;
+  billing?: null;
+  totalItems?: number;
+  contactInfo?: any;
+};
+
+const initialState: ICheckout = {
+  completed: false,
+  activeStep: 0,
+  items: [],
+  subTotal: 0,
+  total: 0,
+  discount: 0,
+  shipping: 0,
+  billing: null,
+  totalItems: 0,
+  contactInfo: null,
+};
+
 export default function ServiceOrderView({ id, graveyardId }: Props) {
   const settings = useSettingsContext();
 
-  const checkout = useCheckoutContext();
+  const [checkout, setCheckout] = useState<ICheckout>(initialState);
+
   const { enqueueSnackbar } = useSnackbar();
 
   const router = useRouter();
 
-  const [contactInfo, setContactInfo] = useState({});
-
-  const { services, servicesLoading } = useGetServicesListsByGraveyardId(
-    graveyardId
-  );
-  const [total, setTotal] = useState(0);
-  const [orderedServices, setOrderedServices] = useState<
-    IServiceRequestedItem[]
-  >([]);
+  const { services, servicesLoading } = useGetServicesListsByGraveyardId(graveyardId);
 
   useEffect(() => {
     if (services && services.length) {
-      setOrderedServices(services);
-    } else {
-      setOrderedServices([]);
-      setTotal(0);
-    }
-  }, [services]);
-
-  useEffect(() => {
-    if (orderedServices && orderedServices.length) {
       let tempTotal = 0;
-      orderedServices.forEach((element) => {
+      services.forEach((element) => {
         tempTotal += Number(element.serviceDetails.price);
       });
-      setTotal(tempTotal);
+
+      setCheckout({ ...checkout, total: tempTotal, items: services });
     } else {
-      setOrderedServices([]);
-      setTotal(0);
+      setCheckout({ ...checkout, total: 0, items: [] });
     }
-  }, [orderedServices]);
+  }, [services, checkout]);
 
   const handleOrderListDelete = (orderId: string) => {
-    const updatedOrderList = orderedServices.filter(
-      (orderService) => orderService.id !== orderId
-    );
-    setOrderedServices(updatedOrderList);
+    const updatedOrderList = checkout.items.filter((orderService) => orderService.id !== orderId);
+    setCheckout({ ...checkout, items: updatedOrderList });
   };
 
   const handleSetContactInfo = (query: any) => {
-    setContactInfo(query);
+    setCheckout({ ...checkout, contactInfo: query });
   };
   const handleSubmitData = async () => {
-    const idList: string[] = orderedServices
+    const idList: string[] = checkout.items
       .map((item) => item.serviceId)
       .filter((itemId) => itemId !== undefined) as string[];
 
     const submitData = {
-      ...contactInfo,
+      ...checkout.contactInfo,
       graveyardId,
       gravestoneId: id,
       servicesList: idList,
@@ -95,58 +114,64 @@ export default function ServiceOrderView({ id, graveyardId }: Props) {
 
     const createResult = await createOrder(submitData);
     if (createResult.results.success) {
-      checkout.onReset();
-      enqueueSnackbar("Order success!");
+      setCheckout(initialState);
+      enqueueSnackbar('Order success!');
       router.push(PATH_AFTER_LOGIN);
     } else {
-      console.error("Order did not success!");
-      checkout.onReset();
+      console.error('Order did not success!');
+      setCheckout(initialState);
     }
   };
+
+  const handleSetCheckout = (query: ITCheckout) => {
+    setCheckout({ ...checkout, ...query });
+  };
+
+  const checkoutReset = () => {
+    setCheckout(initialState);
+  };
+
   return (
-    <Container maxWidth={settings.themeStretch ? false : "lg"} sx={{ mb: 10 }}>
+    <Container maxWidth={settings.themeStretch ? false : 'lg'} sx={{ mb: 10 }}>
       <Typography variant="h4" sx={{ my: { xs: 3, md: 5 } }}>
         Order Grave Care
       </Typography>
       {!servicesLoading && (
         <>
-          <Grid
-            container
-            justifyContent={checkout.completed ? "center" : "flex-start"}
-          >
+          <Grid container justifyContent={checkout.completed ? 'center' : 'flex-start'}>
             <Grid xs={12} md={8}>
-              <CheckoutSteps
-                activeStep={checkout.activeStep}
-                steps={SERVICE_ORDER_STEPS}
-              />
+              <CheckoutSteps activeStep={checkout.activeStep} steps={SERVICE_ORDER_STEPS} />
             </Grid>
           </Grid>
 
           {checkout.completed ? (
             <CheckoutOrderComplete
               open={checkout.completed}
-              onReset={checkout.onReset}
+              onReset={checkoutReset}
               onDownloadPDF={() => {}}
             />
           ) : (
             <>
               {checkout.activeStep === 0 && (
                 <CheckoutCart
-                  services={orderedServices}
-                  total={total}
+                  checkout={checkout}
+                  handleSetCheckout={handleSetCheckout}
                   handleOrderListDelete={handleOrderListDelete}
                 />
               )}
 
               {checkout.activeStep === 1 && (
                 <CheckoutBillingAddress
+                  checkout={checkout}
+                  handleSetCheckout={handleSetCheckout}
                   handleSetContactInfo={handleSetContactInfo}
                 />
               )}
 
-              {checkout.activeStep === 2 && checkout.billing && (
+              {checkout.activeStep === 2 && (
                 <CheckoutPayment
-                  total={total}
+                  checkout1={checkout}
+                  handleSetCheckout={handleSetCheckout}
                   handleSubmitData={handleSubmitData}
                 />
               )}

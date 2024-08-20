@@ -112,6 +112,8 @@ export default function HomeSplash() {
     setSearchKeyState(true);
   };
 
+  console.log(gravestones);
+
   const renderFilters = (
     <Stack
       spacing={3}

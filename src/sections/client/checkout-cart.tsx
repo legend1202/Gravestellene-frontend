@@ -1,32 +1,59 @@
-import Card from "@mui/material/Card";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Unstable_Grid2";
-import CardHeader from "@mui/material/CardHeader";
-import Typography from "@mui/material/Typography";
+import Card from '@mui/material/Card';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Unstable_Grid2';
+import CardHeader from '@mui/material/CardHeader';
+import Typography from '@mui/material/Typography';
 
-import EmptyContent from "src/components/empty-content";
+import EmptyContent from 'src/components/empty-content';
 
-import { IServiceRequestedItem } from "src/types/service";
+import { IServiceRequestedItem } from 'src/types/service';
 
-import CheckoutSummary from "./checkout-summary";
-import { useCheckoutContext } from "../checkout/context";
-import CheckoutCartProductList from "./checkout-cart-product-list";
+import CheckoutSummary from './checkout-summary';
+import CheckoutCartProductList from './checkout-cart-product-list';
 
 // ----------------------------------------------------------------------
-type Props = {
+
+type ICheckout = {
+  completed: boolean;
+  activeStep: number;
+  items: IServiceRequestedItem[];
+  subTotal: number;
   total: number;
-  services: IServiceRequestedItem[];
+  discount: number;
+  shipping: number;
+  billing: null;
+  totalItems: number;
+  contactInfo: any;
+};
+
+type ITCheckout = {
+  completed?: boolean;
+  activeStep?: number;
+  items?: IServiceRequestedItem[];
+  subTotal?: number;
+  total?: number;
+  discount?: number;
+  shipping?: number;
+  billing?: null;
+  totalItems?: number;
+  contactInfo?: any;
+};
+
+type Props = {
+  checkout: ICheckout;
+  handleSetCheckout: (query: ITCheckout) => void;
   handleOrderListDelete: (id: string) => void;
 };
 export default function CheckoutCart({
-  total,
-  services,
+  checkout,
+  handleSetCheckout,
   handleOrderListDelete,
 }: Props) {
-  const checkout = useCheckoutContext();
+  const empty = checkout.items && !checkout.items.length;
 
-  const empty = services && !services.length;
-
+  const handleClickNext = () => {
+    handleSetCheckout({ ...checkout, activeStep: 1 });
+  };
   return (
     <Grid container spacing={3}>
       <Grid xs={12} md={8}>
@@ -35,7 +62,7 @@ export default function CheckoutCart({
             title={
               <Typography variant="h6">
                 Cart
-                <Typography component="span" sx={{ color: "text.secondary" }}>
+                <Typography component="span" sx={{ color: 'text.secondary' }}>
                   &nbsp;({checkout.totalItems} item)
                 </Typography>
               </Typography>
@@ -52,17 +79,17 @@ export default function CheckoutCart({
             />
           ) : (
             <CheckoutCartProductList
-              products={services}
+              products={checkout.items}
               onDelete={handleOrderListDelete}
-              onIncreaseQuantity={checkout.onIncreaseQuantity}
-              onDecreaseQuantity={checkout.onDecreaseQuantity}
+              onIncreaseQuantity={() => {}}
+              onDecreaseQuantity={() => {}}
             />
           )}
         </Card>
       </Grid>
 
       <Grid xs={12} md={4}>
-        <CheckoutSummary total={total} />
+        <CheckoutSummary total={checkout.total} />
 
         <Button
           fullWidth
@@ -70,7 +97,7 @@ export default function CheckoutCart({
           type="submit"
           variant="contained"
           disabled={empty}
-          onClick={checkout.onNextStep}
+          onClick={handleClickNext}
         >
           Check Out
         </Button>

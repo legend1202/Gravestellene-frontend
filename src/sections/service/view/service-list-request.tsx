@@ -1,4 +1,3 @@
-// import isEqual from "lodash/isEqual";
 import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -28,7 +27,7 @@ import { isCompanyFn, isFellesraadFn } from 'src/utils/role-check';
 import { getMergedServiceLists, getRequestedServiceLists } from 'src/utils/getRServicesList';
 
 import { useTranslate } from 'src/locales';
-// import { useAuthContext } from "src/auth/hooks";
+import { useAuthContext } from 'src/auth/hooks';
 import { useGetGraveyards } from 'src/api/graveyard';
 import {
   RequestService,
@@ -39,7 +38,6 @@ import {
 
 import Iconify from 'src/components/iconify';
 import { useSnackbar } from 'src/components/snackbar';
-// import { useSnackbar } from "src/components/snackbar";
 import EmptyContent from 'src/components/empty-content';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
@@ -57,11 +55,6 @@ import {
 
 // ----------------------------------------------------------------------
 
-const PUBLISH_OPTIONS = [
-  { value: 'published', label: 'Published' },
-  { value: 'draft', label: 'Draft' },
-];
-
 const HIDE_COLUMNS = {
   category: false,
 };
@@ -69,11 +62,8 @@ const HIDE_COLUMNS = {
 const HIDE_COLUMNS_TOGGLABLE = ['category', 'actions'];
 
 // ----------------------------------------------------------------------
-type Props = {
-  user: any;
-};
 
-export default function ServiceRequest({ user }: Props) {
+export default function ServiceRequest() {
   const { enqueueSnackbar } = useSnackbar();
 
   const [isComany, setCompany] = useState(false);
@@ -86,7 +76,7 @@ export default function ServiceRequest({ user }: Props) {
 
   const settings = useSettingsContext();
 
-  // const { user } = useAuthContext();
+  const { user } = useAuthContext();
 
   const { services, servicesLoading } = useGetServicesListsByCompanyId(user?.userId);
   const { rservices } = useGetRequestedServices(user?.userId);
@@ -118,6 +108,12 @@ export default function ServiceRequest({ user }: Props) {
   const values = watch();
 
   useEffect(() => {
+    if (services) {
+      setServicesData(services);
+    }
+  }, [services]);
+
+  useEffect(() => {
     if (user?.role) {
       setCompany(isCompanyFn(user?.role));
       setFellesraad(isFellesraadFn(user?.role));
@@ -139,6 +135,7 @@ export default function ServiceRequest({ user }: Props) {
 
   useEffect(() => {
     if (rservices) {
+      console.log('request services', rservices);
       handleMergRows();
     }
   }, [rservices, handleMergRows]);
@@ -180,7 +177,6 @@ export default function ServiceRequest({ user }: Props) {
       enqueueSnackbar('Approve success!');
     } else {
       console.error('Approve not success!');
-      // enqueueSnackbar("Approve success!");
     }
   };
 
@@ -217,36 +213,37 @@ export default function ServiceRequest({ user }: Props) {
       flex: 1,
       minWidth: 100,
       hideable: false,
+      disableColumnMenu: true,
       renderCell: (params) => <RenderCellGraveyard params={params} />,
     },
     {
       field: 'description',
       headerName: t('description'),
       minWidth: 280,
+      disableColumnMenu: true,
       renderCell: (params) => <RenderCellDescription params={params} />,
     },
     {
       field: 'price',
       headerName: t('price'),
       minWidth: 110,
+      disableColumnMenu: true,
       renderCell: (params) => <RenderCellPrice params={params} />,
     },
     {
       field: 'Graveyard',
       headerName: t('Graveyard'),
-      width: 280,
+      minWidth: 280,
       type: 'singleSelect',
-      editable: true,
-      valueOptions: PUBLISH_OPTIONS,
+      disableColumnMenu: true,
       renderCell: (params) => <RenderCellRequestedGraveyard params={params} />,
     },
     {
       field: 'Approve',
       headerName: t('Approve'),
-      width: 110,
+      minWidth: 110,
       type: 'singleSelect',
-      editable: true,
-      valueOptions: PUBLISH_OPTIONS,
+      disableColumnMenu: true,
       renderCell: (params) => <RenderCellRequestApprove params={params} />,
     },
     {
@@ -333,7 +330,6 @@ export default function ServiceRequest({ user }: Props) {
       >
         {servicesData && servicesData.length > 0 && (
           <DataGrid
-            // checkboxSelection
             disableRowSelectionOnClick
             rows={servicesData}
             columns={columns}
@@ -353,13 +349,6 @@ export default function ServiceRequest({ user }: Props) {
             slots={{
               toolbar: () => (
                 <GridToolbarContainer>
-                  {/* <ProductTableToolbar
-                      filters={filters}
-                      onFilters={handleFilters}
-                      stockOptions={PRODUCT_STOCK_OPTIONS}
-                      publishOptions={PUBLISH_OPTIONS}
-                    /> */}
-
                   <GridToolbarQuickFilter />
 
                   <Stack

@@ -24,8 +24,8 @@ import { useRouter } from 'src/routes/hooks';
 import { useBoolean } from 'src/hooks/use-boolean';
 
 import { useTranslate } from 'src/locales';
-import { GetGravestones } from 'src/api/gravestone';
-import { deleteGraveyard, useGetGraveyards } from 'src/api/graveyard';
+import { useGetGraveyards } from 'src/api/graveyard';
+import { GetGravestones, deleteGravestone } from 'src/api/gravestone';
 
 import Iconify from 'src/components/iconify';
 import { useSnackbar } from 'src/components/snackbar';
@@ -49,11 +49,6 @@ import {
 
 // ----------------------------------------------------------------------
 
-const PUBLISH_OPTIONS = [
-  { value: 'published', label: 'Published' },
-  { value: 'draft', label: 'Draft' },
-];
-
 const HIDE_COLUMNS = {
   category: false,
 };
@@ -74,8 +69,6 @@ export default function GravestoneList() {
   const settings = useSettingsContext();
 
   const { graveyards, graveyardsLoading } = useGetGraveyards();
-
-  // const { requestedServices, requestedServicesoading } = useGetRequestedServices();
 
   const [tableData, setTableData] = useState<IGravestoneItem[]>([]);
 
@@ -116,7 +109,7 @@ export default function GravestoneList() {
 
   const handleDeleteRow = async (id: string) => {
     try {
-      const result = await deleteGraveyard(id);
+      const result = await deleteGravestone(id);
       if (result.success) {
         const deleteRow = tableData.filter((row) => row.id !== id);
 
@@ -130,11 +123,6 @@ export default function GravestoneList() {
   };
 
   const handleDeleteRows = useCallback(() => {
-    // const deleteRows = tableData.filter(
-    //   (row) => !selectedRowIds.includes(row?.id)
-    // );
-    // enqueueSnackbar("Delete success!");
-    // setTableData(deleteRows);
     console.log('delete id');
   }, []);
 
@@ -164,55 +152,37 @@ export default function GravestoneList() {
     {
       field: 'deceasedDate',
       headerName: t('deceased_date'),
-      width: 150,
-      type: 'singleSelect',
-      editable: true,
-      valueOptions: PUBLISH_OPTIONS,
+      minWidth: 150,
       renderCell: (params) => <RenderCellDeceaseDate params={params} />,
     },
     {
       field: 'buriedDate',
       headerName: t('Death Age'),
-      width: 150,
-      type: 'singleSelect',
-      editable: true,
-      valueOptions: PUBLISH_OPTIONS,
+      minWidth: 150,
       renderCell: (params) => <RenderCellBuriedDate params={params} />,
     },
     {
       field: 'homeTown',
       headerName: t('Field'),
-      width: 180,
-      type: 'singleSelect',
-      editable: true,
-      valueOptions: PUBLISH_OPTIONS,
+      minWidth: 180,
       renderCell: (params) => <RenderCellHomeTown params={params} />,
     },
     {
       field: 'graveSiteNumber',
       headerName: t('Row'),
-      width: 110,
-      type: 'singleSelect',
-      editable: true,
-      valueOptions: PUBLISH_OPTIONS,
+      minWidth: 110,
       renderCell: (params) => <RenderCellSite params={params} />,
     },
     {
       field: 'quarter',
       headerName: t('Place'),
-      width: 110,
-      type: 'singleSelect',
-      editable: true,
-      valueOptions: PUBLISH_OPTIONS,
+      minWidth: 110,
       renderCell: (params) => <RenderCellQuarter params={params} />,
     },
     {
       field: 'buriedWith',
       headerName: t('Buried With'),
-      width: 220,
-      type: 'singleSelect',
-      editable: true,
-      valueOptions: PUBLISH_OPTIONS,
+      minWidth: 280,
       renderCell: (params) => <RenderCellBuriedWith params={params} />,
     },
     {
@@ -221,7 +191,7 @@ export default function GravestoneList() {
       headerName: ' ',
       align: 'right',
       headerAlign: 'right',
-      width: 80,
+      minWidth: 80,
       sortable: false,
       filterable: false,
       disableColumnMenu: true,
@@ -265,29 +235,6 @@ export default function GravestoneList() {
           flexDirection: 'column',
         }}
       >
-        {/* <CustomBreadcrumbs
-          heading={t('List')}
-          links={[
-            { name: t('Gravestone'), href: paths.fellesraad.gravestone.create },
-            { name: t('List') },
-          ]}
-          action={
-            <Button
-              component={RouterLink}
-              href={paths.fellesraad.gravestone.create}
-              variant="contained"
-              startIcon={<Iconify icon="mingcute:add-line" />}
-            >
-              {t('new_gravestone')}
-            </Button>
-          }
-          sx={{
-            mb: {
-              xs: 3,
-              md: 5,
-            },
-          }}
-        /> */}
         {graveyards && (
           <FormProvider methods={methods}>
             <RHFSelect

@@ -1,14 +1,14 @@
-import useSWR from "swr";
-import { useMemo } from "react";
+import useSWR from 'swr';
+import { useMemo } from 'react';
 
-import axiosInstance, { fetcher, endpoints } from "src/utils/axios";
+import axiosInstance, { fetcher, endpoints } from 'src/utils/axios';
 
 import {
   IServiceItem,
   IServiceListItem,
   IServiceRequestItem,
   IServiceRequestedItem,
-} from "src/types/service";
+} from 'src/types/service';
 
 // ----------------------------------------------------------------------
 
@@ -63,11 +63,8 @@ export function useGetServicesListsByCompanyId(companyId: string) {
   return memoizedValue;
 }
 
-
 export function useGetServicesByGraveyardId(graveyardId: string) {
-  const URL = graveyardId
-    ? [`${endpoints.services.getListsByGraveyardId}/${graveyardId}`]
-    : "";
+  const URL = graveyardId ? [`${endpoints.services.getListsByGraveyardId}/${graveyardId}`] : '';
 
   const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
 
@@ -84,11 +81,8 @@ export function useGetServicesByGraveyardId(graveyardId: string) {
   return memoizedValue;
 }
 
-
 export function useGetServicesListsByGraveyardId(graveyardId: string) {
-  const URL = graveyardId
-    ? [`${endpoints.services.getByGraveyardId}/${graveyardId}`]
-    : "";
+  const URL = graveyardId ? [`${endpoints.services.getByGraveyardId}/${graveyardId}`] : '';
 
   const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
 
@@ -106,7 +100,7 @@ export function useGetServicesListsByGraveyardId(graveyardId: string) {
 }
 
 export function useGetService(serviceId: string) {
-  const URL = serviceId ? [`${endpoints.services.getById}/${serviceId}`] : "";
+  const URL = serviceId ? [`${endpoints.services.getById}/${serviceId}`] : '';
 
   const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
 
@@ -168,9 +162,7 @@ export const RequestService = async (query: IServiceRequestItem) => {
 };
 
 export function useGetRequestedServices(companyId: string) {
-  const URL = companyId
-    ? [`${endpoints.services.requestedService}/${companyId}`]
-    : "";
+  const URL = `${endpoints.services.requestedService}`;
 
   const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
 

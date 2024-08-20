@@ -1,8 +1,8 @@
 // import isEqual from "lodash/isEqual";
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
-import Card from "@mui/material/Card";
-import Container from "@mui/material/Container";
+import Card from '@mui/material/Card';
+import Container from '@mui/material/Container';
 import {
   DataGrid,
   GridColDef,
@@ -10,28 +10,28 @@ import {
   GridToolbarContainer,
   GridToolbarQuickFilter,
   GridColumnVisibilityModel,
-} from "@mui/x-data-grid";
+} from '@mui/x-data-grid';
 
-import { paths } from "src/routes/paths";
+import { paths } from 'src/routes/paths';
 
-import { useTranslate } from "src/locales";
-import { UserRoleUpdate, useGetUserLists } from "src/api/userlist";
+import { useTranslate } from 'src/locales';
+import { UserRoleUpdate, useGetUserLists } from 'src/api/userlist';
 
-import Iconify from "src/components/iconify";
-import { useSnackbar } from "src/components/snackbar";
-import EmptyContent from "src/components/empty-content";
-import { useSettingsContext } from "src/components/settings";
-import CustomBreadcrumbs from "src/components/custom-breadcrumbs";
+import Iconify from 'src/components/iconify';
+import { useSnackbar } from 'src/components/snackbar';
+import EmptyContent from 'src/components/empty-content';
+import { useSettingsContext } from 'src/components/settings';
+import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 
-import { ITUserItem } from "src/types/user";
+import { ITUserItem } from 'src/types/user';
 
-import { RenderCellRole, RenderCellGraveyard } from "../graveyard-table-row";
+import { RenderCellRole, RenderCellGraveyard } from '../graveyard-table-row';
 
 const HIDE_COLUMNS = {
   category: false,
 };
 
-const HIDE_COLUMNS_TOGGLABLE = ["category", "actions"];
+const HIDE_COLUMNS_TOGGLABLE = ['category', 'actions'];
 
 // ----------------------------------------------------------------------
 
@@ -48,9 +48,8 @@ export default function AdminUserList() {
 
   const [reset, setReset] = useState(false);
 
-  const [columnVisibilityModel, setColumnVisibilityModel] = useState<
-    GridColumnVisibilityModel
-  >(HIDE_COLUMNS);
+  const [columnVisibilityModel, setColumnVisibilityModel] =
+    useState<GridColumnVisibilityModel>(HIDE_COLUMNS);
 
   useEffect(() => {
     if (users) {
@@ -62,40 +61,41 @@ export default function AdminUserList() {
     const updateData = { id, role };
     const result = await UserRoleUpdate(updateData);
     if (result.data.success) {
-      enqueueSnackbar(t("update_success"));
+      enqueueSnackbar(t('update_success'));
       const updatedUsers = users.map((user) => {
-        if (user.id === result.data.result.id)
-          return { ...user, role: result.data.result.role };
+        if (user.id === result.data.result.id) return { ...user, role: result.data.result.role };
         return user;
       });
       setTableData([...updatedUsers]);
       setReset(!reset);
     } else {
-      enqueueSnackbar("Update did not success");
+      enqueueSnackbar('Update did not success');
     }
   };
 
   const columns: GridColDef[] = [
     {
-      field: "name",
-      headerName: "Name",
+      field: 'name',
+      headerName: 'Name',
       flex: 1,
       minWidth: 280,
       hideable: false,
+      disableColumnMenu: true,
       renderCell: (params) => <RenderCellGraveyard params={params} />,
     },
     {
-      field: "role",
-      headerName: "Role",
+      field: 'role',
+      headerName: 'Role',
       minWidth: 280,
+      disableColumnMenu: true,
       renderCell: (params) => <RenderCellRole params={params} />,
     },
     {
-      type: "actions",
-      field: "actions",
-      headerName: " ",
-      align: "right",
-      headerAlign: "right",
+      type: 'actions',
+      field: 'actions',
+      headerName: ' ',
+      align: 'right',
+      headerAlign: 'right',
       width: 80,
       sortable: false,
       filterable: false,
@@ -105,25 +105,25 @@ export default function AdminUserList() {
           showInMenu
           icon={<Iconify icon="solar:eye-bold" />}
           label="ADMIN"
-          onClick={() => handleUpdateRoleRow(params.row.id, "ADMIN")}
+          onClick={() => handleUpdateRoleRow(params.row.id, 'ADMIN')}
         />,
         <GridActionsCellItem
           showInMenu
           icon={<Iconify icon="solar:pen-bold" />}
           label="FELLESRAAD"
-          onClick={() => handleUpdateRoleRow(params.row.id, "FELLESRAAD")}
+          onClick={() => handleUpdateRoleRow(params.row.id, 'FELLESRAAD')}
         />,
         <GridActionsCellItem
           showInMenu
           icon={<Iconify icon="solar:pen-bold" />}
           label="COMPANY"
-          onClick={() => handleUpdateRoleRow(params.row.id, "COMPANY")}
+          onClick={() => handleUpdateRoleRow(params.row.id, 'COMPANY')}
         />,
         <GridActionsCellItem
           showInMenu
           icon={<Iconify icon="solar:pen-bold" />}
           label="CLIENT"
-          onClick={() => handleUpdateRoleRow(params.row.id, "CLIENT")}
+          onClick={() => handleUpdateRoleRow(params.row.id, 'CLIENT')}
         />,
       ],
     },
@@ -136,16 +136,16 @@ export default function AdminUserList() {
 
   return (
     <Container
-      maxWidth={settings.themeStretch ? false : "lg"}
+      maxWidth={settings.themeStretch ? false : 'lg'}
       sx={{
         flexGrow: 1,
-        display: "flex",
-        flexDirection: "column",
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
       <CustomBreadcrumbs
         heading="List"
-        links={[{ name: "User", href: paths.dashboard.root }, { name: "List" }]}
+        links={[{ name: 'User', href: paths.dashboard.root }, { name: 'List' }]}
         sx={{
           mb: {
             xs: 3,
@@ -158,8 +158,8 @@ export default function AdminUserList() {
         sx={{
           height: { xs: 800, md: 2 },
           flexGrow: { md: 1 },
-          display: { md: "flex" },
-          flexDirection: { md: "column" },
+          display: { md: 'flex' },
+          flexDirection: { md: 'column' },
         }}
       >
         <DataGrid
@@ -168,7 +168,7 @@ export default function AdminUserList() {
           rows={tableData}
           columns={columns}
           loading={usersLoading}
-          getRowHeight={() => "auto"}
+          getRowHeight={() => 'auto'}
           pageSizeOptions={[5, 10, 25]}
           initialState={{
             pagination: {
@@ -179,9 +179,7 @@ export default function AdminUserList() {
           //   setSelectedRowIds(newSelectionModel);
           // }}
           columnVisibilityModel={columnVisibilityModel}
-          onColumnVisibilityModelChange={(newModel) =>
-            setColumnVisibilityModel(newModel)
-          }
+          onColumnVisibilityModelChange={(newModel) => setColumnVisibilityModel(newModel)}
           slots={{
             toolbar: () => (
               <>

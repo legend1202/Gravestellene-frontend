@@ -1,4 +1,3 @@
-// import isEqual from "lodash/isEqual";
 import { useMemo, useState } from 'react';
 
 import Card from '@mui/material/Card';
@@ -19,13 +18,6 @@ import {
   RenderCellLocation,
   RenderCellSplashGraveyard,
 } from '../graveyard-table-row';
-
-// ----------------------------------------------------------------------
-
-const PUBLISH_OPTIONS = [
-  { value: 'approved', label: 'Approved' },
-  { value: 'draft', label: 'Draft' },
-];
 
 // ----------------------------------------------------------------------
 
@@ -60,10 +52,8 @@ export default function SplashGraveyardList() {
     {
       field: 'publish',
       headerName: 'Publish',
-      width: 110,
+      minWidth: 110,
       type: 'singleSelect',
-      editable: true,
-      valueOptions: PUBLISH_OPTIONS,
       renderCell: (params) => <RenderCellApprove params={params} />,
     },
   ];

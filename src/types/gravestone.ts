@@ -2,7 +2,8 @@ export type IGravestoneItem = {
   id?: string;
   graveyardId: string;
   name: string;
-  gender: 'MAN' | 'WOMEN';
+  firstName: string;
+  lastName: string;
   birthday: string;
   deceasedDate: string;
   buriedDate: string;
@@ -10,8 +11,15 @@ export type IGravestoneItem = {
   graveSite: string;
   homeTown: string;
   graveSiteNumber: string;
+  ageOnDeath?: string;
+  churchNumber?: string;
+  field?: string;
+  row?: string;
+  place?: string;
+  graveyardDetails?: any;
   burriedWith?: string;
   approved?: boolean;
   createdAt?: Date;
   updateAt?: Date;
+  bio?: string;
 };

@@ -181,9 +181,10 @@ export function CheckoutProvider({ children }: Props) {
   const onReset = useCallback(() => {
     if (completed) {
       reset();
+      update('activeStep', 0);
       router.replace(paths.product.root);
     }
-  }, [completed, reset, router]);
+  }, [completed, reset, update, router]);
 
   const memoizedValue = useMemo(
     () => ({

@@ -1,12 +1,12 @@
-import useSWR from "swr";
-import { useMemo } from "react";
+import useSWR from 'swr';
+import { useMemo } from 'react';
 
-import axiosInstance, { fetcher, endpoints } from "src/utils/axios";
+import axiosInstance, { fetcher, endpoints } from 'src/utils/axios';
 
-import { HOST_API } from "src/config-global";
+import { HOST_API } from 'src/config-global';
 
-import { IProductItem } from "src/types/product";
-import { IImageType, IGraveyardItem } from "src/types/graveyard";
+import { IProductItem } from 'src/types/product';
+import { IImageType, IGraveyardItem } from 'src/types/graveyard';
 
 export const createGraveyard = async (query: IGraveyardItem) => {
   const res = await axiosInstance.post(endpoints.graveyard.create, {
@@ -51,7 +51,7 @@ export const upload = async (query: IImageType) => {
   const formData = new FormData();
 
   query.forEach((image) => {
-    formData.append("images", image);
+    formData.append('images', image);
   });
 
   const res = await axiosInstance.post(endpoints.graveyard.upload, formData);
@@ -60,9 +60,7 @@ export const upload = async (query: IImageType) => {
 };
 
 export function useGetGraveyard(graveyardId: string) {
-  const URL = graveyardId
-    ? [`${endpoints.graveyard.getById}/${graveyardId}`]
-    : "";
+  const URL = graveyardId ? [`${endpoints.graveyard.getById}/${graveyardId}`] : '';
 
   const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
 
@@ -80,7 +78,7 @@ export function useGetGraveyard(graveyardId: string) {
 
 export function useGetGraveyards() {
   const URL = endpoints.graveyard.list;
-  
+
   const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
 
   const memoizedValue = useMemo(
@@ -98,7 +96,7 @@ export function useGetGraveyards() {
 
 export function useGetAllGraveyards() {
   const URL = endpoints.graveyard.dashboardlist;
-  
+
   const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
 
   const memoizedValue = useMemo(
@@ -122,9 +120,7 @@ export async function deleteGraveyard(graveyardId: string) {
 }
 
 export function useGetProduct(productId: string) {
-  const URL = productId
-    ? [endpoints.product.details, { params: { productId } }]
-    : "";
+  const URL = productId ? [endpoints.product.details, { params: { productId } }] : '';
 
   const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
 
