@@ -1,7 +1,7 @@
 import { m } from 'framer-motion';
 
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
+/* import Stack from '@mui/material/Stack'; */
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
 import { alpha } from '@mui/material/styles';
@@ -9,9 +9,10 @@ import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
-import { paths } from 'src/routes/paths';
+/* import { paths } from 'src/routes/paths'; */
 import { useRouter } from 'src/routes/hooks';
 
+import { useTranslate } from 'src/locales';
 import { useAuthContext } from 'src/auth/hooks';
 
 import { varHover } from 'src/components/animate';
@@ -20,7 +21,7 @@ import CustomPopover, { usePopover } from 'src/components/custom-popover';
 
 // ----------------------------------------------------------------------
 
-const OPTIONS = [
+/* const OPTIONS = [
   {
     label: 'Home',
     linkTo: '/',
@@ -33,11 +34,12 @@ const OPTIONS = [
     label: 'Settings',
     linkTo: paths.dashboard.user.account,
   },
-];
+]; */
 
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
+  const { t } = useTranslate();
   const router = useRouter();
 
   const { user } = useAuthContext();
@@ -59,10 +61,10 @@ export default function AccountPopover() {
     }
   };
 
-  const handleClickItem = (path: string) => {
+  /* const handleClickItem = (path: string) => {
     popover.onClose();
     router.push(path);
-  };
+  }; */
 
   return (
     <>
@@ -108,21 +110,21 @@ export default function AccountPopover() {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <Stack sx={{ p: 1 }}>
+        {/* <Stack sx={{ p: 1 }}>
           {OPTIONS.map((option) => (
             <MenuItem key={option.label} onClick={() => handleClickItem(option.linkTo)}>
               {option.label}
             </MenuItem>
           ))}
         </Stack>
-
+ */}
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <MenuItem
           onClick={handleLogout}
           sx={{ m: 1, fontWeight: 'fontWeightBold', color: 'error.main' }}
         >
-          Logout
+          {t('Logout')}
         </MenuItem>
       </CustomPopover>
     </>

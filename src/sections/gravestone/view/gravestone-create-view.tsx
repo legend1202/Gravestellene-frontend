@@ -181,8 +181,8 @@ export default function GravestoneCreateView({ currentGravestone }: Props) {
           spacing={3}
           sx={{ p: 1, flex: 1, justifyContent: 'space-between', overflowY: 'scroll' }}
         >
-          <RHFTextField name="firstName" label={t('First Name')} />
-          <RHFTextField name="lastName" label={t('Last Name')} />
+          <RHFTextField name="firstName" label={t('Fornavn')} />
+          <RHFTextField name="lastName" label={t('Etternavn')} />
 
           <RHFDatePicker
             name="birthday"
@@ -214,7 +214,7 @@ export default function GravestoneCreateView({ currentGravestone }: Props) {
 
           <RHFTextField name="burriedWith" label={t('Buried With')} />
 
-          <RHFTextField name="bio" label={t('Bio')} />
+          <RHFTextField name="bio" label={t('bio')} />
         </Stack>
       )}
     </>

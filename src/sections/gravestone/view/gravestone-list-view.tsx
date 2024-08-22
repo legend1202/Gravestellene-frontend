@@ -141,48 +141,56 @@ export default function GravestoneList() {
       flex: 1,
       minWidth: 220,
       hideable: false,
+      disableColumnMenu: true,
       renderCell: (params) => <RenderCellGravestone params={params} />,
     },
     {
       field: 'birthday',
       headerName: t('Birthday'),
       minWidth: 150,
+      disableColumnMenu: true,
       renderCell: (params) => <RenderCellBirthday params={params} />,
     },
     {
       field: 'deceasedDate',
       headerName: t('deceased_date'),
       minWidth: 150,
+      disableColumnMenu: true,
       renderCell: (params) => <RenderCellDeceaseDate params={params} />,
     },
     {
       field: 'buriedDate',
       headerName: t('Death Age'),
       minWidth: 150,
+      disableColumnMenu: true,
       renderCell: (params) => <RenderCellBuriedDate params={params} />,
     },
     {
       field: 'homeTown',
       headerName: t('Field'),
       minWidth: 180,
+      disableColumnMenu: true,
       renderCell: (params) => <RenderCellHomeTown params={params} />,
     },
     {
       field: 'graveSiteNumber',
       headerName: t('Row'),
       minWidth: 110,
+      disableColumnMenu: true,
       renderCell: (params) => <RenderCellSite params={params} />,
     },
     {
       field: 'quarter',
       headerName: t('Place'),
       minWidth: 110,
+      disableColumnMenu: true,
       renderCell: (params) => <RenderCellQuarter params={params} />,
     },
     {
       field: 'buriedWith',
       headerName: t('Buried With'),
       minWidth: 280,
+      disableColumnMenu: true,
       renderCell: (params) => <RenderCellBuriedWith params={params} />,
     },
     {
@@ -199,13 +207,13 @@ export default function GravestoneList() {
         <GridActionsCellItem
           showInMenu
           icon={<Iconify icon="solar:trash-bin-trash-bold" />}
-          label="Delete"
+          label={t('delete')}
           onClick={() => handleDeleteRow(params.row.id)}
         />,
         <GridActionsCellItem
           showInMenu
           icon={<Iconify icon="solar:pen-bold" />}
-          label="Edit"
+          label={t('Edit')}
           onClick={() => handleEditRow(params.row.id)}
         />,
       ],

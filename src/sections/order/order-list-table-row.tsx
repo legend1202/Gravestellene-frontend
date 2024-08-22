@@ -5,6 +5,8 @@ import ListItemText from '@mui/material/ListItemText';
 
 import { fCurrency } from 'src/utils/format-number';
 
+import { useTranslate } from 'src/locales';
+
 import Label from 'src/components/label';
 
 // ----------------------------------------------------------------------
@@ -33,9 +35,10 @@ export function RenderCellPrice({ params }: ParamsProps) {
 }
 
 export function RenderCellApprove({ params }: ParamsProps) {
+  const { t } = useTranslate();
   return (
     <Label variant="soft" color={(params.row.approved && 'info') || 'default'}>
-      {params.row.approved ? 'Approved' : 'Draft'}
+      {params.row.approved ? t('Approved') : t('Draft')}
     </Label>
   );
 }

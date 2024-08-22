@@ -1,16 +1,14 @@
-import { formatDistanceToNowStrict } from "date-fns";
+import { formatDistanceToNowStrict } from 'date-fns';
 
 // import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
+import Stack from '@mui/material/Stack';
 // import Avatar from "@mui/material/Avatar";
-import Typography from "@mui/material/Typography";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemButton, {
-  ListItemButtonProps,
-} from "@mui/material/ListItemButton";
+import Typography from '@mui/material/Typography';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemButton, { ListItemButtonProps } from '@mui/material/ListItemButton';
 
 // import { IMail } from "src/types/mail";
-import { IGraveyardItem } from "src/types/graveyard";
+import { IGraveyardItem } from 'src/types/graveyard';
 
 // ----------------------------------------------------------------------
 
@@ -28,7 +26,7 @@ export default function MailItem({ mail, selected, sx, ...other }: Props) {
           mb: 0.5,
           borderRadius: 1,
           ...(selected && {
-            bgcolor: "action.selected",
+            bgcolor: 'action.selected',
           }),
           ...sx,
         }}
@@ -38,14 +36,14 @@ export default function MailItem({ mail, selected, sx, ...other }: Props) {
           primary={mail.name}
           primaryTypographyProps={{
             noWrap: true,
-            variant: "subtitle2",
+            variant: 'subtitle2',
           }}
-          secondary="Graveyard Location"
+          secondary={mail.location}
           secondaryTypographyProps={{
             noWrap: true,
-            component: "span",
-            variant: "body2",
-            color: "text.secondary",
+            component: 'span',
+            variant: 'body2',
+            color: 'text.secondary',
           }}
         />
 
@@ -57,7 +55,7 @@ export default function MailItem({ mail, selected, sx, ...other }: Props) {
             sx={{
               mb: 1.5,
               fontSize: 12,
-              color: "text.disabled",
+              color: 'text.disabled',
             }}
           >
             {mail.cratedAt &&

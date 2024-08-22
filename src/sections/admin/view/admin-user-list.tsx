@@ -76,7 +76,7 @@ export default function AdminUserList() {
   const columns: GridColDef[] = [
     {
       field: 'name',
-      headerName: 'Name',
+      headerName: `${t('Name')}`,
       flex: 1,
       minWidth: 280,
       hideable: false,
@@ -85,7 +85,7 @@ export default function AdminUserList() {
     },
     {
       field: 'role',
-      headerName: 'Role',
+      headerName: `${t('Role')}`,
       minWidth: 280,
       disableColumnMenu: true,
       renderCell: (params) => <RenderCellRole params={params} />,
@@ -104,25 +104,25 @@ export default function AdminUserList() {
         <GridActionsCellItem
           showInMenu
           icon={<Iconify icon="solar:eye-bold" />}
-          label="ADMIN"
+          label={t('ADMIN')}
           onClick={() => handleUpdateRoleRow(params.row.id, 'ADMIN')}
         />,
         <GridActionsCellItem
           showInMenu
           icon={<Iconify icon="solar:pen-bold" />}
-          label="FELLESRAAD"
+          label={t('FELLESRAAD')}
           onClick={() => handleUpdateRoleRow(params.row.id, 'FELLESRAAD')}
         />,
         <GridActionsCellItem
           showInMenu
           icon={<Iconify icon="solar:pen-bold" />}
-          label="COMPANY"
+          label={t('COMPANY')}
           onClick={() => handleUpdateRoleRow(params.row.id, 'COMPANY')}
         />,
         <GridActionsCellItem
           showInMenu
           icon={<Iconify icon="solar:pen-bold" />}
-          label="CLIENT"
+          label={t('CLIENT')}
           onClick={() => handleUpdateRoleRow(params.row.id, 'CLIENT')}
         />,
       ],
@@ -144,8 +144,8 @@ export default function AdminUserList() {
       }}
     >
       <CustomBreadcrumbs
-        heading="List"
-        links={[{ name: 'User', href: paths.dashboard.root }, { name: 'List' }]}
+        heading={t('List')}
+        links={[{ name: t('User'), href: paths.dashboard.root }, { name: t('List') }]}
         sx={{
           mb: {
             xs: 3,

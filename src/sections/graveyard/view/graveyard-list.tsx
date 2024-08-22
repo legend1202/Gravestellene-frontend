@@ -136,7 +136,7 @@ export default function GraveyardList() {
         <GridActionsCellItem
           showInMenu
           icon={<Iconify icon="eva:checkmark-circle-2-fill" />}
-          label="Approve"
+          label={t('Approve')}
           onClick={() => handleApproveRow(params.row.id)}
         />,
       ];
@@ -146,13 +146,13 @@ export default function GraveyardList() {
         <GridActionsCellItem
           showInMenu
           icon={<Iconify icon="solar:trash-bin-trash-bold" />}
-          label="Delete"
+          label={t('delete')}
           onClick={() => handleDeleteRow(params.row.id)}
         />,
         <GridActionsCellItem
           showInMenu
           icon={<Iconify icon="solar:pen-bold" />}
-          label="Edit"
+          label={t('Edit')}
           onClick={() => handleEditRow(params.row.name)}
         />,
       ];
@@ -178,7 +178,7 @@ export default function GraveyardList() {
     },
     {
       field: 'publish',
-      headerName: t('Publish'),
+      headerName: t('Approve'),
       minWidth: 110,
       disableColumnMenu: true,
       renderCell: (params) => <RenderCellApprove params={params} />,

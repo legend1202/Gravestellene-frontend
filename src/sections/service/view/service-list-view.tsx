@@ -131,7 +131,7 @@ export default function ServiceListViewPage() {
         <GridActionsCellItem
           showInMenu
           icon={<Iconify icon="eva:checkmark-circle-2-fill" />}
-          label="Approve"
+          label={t('Approve')}
           onClick={() => handleApproveRow(params.row.id)}
         />,
       ];
@@ -220,7 +220,7 @@ export default function ServiceListViewPage() {
             variant="contained"
             startIcon={<Iconify icon="mingcute:add-line" />}
           >
-            {t('new_service')}
+            {t('New Service')}
           </Button>
         }
         sx={{

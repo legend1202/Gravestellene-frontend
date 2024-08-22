@@ -186,7 +186,7 @@ export default function ServiceRequest() {
         <GridActionsCellItem
           showInMenu
           icon={<Iconify icon="eva:checkmark-circle-2-fill" />}
-          label="Approve"
+          label={t('Approve')}
           onClick={() => handleApproveRow(params.row.id)}
         />,
       ];
