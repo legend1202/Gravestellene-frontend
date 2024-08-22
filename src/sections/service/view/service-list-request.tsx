@@ -50,7 +50,7 @@ import {
   RenderCellGraveyard,
   RenderCellDescription,
   RenderCellRequestApprove,
-  RenderCellRequestedGraveyard,
+  /*   RenderCellRequestedGraveyard, */
 } from '../graveyard-table-row';
 
 // ----------------------------------------------------------------------
@@ -197,7 +197,7 @@ export default function ServiceRequest() {
           <GridActionsCellItem
             showInMenu
             icon={<Iconify icon="solar:trash-bin-trash-bold" />}
-            label={t('Request')}
+            label={t('request')}
             onClick={() => handleRequestRow(params.row.id)}
           />,
         ];
@@ -230,14 +230,14 @@ export default function ServiceRequest() {
       disableColumnMenu: true,
       renderCell: (params) => <RenderCellPrice params={params} />,
     },
-    {
+    /* {
       field: 'Graveyard',
       headerName: t('Graveyard'),
       minWidth: 280,
       type: 'singleSelect',
       disableColumnMenu: true,
       renderCell: (params) => <RenderCellRequestedGraveyard params={params} />,
-    },
+    }, */
     {
       field: 'Approve',
       headerName: t('Approve'),
@@ -285,7 +285,7 @@ export default function ServiceRequest() {
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >
-              {t('new_service')}
+              {t('New Service')}
             </Button>
           )
         }

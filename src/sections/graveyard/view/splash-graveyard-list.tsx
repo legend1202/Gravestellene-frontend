@@ -6,6 +6,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 import { paths } from 'src/routes/paths';
 
+import { useTranslate } from 'src/locales';
 import { useGetAllGraveyards } from 'src/api/graveyard';
 
 import { useSettingsContext } from 'src/components/settings';
@@ -22,6 +23,7 @@ import {
 // ----------------------------------------------------------------------
 
 export default function SplashGraveyardList() {
+  const { t } = useTranslate();
   const settings = useSettingsContext();
 
   const { graveyards, graveyardsLoading } = useGetAllGraveyards();
@@ -37,7 +39,7 @@ export default function SplashGraveyardList() {
   const columns: GridColDef[] = [
     {
       field: 'name',
-      headerName: 'Graveyard',
+      headerName: t('Graveyard'),
       flex: 1,
       minWidth: 280,
       hideable: false,
@@ -45,13 +47,13 @@ export default function SplashGraveyardList() {
     },
     {
       field: 'location',
-      headerName: 'location',
+      headerName: t('location'),
       minWidth: 280,
       renderCell: (params) => <RenderCellLocation params={params} />,
     },
     {
       field: 'publish',
-      headerName: 'Publish',
+      headerName: t('Approve'),
       minWidth: 110,
       type: 'singleSelect',
       renderCell: (params) => <RenderCellApprove params={params} />,
@@ -68,8 +70,8 @@ export default function SplashGraveyardList() {
       }}
     >
       <CustomBreadcrumbs
-        heading="List"
-        links={[{ name: 'Graveyard', href: paths.dashboard.root }, { name: 'List' }]}
+        heading={t('List')}
+        links={[{ name: t('Graveyard'), href: paths.dashboard.root }, { name: t('List') }]}
         sx={{
           mb: {
             xs: 3,
