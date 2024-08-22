@@ -6,6 +6,8 @@ import TableCell from '@mui/material/TableCell';
 import { Theme, SxProps } from '@mui/material/styles';
 import TableSortLabel from '@mui/material/TableSortLabel';
 
+import { useTranslate } from 'src/locales';
+
 // ----------------------------------------------------------------------
 
 const visuallyHidden = {
@@ -43,6 +45,7 @@ export default function TableHeadCustom({
   onSelectAllRows,
   sx,
 }: Props) {
+  const { t } = useTranslate();
   return (
     <TableHead sx={sx}>
       <TableRow>
@@ -81,7 +84,7 @@ export default function TableHeadCustom({
                 ) : null}
               </TableSortLabel>
             ) : (
-              headCell.label
+              t(headCell.label)
             )}
           </TableCell>
         ))}

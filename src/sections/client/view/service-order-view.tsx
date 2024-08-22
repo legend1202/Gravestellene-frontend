@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 
 import { useRouter } from 'src/routes/hooks';
 
+import { useTranslate } from 'src/locales';
 import { createOrder } from 'src/api/order';
 import { PATH_AFTER_LOGIN } from 'src/config-global';
 import { SERVICE_ORDER_STEPS } from 'src/_mock/_product';
@@ -69,6 +70,7 @@ const initialState: ICheckout = {
 };
 
 export default function ServiceOrderView({ id, graveyardId }: Props) {
+  const { t } = useTranslate();
   const settings = useSettingsContext();
 
   const [checkout, setCheckout] = useState<ICheckout>(initialState);
@@ -134,7 +136,7 @@ export default function ServiceOrderView({ id, graveyardId }: Props) {
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'} sx={{ mb: 10 }}>
       <Typography variant="h4" sx={{ my: { xs: 3, md: 5 } }}>
-        Order Grave Care
+        {t('Order Grave Care')}
       </Typography>
       {!servicesLoading && (
         <>

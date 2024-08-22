@@ -4,6 +4,8 @@ import Grid from '@mui/material/Unstable_Grid2';
 import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
 
+import { useTranslate } from 'src/locales';
+
 import EmptyContent from 'src/components/empty-content';
 
 import { IServiceRequestedItem } from 'src/types/service';
@@ -49,6 +51,7 @@ export default function CheckoutCart({
   handleSetCheckout,
   handleOrderListDelete,
 }: Props) {
+  const { t } = useTranslate();
   const empty = checkout.items && !checkout.items.length;
 
   const handleClickNext = () => {
@@ -61,7 +64,7 @@ export default function CheckoutCart({
           <CardHeader
             title={
               <Typography variant="h6">
-                Cart
+                {t('Cart')}
                 <Typography component="span" sx={{ color: 'text.secondary' }}>
                   &nbsp;({checkout.totalItems} item)
                 </Typography>
@@ -72,8 +75,8 @@ export default function CheckoutCart({
 
           {empty ? (
             <EmptyContent
-              title="Cart is Empty!"
-              description="Look like you have no items in your shopping cart."
+              title={t('Cart is Empty!')}
+              description={t('Look like you have no items in your shopping cart.')}
               imgUrl="/assets/icons/empty/ic_cart.svg"
               sx={{ pt: 5, pb: 10 }}
             />
@@ -99,7 +102,7 @@ export default function CheckoutCart({
           disabled={empty}
           onClick={handleClickNext}
         >
-          Check Out
+          {t('Check Out')}
         </Button>
       </Grid>
     </Grid>

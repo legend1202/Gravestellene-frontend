@@ -133,6 +133,7 @@ export default function ServiceRequest() {
     }
   }, [services, isFellesraad, rservices]);
 
+  console.log('sdfas');
   useEffect(() => {
     if (rservices) {
       console.log('request services', rservices);

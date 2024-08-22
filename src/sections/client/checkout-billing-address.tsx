@@ -14,6 +14,7 @@ import Alert from '@mui/material/Alert';
 import CardHeader from '@mui/material/CardHeader';
 import LoadingButton from '@mui/lab/LoadingButton';
 
+import { useTranslate } from 'src/locales';
 import { useAuthContext } from 'src/auth/hooks';
 
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
@@ -57,6 +58,7 @@ export default function CheckoutBillingAddress({
   handleSetCheckout,
   handleSetContactInfo,
 }: Props) {
+  const { t } = useTranslate();
   const { user } = useAuthContext();
 
   const [errorMsg] = useState('');
@@ -100,13 +102,13 @@ export default function CheckoutBillingAddress({
   const renderDetails = (
     <Grid xs={12} md={12}>
       <Card>
-        <CardHeader title="Details" />
+        <CardHeader title={t('Details')} />
 
         <Stack spacing={3} sx={{ p: 3 }}>
-          <RHFTextField name="ssn" label="Social Security Number" />
-          <RHFTextField name="name" label="Your Name" />
-          <RHFTextField name="email" label="Your E-mail" />
-          <RHFTextField name="phone" label="Your Phone" />
+          <RHFTextField name="ssn" label={t('Social Security Number')} />
+          <RHFTextField name="name" label={t('Your Name')} />
+          <RHFTextField name="email" label={t('Your E-mail')} />
+          <RHFTextField name="phone" label={t('Your Phone')} />
         </Stack>
       </Card>
     </Grid>
@@ -119,7 +121,7 @@ export default function CheckoutBillingAddress({
       sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}
     >
       <LoadingButton type="submit" variant="contained" size="large" loading={isSubmitting}>
-        Save Contact
+        {t('Save Contact')}
       </LoadingButton>
     </Grid>
   );

@@ -62,7 +62,7 @@ export default function AdminUserList() {
     const result = await UserRoleUpdate(updateData);
     if (result.data.success) {
       enqueueSnackbar(t('update_success'));
-      const updatedUsers = users.map((user) => {
+      const updatedUsers = tableData.map((user) => {
         if (user.id === result.data.result.id) return { ...user, role: result.data.result.role };
         return user;
       });
