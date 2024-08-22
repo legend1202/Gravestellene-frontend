@@ -14,17 +14,6 @@ import { enUS as enUSDate, nbNO as nbNODate } from '@mui/x-date-pickers/locales'
 
 export const allLangs = [
   {
-    label: 'English',
-    value: 'en',
-    systemValue: merge(enUSDate, enUSDataGrid, enUSCore),
-    adapterLocale: enUSAdapter,
-    icon: 'flagpack:gb-nir',
-    numberFormat: {
-      code: 'en-US',
-      currency: 'USD',
-    },
-  },
-  {
     label: 'Norsk',
     value: 'nor',
     systemValue: merge(nbNODate, nbNODataGrid, nbNOCore),
@@ -33,6 +22,17 @@ export const allLangs = [
     numberFormat: {
       code: 'zh-CN',
       currency: 'NOK',
+    },
+  },
+  {
+    label: 'English',
+    value: 'en',
+    systemValue: merge(enUSDate, enUSDataGrid, enUSCore),
+    adapterLocale: enUSAdapter,
+    icon: 'flagpack:gb-nir',
+    numberFormat: {
+      code: 'en-US',
+      currency: 'USD',
     },
   },
 ];

@@ -12,6 +12,7 @@ import { alpha, styled } from '@mui/material/styles';
 import { useBoolean } from 'src/hooks/use-boolean';
 import { useDebounce } from 'src/hooks/use-debounce';
 
+import { useTranslate } from 'src/locales';
 import { bgGradient } from 'src/theme/css';
 import { useGetFilteredGravestones } from 'src/api/gravestone';
 
@@ -23,10 +24,6 @@ import { IProductFilters, IProductFilterValue } from 'src/types/product';
 
 import GravestoneSearch from './gravestone-search';
 
-// import { useSearchGravestoneLists } from "src/api/gravestone";
-
-// ----------------------------------------------------------------------
-
 const StyledRoot = styled('div')(({ theme }) => ({
   ...bgGradient({
     color: alpha(theme.palette.background.default, theme.palette.mode === 'light' ? 0.9 : 0.94),
@@ -35,11 +32,6 @@ const StyledRoot = styled('div')(({ theme }) => ({
   width: '100%',
   height: '100%',
   position: 'relative',
-  // [theme.breakpoints.up("md")]: {
-  //   top: 0,
-  //   left: 0,
-  //   position: "fixed",
-  // },
 }));
 
 const defaultFilters: IProductFilters = {
@@ -56,8 +48,7 @@ export default function HomeSplash() {
 
   const [searchKeyState, setSearchKeyState] = useState(false);
 
-  // const {gravestones} = useGetFilteredGravestones({})
-
+  const { t } = useTranslate();
   const [graveyardName, setGraveyardName] = useState('');
   const [startDOB, setStartDOB] = useState<any>('');
   const [endDOB, setEndDOB] = useState<any>('');
@@ -175,18 +166,18 @@ export default function HomeSplash() {
             >
               <m.div variants={varFade().inUp}>
                 <Typography component="div" variant="h2" sx={{ color: '#d69c00' }}>
-                  Welcome to GraveSteller!
+                  {t('Welcome to GraveSteller!')}
                 </Typography>
               </m.div>
 
               <m.div variants={varFade().inDown}>
                 <Typography variant="overline">
-                  <b>Here you can search for people buried</b>,{' '}
-                  <small>in currently 109 cemetery administrations</small>,{' '}
-                  <b>842 cemeteries and 0 people buried.</b>
+                  <b>{t('Here you can search for people buried')}</b>,{' '}
+                  <small>{t('in currently 109 cemetery administrations')}</small>,{' '}
+                  <b>{t('842 cemeteries and 0 people buried.')}</b>
                   <br />
-                  <b>At</b> <small>administrations</small>{' '}
-                  <b>with the symbol *, you can also order grave care.</b>
+                  <b>{t('At')}</b> <small>{t('administrations')}</small>{' '}
+                  <b>{t('with the symbol *, you can also order grave care.')}</b>
                 </Typography>
               </m.div>
             </Stack>
@@ -216,7 +207,7 @@ export default function HomeSplash() {
                 variant="soft"
                 color="default"
               >
-                Search Buried
+                {t('Search Buried')}
               </Label>
               <Label
                 sx={{
@@ -233,7 +224,7 @@ export default function HomeSplash() {
                 variant="soft"
                 color="default"
               >
-                You can search by name:
+                {t('You can search by name:')}
               </Label>
               <Box
                 sx={{

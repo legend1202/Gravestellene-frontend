@@ -14,6 +14,7 @@ import { RouterLink } from 'src/routes/components';
 import { useOffSetTop } from 'src/hooks/use-off-set-top';
 
 import { bgBlur } from 'src/theme/css';
+import { useTranslate } from 'src/locales';
 
 import Logo from 'src/components/logo';
 
@@ -22,11 +23,14 @@ import LoginButton from '../common/login-button';
 // import signupb
 import HeaderShadow from '../common/header-shadow';
 import SettingsButton from '../common/settings-button';
+import LanguagePopover from '../common/language-popover';
 
 // ----------------------------------------------------------------------
 
 export default function Header() {
   const theme = useTheme();
+
+  const { t } = useTranslate();
 
   const offsetTop = useOffSetTop(HEADER.H_DESKTOP);
 
@@ -79,6 +83,8 @@ export default function Header() {
           <Stack alignItems="center" direction={{ xs: 'row', md: 'row-reverse' }}>
             <LoginButton />
 
+            <LanguagePopover />
+
             <SettingsButton
               sx={{
                 ml: { xs: 1, md: 0 },
@@ -91,7 +97,7 @@ export default function Header() {
               variant="outlined"
               sx={{ mr: 1 }}
             >
-              Graveyard
+              {t('Graveyard')}
             </Button>
           </Stack>
         </Container>

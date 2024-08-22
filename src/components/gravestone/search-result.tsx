@@ -1,16 +1,13 @@
 import { m } from 'framer-motion';
 
 import Box from '@mui/material/Box';
-// import Card from "@mui/material/Card";
-// import Link from "@mui/material/Link";
 import { Button } from '@mui/material';
 import Stack from '@mui/material/Stack';
-// import { alpha } from "@mui/material/styles";
-// import Container from "@mui/material/Container";
 import Typography from '@mui/material/Typography';
 
 import { RouterLink } from 'src/routes/components';
 
+import { useTranslate } from 'src/locales';
 import { PATH_SEARCH_GRAVESTONE } from 'src/config-global';
 
 import { varFade } from 'src/components/animate';
@@ -24,6 +21,7 @@ type ParamsProps = {
 };
 
 export default function GraveStoneSearchResult({ gravestones }: ParamsProps) {
+  const { t } = useTranslate();
   return (
     <Stack
       spacing={3}
@@ -88,7 +86,7 @@ export default function GraveStoneSearchResult({ gravestones }: ParamsProps) {
                   }}
                   color="common.black"
                 >
-                  Born: {element?.birthday}
+                  {t('Born')}: {element?.birthday}
                 </Typography>
               </m.div>
               <m.div variants={varFade().inUp}>
@@ -100,7 +98,7 @@ export default function GraveStoneSearchResult({ gravestones }: ParamsProps) {
                   }}
                   color="common.black"
                 >
-                  Deceased: {element?.deceasedDate}
+                  {t('Deceased')}: {element?.deceasedDate}
                 </Typography>
               </m.div>
               <m.div variants={varFade().inUp}>
@@ -112,7 +110,7 @@ export default function GraveStoneSearchResult({ gravestones }: ParamsProps) {
                   }}
                   color="common.black"
                 >
-                  Buried With: {element?.burriedWith}
+                  {t('Buried With')}: {element?.burriedWith}
                 </Typography>
               </m.div>
             </Box>
@@ -134,7 +132,7 @@ export default function GraveStoneSearchResult({ gravestones }: ParamsProps) {
                   }}
                   color="common.black"
                 >
-                  Graveyard: {element?.graveyardDetails[0].name}
+                  {t('Graveyard')}: {element?.graveyardDetails[0].name}
                 </Typography>
               </m.div>
               <m.div variants={varFade().inUp}>
@@ -146,7 +144,7 @@ export default function GraveStoneSearchResult({ gravestones }: ParamsProps) {
                   }}
                   color="common.black"
                 >
-                  Church Number: {element?.churchNumber}
+                  {t('Church Number')}: {element?.churchNumber}
                 </Typography>
               </m.div>
               <m.div variants={varFade().inUp}>
@@ -158,7 +156,7 @@ export default function GraveStoneSearchResult({ gravestones }: ParamsProps) {
                   }}
                   color="common.black"
                 >
-                  Field: {element?.field}
+                  {t('Field')}: {element?.field}
                 </Typography>
               </m.div>
             </Box>
@@ -180,7 +178,7 @@ export default function GraveStoneSearchResult({ gravestones }: ParamsProps) {
                   }}
                   color="common.black"
                 >
-                  Row: {element?.row}
+                  {t('Row')}: {element?.row}
                 </Typography>
               </m.div>
               <m.div variants={varFade().inUp}>
@@ -192,7 +190,7 @@ export default function GraveStoneSearchResult({ gravestones }: ParamsProps) {
                   }}
                   color="common.black"
                 >
-                  Place: {element?.place}
+                  {t('Place')}: {element?.place}
                 </Typography>
               </m.div>
             </Box>
